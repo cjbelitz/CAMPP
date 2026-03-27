@@ -937,9 +937,30 @@ export default function CirclePage() {
   const [showCarpool, setShowCarpool] = useState(false)
   const [carpoolDetail, setCarpoolDetail] = useState(null) // post object
 
+  // Search
+  const [search, setSearch] = useState('')
+
   // Derived
   const contactMoms = contactIds.map((id) => MOCK_MOMS.find((m) => m.id === id)).filter(Boolean)
   const availableMoms = MOCK_MOMS.filter((m) => !contactIds.includes(m.id))
+
+  // All people connected to the user: contacts + circle members
+  const connectedMomIds = new Set([
+    ...contactIds,
+    ...circles.flatMap((c) => c.memberIds),
+  ])
+  const connectedMoms = MOCK_MOMS.filter((m) => connectedMomIds.has(m.id))
+
+  const searchResults = search.trim()
+    ? connectedMoms.filter((m) => {
+        const q = search.trim().toLowerCase()
+        return (
+          m.name.toLowerCase().includes(q) ||
+          m.kidName.toLowerCase().includes(q) ||
+          m.location.toLowerCase().includes(q)
+        )
+      })
+    : []
 
   function handleCreateCircle(kid, { name, memberIds }) {
     const id = `circle-custom-${Date.now()}`
@@ -1084,11 +1105,61 @@ export default function CirclePage() {
             <NotificationBell />
           </div>
         </div>
-        <h1 className="font-[Fraunces] font-bold text-capp-dark text-2xl">My Circle</h1>
-        <p className="font-[DM_Sans] text-sm text-capp-dark/50">Your camp community</p>
+        <h1 className="font-[Fraunces] font-bold text-capp-dark text-2xl mb-3">My Circle</h1>
+        {/* Search bar */}
+        <div className="relative">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-capp-dark/30 text-base leading-none pointer-events-none">🔍</span>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or kid's name…"
+            className="w-full font-[DM_Sans] text-sm bg-white border border-capp-dark/10 rounded-2xl pl-9 pr-9 py-2.5 focus:outline-none focus:border-capp-coral/40 placeholder:text-capp-dark/30"
+          />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-capp-dark/30 text-sm font-bold active:opacity-60"
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="px-4 pt-5 flex flex-col gap-6">
+
+        {/* ── Search results ── */}
+        {search.trim() && (
+          <section>
+            {searchResults.length === 0 ? (
+              <div className="bg-white rounded-2xl px-5 py-8 text-center shadow-sm">
+                <p className="font-[DM_Sans] text-sm text-capp-dark/50">No one found for "{search}"</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <div className="divide-y divide-capp-dark/[0.04]">
+                  {searchResults.map((mom) => (
+                    <button key={mom.id}
+                      onClick={() => { setSearch(''); setContactSheet(mom) }}
+                      className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-capp-dark/[0.03] transition-colors text-left">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+                        style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
+                        <p className="font-[DM_Sans] text-xs text-capp-dark/40">{mom.kidName}'s parent · {mom.location}</p>
+                      </div>
+                      <span className="text-capp-dark/20 text-sm shrink-0">›</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ── Main content (hidden while searching) ── */}
+        {!search.trim() && <>
 
         {/* ── No kids ── */}
         {kids.length === 0 && (
@@ -1203,6 +1274,8 @@ export default function CirclePage() {
             </div>
           )}
         </section>
+
+        </> /* end !search.trim() */}
 
       </div>
 
