@@ -48,7 +48,7 @@ input, textarea, select {
   }
 
   #root {
-    width: min(780px, 100vw);
+    width: min(1024px, 100vw);
     flex-shrink: 0;
     position: relative;
     background-color: #FFF8F0;
