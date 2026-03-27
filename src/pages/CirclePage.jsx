@@ -1051,7 +1051,7 @@ export default function CirclePage() {
         state: {
           circleName: circle.name,
           circleIcon: camp?.icon ?? '💬',
-          circleAccent: camp?.accent ?? '#FFF952',
+          circleAccent: camp?.accent ?? '#F4D242',
           circleMemberIds: circle.memberIds,
         },
       })
@@ -1069,7 +1069,7 @@ export default function CirclePage() {
         state: {
           circleName: circle.name,
           circleIcon: camp?.icon ?? '💬',
-          circleAccent: camp?.accent ?? '#FFF952',
+          circleAccent: camp?.accent ?? '#F4D242',
           circleMemberIds: circle.memberIds,
         },
       })
@@ -1293,7 +1293,7 @@ export default function CirclePage() {
 
       {carpoolDetail && (() => {
         const livePost = carpoolPosts.find((p) => p.id === carpoolDetail.id) ?? carpoolDetail
-        const mom = MOCK_MOMS.find((m) => m.id === livePost.momId) ?? { name: 'You', avatarColor: '#FFF952', location: '', kidName: '', kidAge: '' }
+        const mom = MOCK_MOMS.find((m) => m.id === livePost.momId) ?? { name: 'You', avatarColor: '#F4D242', location: '', kidName: '', kidAge: '' }
         return (
           <CarpoolDetailSheet
             post={livePost}

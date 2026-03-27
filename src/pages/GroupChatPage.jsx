@@ -38,7 +38,7 @@ export default function GroupChatPage() {
   // Fall back to circle state when no matching camp (user-created circles)
   const displayName   = camp?.name   ?? circleState.circleName   ?? 'Circle'
   const displayIcon   = camp?.icon   ?? circleState.circleIcon   ?? '💬'
-  const displayAccent = camp?.accent ?? circleState.circleAccent ?? '#FFF952'
+  const displayAccent = camp?.accent ?? circleState.circleAccent ?? '#F4D242'
 
   useEffect(() => { markRead(convId) }, [convId])
   useEffect(() => {

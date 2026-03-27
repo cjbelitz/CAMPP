@@ -6,14 +6,14 @@ import { categories } from '../data/camps'
 const INTEREST_OPTIONS = categories.filter((c) => c !== 'All')
 
 const AVATAR_COLORS = [
-  '#FF6B6B',
-  '#FFF952',
-  '#44DD9E',
-  '#118AB2',
-  '#A78BFA',
-  '#FB923C',
-  '#34D399',
-  '#F472B6',
+  '#80B0E8',
+  '#FFC0C0',
+  '#008471',
+  '#D1CAEA',
+  '#D6D35F',
+  '#C45F3F',
+  '#898E46',
+  '#F29CC3',
 ]
 
 const ENVIRONMENT_OPTIONS = [
@@ -78,7 +78,7 @@ export default function AddKidPage() {
 
   const [name, setName] = useState(existing?.name ?? '')
   const [age, setAge] = useState(existing?.age ?? 8)
-  const [avatarColor, setAvatarColor] = useState(existing?.avatarColor ?? '#FF6B6B')
+  const [avatarColor, setAvatarColor] = useState(existing?.avatarColor ?? '#C45F3F')
   const [interests, setInterests] = useState(existing?.interests ?? [])
   const [environment, setEnvironment] = useState(existing?.environment ?? 'both')
   const [stimulation, setStimulation] = useState(existing?.stimulation ?? 'moderate')

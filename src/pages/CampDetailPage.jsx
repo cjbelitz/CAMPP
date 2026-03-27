@@ -214,7 +214,7 @@ export default function CampDetailPage() {
                     <div key={`${signup.kidName}-${signup.session}`} className="flex items-center gap-3">
                       <div
                         className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
-                        style={{ backgroundColor: mom?.avatarColor ?? '#A78BFA' }}
+                        style={{ backgroundColor: mom?.avatarColor ?? '#D1CAEA' }}
                       >
                         {signup.kidName[0]}
                       </div>

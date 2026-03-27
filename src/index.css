@@ -3,10 +3,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-capp-coral: #FFF952;
-  --color-capp-yellow: #FFF952;
-  --color-capp-mint: #44DD9E;
-  --color-capp-blue: #118AB2;
+  --color-capp-coral: #F4D242;
+  --color-capp-yellow: #F4D242;
+  --color-capp-mint: #008471;
+  --color-capp-blue: #80B0E8;
+  --color-capp-pink: #F29CC3;
+  --color-capp-blush: #FFC0C0;
+  --color-capp-lavender: #D1CAEA;
+  --color-capp-olive: #D6D35F;
+  --color-capp-rust: #C45F3F;
+  --color-capp-sage: #898E46;
   --color-capp-dark: #0f172a;
   --color-capp-warm-bg: #FFF8F0;
 

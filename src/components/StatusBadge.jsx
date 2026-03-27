@@ -1,5 +1,5 @@
 const STATUS_CONFIG = {
-  'popular':     { label: '⭐ Popular',     bg: '#FFF3CC', text: '#b45309', border: '#FFF95260' },
+  'popular':     { label: '⭐ Popular',     bg: '#F4D24225', text: '#7a6500', border: '#F4D24260' },
   'almost-full': { label: '⚡ Almost full', bg: '#fee2e2', text: '#dc2626', border: '#fca5a560' },
 }
 

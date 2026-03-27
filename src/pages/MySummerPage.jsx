@@ -90,9 +90,9 @@ function downloadICS(savedEntries, allCamps, customEvents) {
 
 const EVENT_TYPES = [
   { type: 'vacation',    label: 'Family Vacation', emoji: '🏖️', color: '#818CF8' },
-  { type: 'family',      label: 'Family in Town',  emoji: '🏡', color: '#34D399' },
+  { type: 'family',      label: 'Family in Town',  emoji: '🏡', color: '#008471' },
   { type: 'appointment', label: 'Appointment',     emoji: '📅', color: '#F87171' },
-  { type: 'custom',      label: 'Custom',          emoji: '✏️', color: '#A78BFA' },
+  { type: 'custom',      label: 'Custom',          emoji: '✏️', color: '#D1CAEA' },
 ]
 
 function useCustomEvents() {
@@ -661,7 +661,7 @@ export default function MySummerPage() {
         <div className="px-4 pt-4 pb-4 flex flex-col gap-4">
 
           {/* Total summary bar */}
-          <div className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md" style={{ backgroundColor: '#FFF952' }}>
+          <div className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md" style={{ backgroundColor: '#F4D242' }}>
             <div>
               <p className="font-[Montserrat] text-xs text-capp-dark/60 mb-0.5">Estimated total</p>
               <p className="font-[League_Spartan] font-bold text-capp-dark text-3xl">${total.toLocaleString()}</p>

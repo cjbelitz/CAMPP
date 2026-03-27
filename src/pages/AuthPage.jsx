@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 const CAMP_TILES = [
-  { icon: '🎨', bg: '#FFF952', label: 'Arts' },
-  { icon: '🔬', bg: '#44DD9E', label: 'STEM' },
-  { icon: '⚽', bg: '#FF6B6B', label: 'Sports' },
-  { icon: '🏄', bg: '#118AB2', label: 'Surf' },
-  { icon: '🎵', bg: '#A78BFA', label: 'Music' },
-  { icon: '🏕️', bg: '#34D399', label: 'Outdoors' },
+  { icon: '🎨', bg: '#F4D242', label: 'Arts' },
+  { icon: '🔬', bg: '#008471', label: 'STEM' },
+  { icon: '⚽', bg: '#C45F3F', label: 'Sports' },
+  { icon: '🏄', bg: '#80B0E8', label: 'Surf' },
+  { icon: '🎵', bg: '#D1CAEA', label: 'Music' },
+  { icon: '🏕️', bg: '#008471', label: 'Outdoors' },
 ]
 
 export default function AuthPage() {
