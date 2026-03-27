@@ -4,7 +4,7 @@ export const SUMMER_WEEKS = [
   'Aug 4–8',  'Aug 11–15', 'Aug 18–22',
 ]
 
-// status: 'hot' | 'popular' | 'almost-full' | 'open'
+// status: 'popular' | 'almost-full' | 'open'
 export const camps = [
   {
     id: 1,
@@ -18,7 +18,7 @@ export const camps = [
     location: 'Oceanside',
     dates: 'Jun 16 – Aug 15',
     rating: 4.9, reviews: 58,
-    status: 'hot', spotsLeft: 6, regDeadline: '2026-04-08',
+    status: 'popular', spotsLeft: 6, regDeadline: '2026-04-08',
     registrationUrl: 'https://surfsocal.com',
     description: 'Professional surf instruction for all skill levels. Equipment included, small group sizes, and daily beach cleanup.',
     tags: ['Equipment included', 'Small groups', 'Beginner friendly'],
@@ -126,7 +126,7 @@ export const camps = [
     location: 'Carlsbad',
     dates: 'Jun 2 – Aug 29',
     rating: 4.7, reviews: 88,
-    status: 'hot', spotsLeft: 5, regDeadline: '2026-04-05',
+    status: 'popular', spotsLeft: 5, regDeadline: '2026-04-05',
     registrationUrl: 'https://swimfitaquatics.com',
     description: 'Stroke development, water safety, and fun in the water. USA Swimming certified instructors. Morning and afternoon sessions.',
     tags: ['USA Swimming certified', 'All levels', 'Morning & afternoon'],
@@ -180,7 +180,7 @@ export const camps = [
     location: 'Del Mar',
     dates: 'Jun 23 – Aug 8',
     rating: 4.9, reviews: 31,
-    status: 'hot', spotsLeft: 4, regDeadline: '2026-04-12',
+    status: 'popular', spotsLeft: 4, regDeadline: '2026-04-12',
     registrationUrl: 'https://juniorchefacademy.com',
     description: 'Cooking skills, nutrition science, and kitchen safety. Kids cook and eat a full meal every day and bring home recipe cards.',
     tags: ['All ingredients included', 'Take-home recipes', 'Dietary options available'],
@@ -272,7 +272,7 @@ export const camps = [
     location: 'San Marcos',
     dates: 'Jun 16–20',
     rating: 4.9, reviews: 31,
-    status: 'hot', spotsLeft: 6, regDeadline: '2026-06-02',
+    status: 'popular', spotsLeft: 6, regDeadline: '2026-06-02',
     registrationUrl: 'https://www.codeninjas.com/ca-san-marcos',
     description: 'Kids learn to code real games and apps using Scratch, JavaScript and more at Code Ninjas San Marcos. No experience needed.',
     tags: ['Beginner friendly', 'Full day', 'Indoor'],
@@ -470,7 +470,7 @@ export const camps = [
     location: 'Encinitas',
     dates: 'Jul 14–18',
     rating: 4.9, reviews: 51,
-    status: 'hot', spotsLeft: 4, regDeadline: '2026-06-30',
+    status: 'popular', spotsLeft: 4, regDeadline: '2026-06-30',
     registrationUrl: 'https://www.idtech.com',
     description: 'iD Tech premium camp — kids design mods, build worlds and learn real game logic using Minecraft and Roblox Studio at The Grauer School.',
     tags: ['Beginner friendly', 'Full day', 'Indoor'],
@@ -506,7 +506,7 @@ export const camps = [
     location: 'Carlsbad',
     dates: 'Jul 7–11',
     rating: 4.9, reviews: 22,
-    status: 'hot', spotsLeft: 5, regDeadline: '2026-06-23',
+    status: 'popular', spotsLeft: 5, regDeadline: '2026-06-23',
     registrationUrl: 'https://www.surlatable.com/cooking-classes',
     description: 'Hands-on cooking classes at Sur La Table Carlsbad where kids learn real culinary skills, knife safety and create dishes to share. Small groups only.',
     tags: ['Small groups', 'Half day', 'Indoor'],

@@ -213,7 +213,7 @@ export default function DashboardPage() {
         .sort((a, b) => daysUntil(a.camp.regDeadline) - daysUntil(b.camp.regDeadline))
         .slice(0, 3)
     : camps
-        .filter(c => ['hot', 'almost-full'].includes(c.status))
+        .filter(c => ['almost-full', 'popular'].includes(c.status))
         .sort((a, b) => daysUntil(a.regDeadline) - daysUntil(b.regDeadline))
         .slice(0, 3)
         .map(c => ({ camp: c, session: null }))

@@ -1,8 +1,6 @@
 const STATUS_CONFIG = {
-  'hot':         { label: '🔥 Hot',            bg: '#FF6B6B18', text: '#e03e3e', border: '#FF6B6B40' },
-  'popular':     { label: '⭐ Popular',         bg: '#FFF3CC',   text: '#b45309', border: '#FFD16660' },
-  'almost-full': { label: '⚡ Almost full',     bg: '#fee2e2',   text: '#dc2626', border: '#fca5a560' },
-  'open':        { label: '✅ Plenty of room',  bg: '#d1fae5',   text: '#059669', border: '#6ee7b760' },
+  'popular':     { label: '⭐ Popular',     bg: '#FFF3CC', text: '#b45309', border: '#FFD16660' },
+  'almost-full': { label: '⚡ Almost full', bg: '#fee2e2', text: '#dc2626', border: '#fca5a560' },
 }
 
 export default function StatusBadge({ status, size = 'sm' }) {
