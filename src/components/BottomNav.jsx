@@ -17,7 +17,7 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8 px-1" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-      <div className="flex justify-around max-w-[430px] mx-auto">
+      <div className="flex justify-center gap-2 max-w-[480px] mx-auto">
         {tabs.map((tab) => {
           const isActive = pathname === tab.path ||
             (tab.path !== '/dashboard' && pathname.startsWith(tab.path))
@@ -29,7 +29,7 @@ export default function BottomNav() {
             <button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 relative active:scale-95 transition-transform ${
+              className={`w-28 flex flex-col items-center gap-0.5 py-2.5 relative active:scale-95 transition-transform ${
                 isActive ? 'text-capp-coral' : 'text-capp-dark/35'
               }`}
             >
