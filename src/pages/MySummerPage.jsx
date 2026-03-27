@@ -58,7 +58,9 @@ function generateICS(savedEntries, allCamps, customEvents) {
   })
 
   customEvents.forEach((ev) => {
-    const { start, end } = weekToDateRange(ev.week)
+    const start = ev.startDate ? new Date(ev.startDate + 'T00:00:00') : weekToDateRange(ev.week ?? SUMMER_WEEKS[0]).start
+    const endRaw = ev.endDate ? new Date(ev.endDate + 'T00:00:00') : weekToDateRange(ev.week ?? SUMMER_WEEKS[0]).end
+    const end = new Date(endRaw); end.setDate(end.getDate() + 1) // DTEND exclusive
     lines.push(
       'BEGIN:VEVENT',
       `UID:event-${ev.id}@capp`,
@@ -106,13 +108,20 @@ function useCustomEvents() {
   return { events, addEvent, removeEvent }
 }
 
+function formatDisplayDate(isoStr) {
+  if (!isoStr) return ''
+  const d = new Date(isoStr + 'T00:00:00')
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
 function AddEventSheet({ onClose, onAdd }) {
   const [selectedType, setSelectedType] = useState(EVENT_TYPES[0])
   const [customLabel, setCustomLabel] = useState('')
-  const [selectedWeek, setSelectedWeek] = useState(SUMMER_WEEKS[0])
+  const [startDate, setStartDate] = useState('2026-06-02')
+  const [endDate, setEndDate] = useState('2026-06-06')
 
   const label = selectedType.type === 'custom' ? customLabel.trim() : selectedType.label
-  const canAdd = label.length > 0
+  const canAdd = label.length > 0 && startDate && endDate && endDate >= startDate
 
   function handleAdd() {
     if (!canAdd) return
@@ -120,7 +129,8 @@ function AddEventSheet({ onClose, onAdd }) {
       label,
       emoji: selectedType.emoji,
       color: selectedType.color,
-      week: selectedWeek,
+      startDate,
+      endDate,
       type: selectedType.type,
     })
     onClose()
@@ -133,12 +143,10 @@ function AddEventSheet({ onClose, onAdd }) {
         style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Handle */}
         <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-5" />
-
         <h2 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-4">Add to Calendar</h2>
 
-        {/* Event type pills */}
+        {/* Event type */}
         <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event type</p>
         <div className="grid grid-cols-2 gap-2 mb-4">
           {EVENT_TYPES.map((et) => (
@@ -156,7 +164,7 @@ function AddEventSheet({ onClose, onAdd }) {
           ))}
         </div>
 
-        {/* Custom label input */}
+        {/* Custom label */}
         {selectedType.type === 'custom' && (
           <div className="mb-4">
             <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event name</p>
@@ -171,17 +179,32 @@ function AddEventSheet({ onClose, onAdd }) {
           </div>
         )}
 
-        {/* Week selector */}
-        <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Week</p>
-        <select
-          value={selectedWeek}
-          onChange={(e) => setSelectedWeek(e.target.value)}
-          className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-3 mb-5 focus:outline-none"
-        >
-          {SUMMER_WEEKS.map((w) => (
-            <option key={w} value={w}>{w}</option>
-          ))}
-        </select>
+        {/* Date range */}
+        <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Dates</p>
+        <div className="flex gap-3 mb-5">
+          <div className="flex-1">
+            <p className="font-[DM_Sans] text-[10px] text-capp-dark/40 mb-1">Start</p>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => {
+                setStartDate(e.target.value)
+                if (e.target.value > endDate) setEndDate(e.target.value)
+              }}
+              className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-3 py-2.5 focus:outline-none focus:border-capp-coral/40"
+            />
+          </div>
+          <div className="flex-1">
+            <p className="font-[DM_Sans] text-[10px] text-capp-dark/40 mb-1">End</p>
+            <input
+              type="date"
+              value={endDate}
+              min={startDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-3 py-2.5 focus:outline-none focus:border-capp-coral/40"
+            />
+          </div>
+        </div>
 
         <button
           onClick={handleAdd}
@@ -522,9 +545,10 @@ function MonthView({ savedEntries, allCamps, customEvents, navigate, isRegistere
   })
 
   customEvents.forEach((ev) => {
-    const { start, end } = weekToDateRange(ev.week)
+    const start = ev.startDate ? new Date(ev.startDate + 'T00:00:00') : weekToDateRange(ev.week ?? SUMMER_WEEKS[0]).start
+    const end = ev.endDate ? new Date(ev.endDate + 'T00:00:00') : weekToDateRange(ev.week ?? SUMMER_WEEKS[0]).end
     const d = new Date(start)
-    while (d < end) { mark(new Date(d), { type: 'event', event: ev }); d.setDate(d.getDate() + 1) }
+    while (d <= end) { mark(new Date(d), { type: 'event', event: ev }); d.setDate(d.getDate() + 1) }
   })
 
   return (
@@ -777,7 +801,9 @@ export default function MySummerPage() {
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: `${ev.color}18` }}>{ev.emoji}</div>
                     <div className="flex-1 min-w-0">
                       <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark truncate">{ev.label}</p>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/40">{ev.week}</p>
+                      <p className="font-[DM_Sans] text-xs text-capp-dark/40">
+                        {ev.startDate ? `${formatDisplayDate(ev.startDate)} – ${formatDisplayDate(ev.endDate)}` : ev.week}
+                      </p>
                     </div>
                     <button onClick={() => removeEvent(ev.id)} className="text-capp-dark/20 text-sm active:opacity-60 shrink-0">✕</button>
                   </div>
