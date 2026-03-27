@@ -439,6 +439,103 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
   )
 }
 
+const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const cells = []
+  for (let i = 0; i < firstDay; i++) cells.push(null)
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d)
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm p-4">
+      <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg mb-3">{name} {year}</h3>
+      <div className="grid grid-cols-7 mb-1">
+        {DAY_LABELS.map((d) => (
+          <div key={d} className="text-center font-[DM_Sans] text-[10px] font-semibold text-capp-dark/35 uppercase tracking-wide py-1">{d}</div>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-px">
+        {cells.map((day, i) => {
+          if (!day) return <div key={`e-${i}`} />
+          const key = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`
+          const items = dayMap[key] ?? []
+          const today = new Date()
+          const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day
+
+          return (
+            <div key={day} className={`min-h-[48px] rounded-lg p-0.5 flex flex-col gap-0.5 ${items.length > 0 ? 'bg-capp-warm-bg' : ''}`}>
+              <span className={`font-[DM_Sans] text-xs font-semibold self-center w-6 h-6 flex items-center justify-center rounded-full mb-0.5 ${
+                isToday ? 'bg-capp-coral text-capp-dark' : items.length > 0 ? 'text-capp-dark' : 'text-capp-dark/25'
+              }`}>
+                {day}
+              </span>
+              {items.slice(0, 2).map((item, idx) => {
+                if (item.type === 'event') {
+                  return (
+                    <div key={idx} className="text-[8px] font-[DM_Sans] font-semibold px-1 py-0.5 rounded truncate leading-tight"
+                      style={{ backgroundColor: `${item.event.color}25`, color: item.event.color }}>
+                      {item.event.emoji} {item.event.label}
+                    </div>
+                  )
+                }
+                const reg = isRegistered(item.camp.id)
+                return (
+                  <button key={idx}
+                    onClick={() => navigate(`/camps/${item.camp.id}`)}
+                    className="text-[8px] font-[DM_Sans] font-semibold px-1 py-0.5 rounded truncate leading-tight text-left active:opacity-70"
+                    style={reg
+                      ? { backgroundColor: '#FEF08A', color: '#854d0e' }
+                      : { backgroundColor: `${item.camp.accent}25`, color: item.camp.accent }}>
+                    {item.camp.icon} {item.camp.name}
+                  </button>
+                )
+              })}
+              {items.length > 2 && (
+                <div className="text-[8px] font-[DM_Sans] text-capp-dark/35 px-1">+{items.length - 2}</div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function MonthView({ savedEntries, allCamps, customEvents, navigate, isRegistered }) {
+  // Build a day → items map
+  const dayMap = {}
+  const mark = (date, item) => {
+    const key = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`
+    if (!dayMap[key]) dayMap[key] = []
+    dayMap[key].push(item)
+  }
+
+  savedEntries.forEach((entry) => {
+    if (!entry.session) return
+    const camp = allCamps.find((c) => c.id === entry.id)
+    if (!camp) return
+    const { start, end } = weekToDateRange(entry.session)
+    const d = new Date(start)
+    while (d < end) { mark(new Date(d), { type: 'camp', camp, entry }); d.setDate(d.getDate() + 1) }
+  })
+
+  customEvents.forEach((ev) => {
+    const { start, end } = weekToDateRange(ev.week)
+    const d = new Date(start)
+    while (d < end) { mark(new Date(d), { type: 'event', event: ev }); d.setDate(d.getDate() + 1) }
+  })
+
+  return (
+    <div className="flex flex-col gap-4">
+      {[{ month: 5, name: 'June' }, { month: 6, name: 'July' }, { month: 7, name: 'August' }].map(({ month, name }) => (
+        <MonthGrid key={month} month={month} year={2026} name={name} dayMap={dayMap} navigate={navigate} isRegistered={isRegistered} />
+      ))}
+    </div>
+  )
+}
+
 export default function MySummerPage() {
   const navigate = useNavigate()
   const { savedIds, savedEntries, unsave, assignKid, markRegistered, isRegistered } = useSaved()
@@ -486,38 +583,19 @@ export default function MySummerPage() {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => downloadICS(savedEntries, camps, customEvents)}
-              className="px-3 py-2 rounded-xl bg-white border border-capp-dark/10 text-capp-dark font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform shadow-sm"
-              title="Export to Apple Calendar, Google Calendar or Outlook"
-            >
-              📅 Sync
-            </button>
-            <button
               onClick={() => setShowAddEvent(true)}
               className="px-3 py-2 rounded-xl bg-capp-dark text-white font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform"
             >
-              +
+              + Event
             </button>
-            {savedCamps.length > 0 && (
-              <div className="flex gap-1 bg-capp-dark/6 rounded-xl p-1">
-                <button
-                  onClick={() => setView('calendar')}
-                  className={`px-3 py-1.5 rounded-lg font-[DM_Sans] text-xs font-semibold transition-all ${
-                    view === 'calendar' ? 'bg-white text-capp-dark shadow-sm' : 'text-capp-dark/40'
-                  }`}
-                >
-                  📅 Calendar
-                </button>
-                <button
-                  onClick={() => setView('list')}
-                  className={`px-3 py-1.5 rounded-lg font-[DM_Sans] text-xs font-semibold transition-all ${
-                    view === 'list' ? 'bg-white text-capp-dark shadow-sm' : 'text-capp-dark/40'
-                  }`}
-                >
-                  ☰ List
-                </button>
-              </div>
-            )}
+            <select
+              value={view}
+              onChange={(e) => setView(e.target.value)}
+              className="font-[DM_Sans] text-xs font-semibold text-capp-dark bg-white border border-capp-dark/10 rounded-xl px-3 py-2 shadow-sm"
+            >
+              <option value="calendar">Calendar</option>
+              <option value="list">List</option>
+            </select>
           </div>
         </div>
       </div>
@@ -537,57 +615,16 @@ export default function MySummerPage() {
             Browse Camps
           </button>
         </div>
-      ) : view === 'calendar' || savedCamps.length === 0 ? (
-        /* ── Calendar view ── */
+      ) : view === 'calendar' ? (
+        /* ── Monthly calendar view ── */
         <div className="px-4 pt-5 flex flex-col gap-4">
-          {savedCamps.length > 0 && (
-            <div
-              className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md transition-all"
-              style={{ backgroundColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
-            >
-              <div>
-                <p className="font-[DM_Sans] text-xs text-capp-dark/60 mb-0.5">
-                  {selectedKid ? `${selectedKid.name}'s summer` : 'Estimated total'}
-                </p>
-                <p className="font-[Fraunces] font-bold text-capp-dark text-3xl">${filteredTotal.toLocaleString()}</p>
-                <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">
-                  {filteredCamps.length} camp{filteredCamps.length !== 1 ? 's' : ''} · {selectedKid ? `${selectedKid.name}'s schedule ✓` : 'Summer sorted ✓'}
-                </p>
-              </div>
-              <div className="flex -space-x-2">
-                {(selectedKid ? [selectedKid] : kids).map((kid) => (
-                  <KidAvatar
-                    key={kid.id}
-                    kid={kid}
-                    size={36}
-                    rounded="full"
-                    className="border-2"
-                    style={{ borderColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="bg-white rounded-2xl shadow-sm px-4 pt-5 pb-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-[Fraunces] font-bold text-capp-dark text-base">Summer 2026</h2>
-              <span className="font-[DM_Sans] text-xs text-capp-dark/35">Tap a kid to filter</span>
-            </div>
-            <SummerCalendar
-              savedEntries={savedEntries}
-              allCamps={camps}
-              kids={kids}
-              navigate={navigate}
-              assignKid={assignKid}
-              selectedKidId={selectedKidId}
-              onKidSelect={setSelectedKidId}
-              isRegistered={isRegistered}
-              customEvents={customEvents}
-              onRemoveEvent={removeEvent}
-            />
-          </div>
-
+          <MonthView
+            savedEntries={savedEntries}
+            allCamps={camps}
+            customEvents={customEvents}
+            navigate={navigate}
+            isRegistered={isRegistered}
+          />
           <button
             onClick={() => navigate('/camps')}
             className="w-full py-4 rounded-2xl border-2 border-dashed border-capp-dark/15 font-[DM_Sans] font-medium text-sm text-capp-dark/40 active:scale-95 transition-transform"
