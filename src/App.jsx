@@ -21,6 +21,7 @@ import NotificationsPage from './pages/NotificationsPage'
 import AIChatPage from './pages/AIChatPage'
 import SettingsPage from './pages/SettingsPage'
 import AuthPage from './pages/AuthPage'
+import OnboardingPage from './pages/OnboardingPage'
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -44,8 +45,9 @@ function AnimatedRoutes() {
 }
 
 function AppContent() {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, user } = useAuth()
   if (!isLoggedIn) return <AuthPage />
+  if (!user?.onboarded) return <OnboardingPage />
   return (
     <>
       <ScrollToTop />

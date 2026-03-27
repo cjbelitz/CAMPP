@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
   const isLoggedIn = !!user
 
   function signUp(name, email) {
-    const newUser = { name: name.trim(), email: email.trim().toLowerCase() }
+    const newUser = { name: name.trim(), email: email.trim().toLowerCase(), onboarded: false }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser))
     setUser(newUser)
   }
@@ -27,9 +27,17 @@ export function AuthProvider({ children }) {
   function signIn(email) {
     // Demo mode — accept any credentials, restore or create a user record
     const existing = loadUser()
-    const u = existing ?? { name: email.split('@')[0], email: email.trim().toLowerCase() }
+    const u = existing
+      ? { ...existing, onboarded: true }
+      : { name: email.split('@')[0], email: email.trim().toLowerCase(), onboarded: true }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(u))
     setUser(u)
+  }
+
+  function completeOnboarding() {
+    const updated = { ...loadUser(), onboarded: true }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+    setUser(updated)
   }
 
   function updateProfile(name, email) {
@@ -44,7 +52,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, signUp, signIn, signOut, updateProfile }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, signUp, signIn, signOut, updateProfile, completeOnboarding }}>
       {children}
     </AuthContext.Provider>
   )
