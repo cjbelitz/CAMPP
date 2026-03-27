@@ -39,32 +39,32 @@ const testimonials = [
     quote: "I planned our entire summer in one afternoon. My kids are thrilled and I am not stressed. 10/10.",
     name: 'Jess M.',
     location: 'Encinitas',
-    borderColor: '#C45F3F',
-    initial: '#C45F3F',
+    borderColor: '#FF9B28',
+    initial: '#FF9B28',
   },
   {
     quote: "Finally — a site that actually lists what camps are available near me. Such a game changer.",
     name: 'Taryn L.',
     location: 'Carlsbad',
-    borderColor: '#F4D242',
+    borderColor: '#FABE37',
     initial: '#f59e0b',
   },
   {
     quote: "My son is doing surf camp AND robotics this summer. CAMPP made it stupidly easy to find both.",
     name: 'Brianna K.',
     location: 'Oceanside',
-    borderColor: '#008471',
-    initial: '#008471',
+    borderColor: '#7A88FE',
+    initial: '#7A88FE',
   },
 ]
 
 const categories = [
-  { label: 'Sports', icon: '⚽', bg: '#C45F3F15', border: '#C45F3F40' },
-  { label: 'Arts',   icon: '🎨', bg: '#F4D24230', border: '#F4D24250' },
-  { label: 'STEM',   icon: '🔬', bg: '#00847115', border: '#00847140' },
-  { label: 'Outdoors', icon: '🏕️', bg: '#80B0E815', border: '#80B0E840' },
-  { label: 'Surf',   icon: '🏄', bg: '#C45F3F15', border: '#C45F3F40' },
-  { label: 'Music',  icon: '🎵', bg: '#F4D24230', border: '#F4D24250' },
+  { label: 'Sports', icon: '⚽', bg: '#FF9B2815', border: '#FF9B2840' },
+  { label: 'Arts',   icon: '🎨', bg: '#FABE3730', border: '#FABE3750' },
+  { label: 'STEM',   icon: '🔬', bg: '#7A88FE15', border: '#7A88FE40' },
+  { label: 'Outdoors', icon: '🏕️', bg: '#BFDFF315', border: '#BFDFF340' },
+  { label: 'Surf',   icon: '🏄', bg: '#FF9B2815', border: '#FF9B2840' },
+  { label: 'Music',  icon: '🎵', bg: '#FABE3730', border: '#FABE3750' },
 ]
 
 export default function HomePage() {

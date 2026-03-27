@@ -8,8 +8,8 @@ const INTEREST_OPTIONS = categories.filter((c) => c !== 'All')
 const INTEREST_ICONS = { Arts: '🎨', STEM: '🔬', Sports: '⚽', Surf: '🏄', Music: '🎵', Outdoors: '🏕️' }
 
 const AVATAR_COLORS = [
-  '#80B0E8', '#FFC0C0', '#008471', '#D1CAEA',
-  '#D6D35F', '#C45F3F', '#898E46', '#F29CC3',
+  '#FABE37', '#F055A5', '#CCD537',
+  '#7A88FE', '#FF9B28', '#BFDFF3',
 ]
 
 const ENVIRONMENT_OPTIONS = [

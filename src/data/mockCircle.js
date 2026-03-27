@@ -4,14 +4,14 @@ const DAY  = 24 * HOUR
 const NOW  = Date.now()
 
 export const MOCK_MOMS = [
-  { id: 'mom-1', name: 'Jess R.',    avatarColor: '#C45F3F', location: 'Encinitas',    kidName: 'Maya',   kidAge: 9,  campIds: [3, 6]     },
-  { id: 'mom-2', name: 'Priya K.',   avatarColor: '#80B0E8', location: 'Carlsbad',     kidName: 'Rohan',  kidAge: 11, campIds: [2, 12]    },
-  { id: 'mom-3', name: 'Dana M.',    avatarColor: '#008471', location: 'Oceanside',    kidName: 'Kai',    kidAge: 10, campIds: [3, 9]     },
-  { id: 'mom-4', name: 'Lacey B.',   avatarColor: '#F4D242', location: 'Carlsbad',     kidName: 'Ellie',  kidAge: 8,  campIds: [2, 3]     },
-  { id: 'mom-5', name: 'Steph O.',   avatarColor: '#D1CAEA', location: 'Vista',        kidName: 'Connor', kidAge: 13, campIds: [9, 6]     },
-  { id: 'mom-6', name: 'Raquel T.',  avatarColor: '#D6D35F', location: 'Oceanside',    kidName: 'Mia',    kidAge: 12, campIds: [2, 9]     },
-  { id: 'mom-7', name: 'Bri J.',     avatarColor: '#F29CC3', location: 'Encinitas',    kidName: 'Lily',   kidAge: 7,  campIds: [6]        },
-  { id: 'mom-8', name: 'Tamsin L.',  avatarColor: '#898E46', location: 'Solana Beach', kidName: 'Jack',   kidAge: 10, campIds: [2]        },
+  { id: 'mom-1', name: 'Jess R.',    avatarColor: '#FF9B28', location: 'Encinitas',    kidName: 'Maya',   kidAge: 9,  campIds: [3, 6]     },
+  { id: 'mom-2', name: 'Priya K.',   avatarColor: '#7A88FE', location: 'Carlsbad',     kidName: 'Rohan',  kidAge: 11, campIds: [2, 12]    },
+  { id: 'mom-3', name: 'Dana M.',    avatarColor: '#BFDFF3', location: 'Oceanside',    kidName: 'Kai',    kidAge: 10, campIds: [3, 9]     },
+  { id: 'mom-4', name: 'Lacey B.',   avatarColor: '#FABE37', location: 'Carlsbad',     kidName: 'Ellie',  kidAge: 8,  campIds: [2, 3]     },
+  { id: 'mom-5', name: 'Steph O.',   avatarColor: '#F055A5', location: 'Vista',        kidName: 'Connor', kidAge: 13, campIds: [9, 6]     },
+  { id: 'mom-6', name: 'Raquel T.',  avatarColor: '#CCD537', location: 'Oceanside',    kidName: 'Mia',    kidAge: 12, campIds: [2, 9]     },
+  { id: 'mom-7', name: 'Bri J.',     avatarColor: '#F055A5', location: 'Encinitas',    kidName: 'Lily',   kidAge: 7,  campIds: [6]        },
+  { id: 'mom-8', name: 'Tamsin L.',  avatarColor: '#BFDFF3', location: 'Solana Beach', kidName: 'Jack',   kidAge: 10, campIds: [2]        },
 ]
 
 // ─── Group: Creative Arts (camp 3) ───────────────────────────────────────────

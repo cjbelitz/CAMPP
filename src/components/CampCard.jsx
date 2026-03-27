@@ -98,7 +98,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
                     <div
                       key={s.kidName}
                       className="w-4 h-4 rounded-full border border-violet-50 flex items-center justify-center text-[8px] font-bold text-white"
-                      style={{ backgroundColor: mom?.avatarColor ?? '#D1CAEA' }}
+                      style={{ backgroundColor: mom?.avatarColor ?? '#FABE37' }}
                     >
                       {s.kidName[0]}
                     </div>
@@ -199,7 +199,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
                     <div
                       key={s.kidName}
                       className="w-5 h-5 rounded-full border-2 border-violet-50 flex items-center justify-center text-[9px] font-bold text-white"
-                      style={{ backgroundColor: mom?.avatarColor ?? '#D1CAEA' }}
+                      style={{ backgroundColor: mom?.avatarColor ?? '#FABE37' }}
                     >
                       {s.kidName[0]}
                     </div>
