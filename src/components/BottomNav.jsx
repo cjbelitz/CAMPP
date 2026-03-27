@@ -17,7 +17,7 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8 px-1" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-      <div className="flex justify-center gap-2 max-w-[480px] mx-auto">
+      <div className="flex justify-center gap-2 max-w-[1280px] mx-auto">
         {tabs.map((tab) => {
           const isActive = pathname === tab.path ||
             (tab.path !== '/dashboard' && pathname.startsWith(tab.path))
