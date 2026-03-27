@@ -18,7 +18,7 @@ const QUICK_CHIPS = [
 function TypingIndicator() {
   return (
     <div className="flex items-end gap-2">
-      <div className="w-7 h-7 rounded-full bg-capp-coral flex items-center justify-center shrink-0 text-capp-dark text-xs font-bold font-[Fraunces] shadow-sm">
+      <div className="w-7 h-7 rounded-full bg-capp-coral flex items-center justify-center shrink-0 text-capp-dark text-xs font-bold font-[League_Spartan] shadow-sm">
         ✦
       </div>
       <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm flex gap-1 items-center">
@@ -58,7 +58,7 @@ function Message({ msg }) {
     return (
       <div className="flex justify-end">
         <div className="max-w-[78%] bg-capp-coral text-capp-dark rounded-2xl rounded-br-sm px-4 py-3 shadow-sm">
-          <p className="font-[DM_Sans] text-sm leading-relaxed">{msg.text}</p>
+          <p className="font-[Montserrat] text-sm leading-relaxed">{msg.text}</p>
         </div>
       </div>
     )
@@ -66,12 +66,12 @@ function Message({ msg }) {
 
   return (
     <div className="flex items-end gap-2">
-      <div className="w-7 h-7 rounded-full bg-capp-coral flex items-center justify-center shrink-0 text-white text-xs font-bold font-[Fraunces] shadow-sm self-start mt-0.5">
+      <div className="w-7 h-7 rounded-full bg-capp-coral flex items-center justify-center shrink-0 text-white text-xs font-bold font-[League_Spartan] shadow-sm self-start mt-0.5">
         ✦
       </div>
       <div className="max-w-[82%] bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
-        <p className="font-[DM_Sans] text-[11px] font-bold text-capp-coral mb-1 uppercase tracking-wide">CAMPP Assistant</p>
-        <div className="font-[DM_Sans] text-sm text-capp-dark/80 leading-relaxed space-y-0.5">
+        <p className="font-[Montserrat] text-[11px] font-bold text-capp-coral mb-1 uppercase tracking-wide">CAMPP Assistant</p>
+        <div className="font-[Montserrat] text-sm text-capp-dark/80 leading-relaxed space-y-0.5">
           {msg.text ? renderText(msg.text) : (
             <span className="inline-block w-2 h-4 bg-capp-coral/40 animate-pulse rounded-sm" />
           )}
@@ -215,10 +215,10 @@ export default function AIChatPage() {
           <span className="text-white font-bold text-base leading-none">✦</span>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-[Fraunces] font-bold text-capp-dark text-base leading-tight">CAMPP Assistant</p>
+          <p className="font-[League_Spartan] font-bold text-capp-dark text-base leading-tight">CAMPP Assistant</p>
           <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <p className="font-[DM_Sans] text-[11px] text-capp-dark/40">Online · replies instantly</p>
+            <p className="font-[Montserrat] text-[11px] text-capp-dark/40">Online · replies instantly</p>
           </div>
         </div>
       </div>
@@ -237,7 +237,7 @@ export default function AIChatPage() {
               <button
                 key={chip}
                 onClick={() => sendMessage(chip)}
-                className="font-[DM_Sans] text-xs font-semibold text-capp-coral bg-capp-coral/8 border border-capp-coral/25 px-3 py-2 rounded-full active:scale-95 transition-transform"
+                className="font-[Montserrat] text-xs font-semibold text-capp-coral bg-capp-coral/8 border border-capp-coral/25 px-3 py-2 rounded-full active:scale-95 transition-transform"
               >
                 {chip}
               </button>
@@ -262,7 +262,7 @@ export default function AIChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your question here..."
-            className="flex-1 font-[DM_Sans] bg-capp-warm-bg border-2 border-capp-dark/10 rounded-2xl px-4 py-3.5 focus:outline-none focus:border-capp-coral/50 transition-colors"
+            className="flex-1 font-[Montserrat] bg-capp-warm-bg border-2 border-capp-dark/10 rounded-2xl px-4 py-3.5 focus:outline-none focus:border-capp-coral/50 transition-colors"
           />
           <button
             type="submit"
@@ -272,7 +272,7 @@ export default function AIChatPage() {
             ↑
           </button>
         </form>
-        <p className="font-[DM_Sans] text-[10px] text-capp-dark/25 text-center mt-2">
+        <p className="font-[Montserrat] text-[10px] text-capp-dark/25 text-center mt-2">
           Tap the field above to open your keyboard
         </p>
       </div>

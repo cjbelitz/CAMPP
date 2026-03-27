@@ -6,8 +6,8 @@ const NOW  = Date.now()
 export const MOCK_MOMS = [
   { id: 'mom-1', name: 'Jess R.',    avatarColor: '#FF6B6B', location: 'Encinitas',    kidName: 'Maya',   kidAge: 9,  campIds: [3, 6]     },
   { id: 'mom-2', name: 'Priya K.',   avatarColor: '#118AB2', location: 'Carlsbad',     kidName: 'Rohan',  kidAge: 11, campIds: [2, 12]    },
-  { id: 'mom-3', name: 'Dana M.',    avatarColor: '#06D6A0', location: 'Oceanside',    kidName: 'Kai',    kidAge: 10, campIds: [3, 9]     },
-  { id: 'mom-4', name: 'Lacey B.',   avatarColor: '#FFD166', location: 'Carlsbad',     kidName: 'Ellie',  kidAge: 8,  campIds: [2, 3]     },
+  { id: 'mom-3', name: 'Dana M.',    avatarColor: '#44DD9E', location: 'Oceanside',    kidName: 'Kai',    kidAge: 10, campIds: [3, 9]     },
+  { id: 'mom-4', name: 'Lacey B.',   avatarColor: '#FFF952', location: 'Carlsbad',     kidName: 'Ellie',  kidAge: 8,  campIds: [2, 3]     },
   { id: 'mom-5', name: 'Steph O.',   avatarColor: '#A78BFA', location: 'Vista',        kidName: 'Connor', kidAge: 13, campIds: [9, 6]     },
   { id: 'mom-6', name: 'Raquel T.',  avatarColor: '#FB923C', location: 'Oceanside',    kidName: 'Mia',    kidAge: 12, campIds: [2, 9]     },
   { id: 'mom-7', name: 'Bri J.',     avatarColor: '#F472B6', location: 'Encinitas',    kidName: 'Lily',   kidAge: 7,  campIds: [6]        },

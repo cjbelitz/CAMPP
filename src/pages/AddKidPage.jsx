@@ -7,8 +7,8 @@ const INTEREST_OPTIONS = categories.filter((c) => c !== 'All')
 
 const AVATAR_COLORS = [
   '#FF6B6B',
-  '#FFD166',
-  '#06D6A0',
+  '#FFF952',
+  '#44DD9E',
   '#118AB2',
   '#A78BFA',
   '#FB923C',
@@ -37,10 +37,10 @@ const CHALLENGE_OPTIONS = [
 function PreferenceGroup({ label, hint, options, value, onChange }) {
   return (
     <div>
-      <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-1 block">
+      <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-1 block">
         {label}
       </label>
-      {hint && <p className="font-[DM_Sans] text-xs text-capp-dark/40 mb-3">{hint}</p>}
+      {hint && <p className="font-[Montserrat] text-xs text-capp-dark/40 mb-3">{hint}</p>}
       <div className="flex gap-2">
         {options.map((opt) => (
           <button
@@ -55,7 +55,7 @@ function PreferenceGroup({ label, hint, options, value, onChange }) {
           >
             <span className="text-xl">{opt.icon}</span>
             <span
-              className={`font-[DM_Sans] text-xs font-semibold leading-tight text-center ${
+              className={`font-[Montserrat] text-xs font-semibold leading-tight text-center ${
                 value === opt.value ? 'text-capp-coral' : 'text-capp-dark/60'
               }`}
             >
@@ -137,16 +137,16 @@ export default function AddKidPage() {
         </button>
         <div className="flex items-center gap-2 flex-1">
           <div className="w-7 h-7 rounded-lg bg-capp-coral flex items-center justify-center">
-            <span className="font-[Fraunces] text-white text-sm font-bold">C</span>
+            <span className="font-[League_Spartan] text-white text-sm font-bold">C</span>
           </div>
-          <span className="font-[Fraunces] font-bold text-capp-dark">
+          <span className="font-[League_Spartan] font-bold text-capp-dark">
             {isEditing ? 'Edit kid' : 'Add a kid'}
           </span>
         </div>
         {isEditing && (
           <button
             onClick={() => setShowDeleteConfirm(true)}
-            className="font-[DM_Sans] text-xs font-medium text-red-400 px-3 py-1.5 rounded-xl bg-red-50 active:scale-95 transition-transform"
+            className="font-[Montserrat] text-xs font-medium text-red-400 px-3 py-1.5 rounded-xl bg-red-50 active:scale-95 transition-transform"
           >
             Remove
           </button>
@@ -166,7 +166,7 @@ export default function AddKidPage() {
               />
             ) : (
               <div
-                className="w-28 h-28 rounded-full flex items-center justify-center text-4xl font-bold text-white font-[Fraunces] shadow-lg border-4 border-white"
+                className="w-28 h-28 rounded-full flex items-center justify-center text-4xl font-bold text-white font-[League_Spartan] shadow-lg border-4 border-white"
                 style={{ backgroundColor: avatarColor }}
               >
                 {name.trim() ? name.trim()[0].toUpperCase() : '?'}
@@ -182,13 +182,13 @@ export default function AddKidPage() {
               onChange={handlePhotoChange}
             />
           </label>
-          <p className="font-[DM_Sans] text-xs text-capp-dark/40">
+          <p className="font-[Montserrat] text-xs text-capp-dark/40">
             {photo ? 'Tap to change photo' : 'Tap to add a photo'}
           </p>
           {photo && (
             <button
               onClick={() => setPhoto(null)}
-              className="font-[DM_Sans] text-xs text-red-400 font-medium"
+              className="font-[Montserrat] text-xs text-red-400 font-medium"
             >
               Remove photo
             </button>
@@ -197,7 +197,7 @@ export default function AddKidPage() {
 
         {/* Name */}
         <div>
-          <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-2 block">
+          <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-2 block">
             Name
           </label>
           <input
@@ -205,18 +205,18 @@ export default function AddKidPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Emma"
-            className={`w-full font-[DM_Sans] text-base bg-white border-2 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors ${
+            className={`w-full font-[Montserrat] text-base bg-white border-2 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors ${
               nameError ? 'border-red-400' : 'border-capp-dark/10 focus:border-capp-coral/50'
             }`}
           />
           {nameError && (
-            <p className="font-[DM_Sans] text-xs text-red-400 mt-1.5">Name is required</p>
+            <p className="font-[Montserrat] text-xs text-red-400 mt-1.5">Name is required</p>
           )}
         </div>
 
         {/* Age stepper */}
         <div>
-          <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-2 block">
+          <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-2 block">
             Age
           </label>
           <div className="flex items-center gap-4">
@@ -227,8 +227,8 @@ export default function AddKidPage() {
               −
             </button>
             <div className="flex-1 text-center">
-              <span className="font-[Fraunces] font-bold text-capp-dark text-4xl">{age}</span>
-              <span className="font-[DM_Sans] text-sm text-capp-dark/40 ml-1">yrs old</span>
+              <span className="font-[League_Spartan] font-bold text-capp-dark text-4xl">{age}</span>
+              <span className="font-[Montserrat] text-sm text-capp-dark/40 ml-1">yrs old</span>
             </div>
             <button
               onClick={() => setAge((a) => Math.min(18, a + 1))}
@@ -241,7 +241,7 @@ export default function AddKidPage() {
 
         {/* Avatar color */}
         <div>
-          <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-3 block">
+          <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-3 block">
             Profile color
           </label>
           <div className="flex gap-3 flex-wrap">
@@ -261,10 +261,10 @@ export default function AddKidPage() {
 
         {/* Interests */}
         <div>
-          <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-1 block">
+          <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-1 block">
             Interests
           </label>
-          <p className="font-[DM_Sans] text-xs text-capp-dark/40 mb-3">
+          <p className="font-[Montserrat] text-xs text-capp-dark/40 mb-3">
             Helps the AI suggest the best camps
           </p>
           <div className="flex flex-wrap gap-2">
@@ -274,7 +274,7 @@ export default function AddKidPage() {
                 <button
                   key={cat}
                   onClick={() => toggleInterest(cat)}
-                  className={`font-[DM_Sans] text-sm font-medium px-4 py-2 rounded-2xl border transition-colors active:scale-95 ${
+                  className={`font-[Montserrat] text-sm font-medium px-4 py-2 rounded-2xl border transition-colors active:scale-95 ${
                     active
                       ? 'bg-capp-coral text-capp-dark border-capp-coral'
                       : 'bg-white text-capp-dark/60 border-capp-dark/12'
@@ -318,13 +318,13 @@ export default function AddKidPage() {
         <div className="flex flex-col gap-3 pt-2 pb-8">
           <button
             onClick={handleSave}
-            className="w-full bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold text-base py-4 rounded-2xl shadow-md active:scale-95 transition-transform"
+            className="w-full bg-capp-coral text-capp-dark font-[Montserrat] font-semibold text-base py-4 rounded-2xl shadow-md active:scale-95 transition-transform"
           >
             {isEditing ? 'Save changes' : 'Add kid'}
           </button>
           <button
             onClick={() => navigate('/dashboard')}
-            className="w-full bg-transparent text-capp-dark/50 font-[DM_Sans] font-medium text-base py-3 rounded-2xl border border-capp-dark/12 active:scale-95 transition-transform"
+            className="w-full bg-transparent text-capp-dark/50 font-[Montserrat] font-medium text-base py-3 rounded-2xl border border-capp-dark/12 active:scale-95 transition-transform"
           >
             Cancel
           </button>
@@ -339,22 +339,22 @@ export default function AddKidPage() {
             onClick={() => setShowDeleteConfirm(false)}
           />
           <div className="relative w-full bg-white rounded-t-3xl px-5 pt-6 pb-10">
-            <h3 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-2">
+            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-2 uppercase">
               Remove {existing?.name}?
             </h3>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/55 leading-relaxed mb-6">
+            <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed mb-6">
               This will delete their profile and suggested camps. Your saved camps in My Summer will not be affected.
             </p>
             <div className="flex flex-col gap-3">
               <button
                 onClick={handleDelete}
-                className="w-full bg-red-500 text-white font-[DM_Sans] font-semibold py-4 rounded-2xl active:scale-95 transition-transform"
+                className="w-full bg-red-500 text-white font-[Montserrat] font-semibold py-4 rounded-2xl active:scale-95 transition-transform"
               >
                 Yes, remove {existing?.name}
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="w-full bg-capp-dark/5 text-capp-dark font-[DM_Sans] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform"
+                className="w-full bg-capp-dark/5 text-capp-dark font-[Montserrat] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform"
               >
                 Cancel
               </button>

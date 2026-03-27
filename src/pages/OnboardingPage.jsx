@@ -8,7 +8,7 @@ const INTEREST_OPTIONS = categories.filter((c) => c !== 'All')
 const INTEREST_ICONS = { Arts: '🎨', STEM: '🔬', Sports: '⚽', Surf: '🏄', Music: '🎵', Outdoors: '🏕️' }
 
 const AVATAR_COLORS = [
-  '#FF6B6B', '#FFD166', '#06D6A0', '#118AB2',
+  '#FF6B6B', '#FFF952', '#44DD9E', '#118AB2',
   '#A78BFA', '#FB923C', '#34D399', '#F472B6',
 ]
 
@@ -48,7 +48,7 @@ function OptionGroup({ options, value, onChange }) {
           }`}
         >
           <span className="text-xl">{opt.icon}</span>
-          <span className={`font-[DM_Sans] text-xs font-semibold text-center leading-tight ${
+          <span className={`font-[Montserrat] text-xs font-semibold text-center leading-tight ${
             value === opt.value ? 'text-capp-coral' : 'text-capp-dark/55'
           }`}>
             {opt.label}
@@ -176,14 +176,14 @@ export default function OnboardingPage() {
         {step === 'welcome' && (
           <div className="flex flex-col items-center text-center gap-5 pt-8">
             <div className="w-20 h-20 rounded-3xl bg-capp-coral flex items-center justify-center shadow-lg">
-              <span className="font-[Fraunces] text-capp-dark text-4xl font-bold leading-none">C</span>
+              <span className="font-[League_Spartan] text-capp-dark text-4xl font-bold leading-none">C</span>
             </div>
 
             <div>
-              <h1 className="font-[Fraunces] font-bold text-capp-dark text-3xl leading-tight mb-3">
+              <h1 className="font-[League_Spartan] font-bold text-capp-dark text-3xl leading-tight mb-3 uppercase">
                 Hi {firstName}! ☀️<br />Let's plan your summer.
               </h1>
-              <p className="font-[DM_Sans] text-base text-capp-dark/55 leading-relaxed max-w-xs mx-auto">
+              <p className="font-[Montserrat] text-base text-capp-dark/55 leading-relaxed max-w-xs mx-auto">
                 Tell us about your kids and we'll suggest camps perfectly matched to their age, interests, and personality.
               </p>
             </div>
@@ -192,7 +192,7 @@ export default function OnboardingPage() {
               {Object.entries(INTEREST_ICONS).map(([label, icon]) => (
                 <div key={label} className="w-14 h-14 rounded-2xl bg-white shadow-sm flex flex-col items-center justify-center gap-0.5">
                   <span className="text-2xl">{icon}</span>
-                  <span className="font-[DM_Sans] text-[9px] font-semibold text-capp-dark/40">{label}</span>
+                  <span className="font-[Montserrat] text-[9px] font-semibold text-capp-dark/40">{label}</span>
                 </div>
               ))}
             </div>
@@ -200,13 +200,13 @@ export default function OnboardingPage() {
             <div className="w-full flex flex-col gap-3 mt-2">
               <button
                 onClick={() => setStep('name-age')}
-                className="w-full py-4 bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
+                className="w-full py-4 bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
               >
                 Tell us about your kids →
               </button>
               <button
                 onClick={handleSkip}
-                className="font-[DM_Sans] text-sm text-capp-dark/40 font-medium py-2"
+                className="font-[Montserrat] text-sm text-capp-dark/40 font-medium py-2"
               >
                 Skip for now
               </button>
@@ -218,10 +218,10 @@ export default function OnboardingPage() {
         {step === 'name-age' && (
           <div className="flex flex-col gap-7">
             <div>
-              <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-1">
+              <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-1">
                 {addedKids.length === 0 ? 'Kid 1' : `Kid ${addedKids.length + 1}`}
               </p>
-              <h2 className="font-[Fraunces] font-bold text-capp-dark text-2xl leading-snug">
+              <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl leading-snug uppercase">
                 {addedKids.length === 0 ? "Who's your first kid?" : 'Tell us about your next kid'}
               </h2>
             </div>
@@ -229,7 +229,7 @@ export default function OnboardingPage() {
             {/* Avatar preview */}
             <div className="flex flex-col items-center gap-4">
               <div
-                className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-bold text-white font-[Fraunces] shadow-lg"
+                className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-bold text-white font-[League_Spartan] shadow-lg"
                 style={{ backgroundColor: avatarColor }}
               >
                 {kidName.trim() ? kidName.trim()[0].toUpperCase() : '?'}
@@ -252,7 +252,7 @@ export default function OnboardingPage() {
 
             {/* Name */}
             <div>
-              <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+              <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
                 Name
               </label>
               <input
@@ -261,16 +261,16 @@ export default function OnboardingPage() {
                 onChange={(e) => { setKidName(e.target.value); setNameError(false) }}
                 placeholder="e.g. Emma"
                 autoFocus
-                className={`w-full font-[DM_Sans] text-base bg-white border-2 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors ${
+                className={`w-full font-[Montserrat] text-base bg-white border-2 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors ${
                   nameError ? 'border-red-400' : 'border-capp-dark/10 focus:border-capp-coral/50'
                 }`}
               />
-              {nameError && <p className="font-[DM_Sans] text-xs text-red-400 mt-1.5">Name is required</p>}
+              {nameError && <p className="font-[Montserrat] text-xs text-red-400 mt-1.5">Name is required</p>}
             </div>
 
             {/* Age */}
             <div>
-              <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-3 block">
+              <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-3 block">
                 Age
               </label>
               <div className="flex items-center gap-4">
@@ -281,8 +281,8 @@ export default function OnboardingPage() {
                   −
                 </button>
                 <div className="flex-1 text-center">
-                  <span className="font-[Fraunces] font-bold text-capp-dark text-5xl">{age}</span>
-                  <span className="font-[DM_Sans] text-sm text-capp-dark/40 ml-2">yrs old</span>
+                  <span className="font-[League_Spartan] font-bold text-capp-dark text-5xl">{age}</span>
+                  <span className="font-[Montserrat] text-sm text-capp-dark/40 ml-2">yrs old</span>
                 </div>
                 <button
                   onClick={() => setAge((a) => Math.min(18, a + 1))}
@@ -295,7 +295,7 @@ export default function OnboardingPage() {
 
             <button
               onClick={handleNext_NameAge}
-              className="w-full py-4 bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
+              className="w-full py-4 bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
             >
               Next →
             </button>
@@ -306,11 +306,11 @@ export default function OnboardingPage() {
         {step === 'interests' && (
           <div className="flex flex-col gap-6">
             <div>
-              <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-1">Interests</p>
-              <h2 className="font-[Fraunces] font-bold text-capp-dark text-2xl leading-snug">
+              <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-1">Interests</p>
+              <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl leading-snug uppercase">
                 What does {kidName} love?
               </h2>
-              <p className="font-[DM_Sans] text-sm text-capp-dark/50 mt-1.5">
+              <p className="font-[Montserrat] text-sm text-capp-dark/50 mt-1.5">
                 Pick everything that fits — we'll find camps to match.
               </p>
             </div>
@@ -322,7 +322,7 @@ export default function OnboardingPage() {
                   <button
                     key={cat}
                     onClick={() => toggleInterest(cat)}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-2xl border-2 font-[DM_Sans] text-sm font-semibold transition-all active:scale-95 ${
+                    className={`flex items-center gap-2 px-4 py-3 rounded-2xl border-2 font-[Montserrat] text-sm font-semibold transition-all active:scale-95 ${
                       active
                         ? 'bg-capp-coral/10 border-capp-coral text-capp-coral'
                         : 'bg-white border-capp-dark/10 text-capp-dark/65'
@@ -337,7 +337,7 @@ export default function OnboardingPage() {
 
             <button
               onClick={handleNext_Interests}
-              className="w-full py-4 bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
+              className="w-full py-4 bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
             >
               {interests.length === 0 ? 'Skip for now →' : 'Next →'}
             </button>
@@ -348,33 +348,33 @@ export default function OnboardingPage() {
         {step === 'prefs' && (
           <div className="flex flex-col gap-6">
             <div>
-              <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-1">Personality</p>
-              <h2 className="font-[Fraunces] font-bold text-capp-dark text-2xl leading-snug">
+              <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-1">Personality</p>
+              <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl leading-snug uppercase">
                 How does {kidName} like to spend their day?
               </h2>
-              <p className="font-[DM_Sans] text-sm text-capp-dark/50 mt-1.5">
+              <p className="font-[Montserrat] text-sm text-capp-dark/50 mt-1.5">
                 This helps us match camps to their energy and learning style.
               </p>
             </div>
 
             <div className="flex flex-col gap-5">
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Camp setting</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Camp setting</p>
                 <OptionGroup options={ENVIRONMENT_OPTIONS} value={environment} onChange={setEnvironment} />
               </div>
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Energy level</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Energy level</p>
                 <OptionGroup options={STIMULATION_OPTIONS} value={stimulation} onChange={setStimulation} />
               </div>
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Challenge level</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Challenge level</p>
                 <OptionGroup options={CHALLENGE_OPTIONS} value={challenge} onChange={setChallenge} />
               </div>
             </div>
 
             <button
               onClick={handleSaveKid}
-              className="w-full py-4 bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
+              className="w-full py-4 bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
             >
               Add {kidName} →
             </button>
@@ -386,10 +386,10 @@ export default function OnboardingPage() {
           <div className="flex flex-col gap-6 pt-4">
             <div className="flex flex-col items-center text-center gap-2">
               <span className="text-5xl mb-1">🎉</span>
-              <h2 className="font-[Fraunces] font-bold text-capp-dark text-2xl">
+              <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl uppercase">
                 {addedKids[addedKids.length - 1]?.name} is all set!
               </h2>
-              <p className="font-[DM_Sans] text-sm text-capp-dark/50">
+              <p className="font-[Montserrat] text-sm text-capp-dark/50">
                 Do you have another kid to add?
               </p>
             </div>
@@ -399,14 +399,14 @@ export default function OnboardingPage() {
               {addedKids.map((kid) => (
                 <div key={kid.id} className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-sm">
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-base font-bold text-white font-[Fraunces] shrink-0"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-base font-bold text-white font-[League_Spartan] shrink-0"
                     style={{ backgroundColor: kid.avatarColor }}
                   >
                     {kid.name[0]}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{kid.name}</p>
-                    <p className="font-[DM_Sans] text-xs text-capp-dark/40">
+                    <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{kid.name}</p>
+                    <p className="font-[Montserrat] text-xs text-capp-dark/40">
                       {kid.age} yrs · {kid.interests.length > 0 ? kid.interests.join(', ') : 'No interests set'}
                     </p>
                   </div>
@@ -418,13 +418,13 @@ export default function OnboardingPage() {
             <div className="flex flex-col gap-3">
               <button
                 onClick={handleAddAnother}
-                className="w-full py-4 bg-white border-2 border-capp-dark/12 text-capp-dark font-[DM_Sans] font-semibold text-base rounded-2xl active:scale-95 transition-transform"
+                className="w-full py-4 bg-white border-2 border-capp-dark/12 text-capp-dark font-[Montserrat] font-semibold text-base rounded-2xl active:scale-95 transition-transform"
               >
                 + Add another kid
               </button>
               <button
                 onClick={finish}
-                className="w-full py-4 bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
+                className="w-full py-4 bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-base rounded-2xl shadow-md active:scale-95 transition-transform"
               >
                 See my summer →
               </button>

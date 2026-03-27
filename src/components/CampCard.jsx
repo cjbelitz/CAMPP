@@ -48,10 +48,10 @@ export default function CampCard({ camp, forKid, compact = false }) {
               {camp.icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-[Fraunces] font-bold text-capp-dark text-sm leading-tight line-clamp-2">
+              <h3 className="font-[League_Spartan] font-bold text-capp-dark text-sm leading-tight line-clamp-2 uppercase">
                 {camp.name}
               </h3>
-              <p className="font-[DM_Sans] text-[10px] text-capp-dark/45 mt-0.5 truncate">📍 {camp.location}</p>
+              <p className="font-[Montserrat] text-[10px] text-capp-dark/45 mt-0.5 truncate">📍 {camp.location}</p>
             </div>
             <button
               onClick={(e) => { e.stopPropagation(); toggle(camp.id) }}
@@ -66,12 +66,12 @@ export default function CampCard({ camp, forKid, compact = false }) {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1">
               <span className="text-capp-yellow text-xs">★</span>
-              <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{camp.rating}</span>
-              <span className="font-[DM_Sans] text-[10px] text-capp-dark/35 ml-1">· Ages {camp.ageMin}–{camp.ageMax}</span>
+              <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">{camp.rating}</span>
+              <span className="font-[Montserrat] text-[10px] text-capp-dark/35 ml-1">· Ages {camp.ageMin}–{camp.ageMax}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <span className="font-[Fraunces] font-bold text-capp-dark text-sm">${camp.price}</span>
-              <span className="font-[DM_Sans] text-[10px] text-capp-dark/40">/{camp.priceType}</span>
+              <span className="font-[League_Spartan] font-bold text-capp-dark text-sm">${camp.price}</span>
+              <span className="font-[Montserrat] text-[10px] text-capp-dark/40">/{camp.priceType}</span>
             </div>
           </div>
 
@@ -82,7 +82,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
               style={{ backgroundColor: badge.bg, border: badge.border }}
             >
               <span className="text-xs">{badge.icon}</span>
-              <span className="font-[DM_Sans] text-xs font-semibold leading-none" style={{ color: badge.color }}>
+              <span className="font-[Montserrat] text-xs font-semibold leading-none" style={{ color: badge.color }}>
                 {badge.text}
               </span>
             </div>
@@ -105,7 +105,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
                   )
                 })}
               </div>
-              <p className="font-[DM_Sans] text-[10px] font-semibold text-violet-700 truncate">
+              <p className="font-[Montserrat] text-[10px] font-semibold text-violet-700 truncate">
                 {circleShown.map(s => s.kidName).join(' & ')} going
               </p>
             </div>
@@ -136,10 +136,10 @@ export default function CampCard({ camp, forKid, compact = false }) {
             {camp.icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-[Fraunces] font-bold text-capp-dark text-[15px] leading-tight">
+            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-[15px] leading-tight uppercase">
               {camp.name}
             </h3>
-            <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">📍 {camp.location}</p>
+            <p className="font-[Montserrat] text-xs text-capp-dark/50 mt-0.5">📍 {camp.location}</p>
           </div>
           <div className="flex flex-col items-end gap-1.5 shrink-0">
             <button
@@ -151,7 +151,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
             </button>
             <div className="flex items-center gap-0.5">
               <span className="text-capp-yellow text-xs">★</span>
-              <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{camp.rating}</span>
+              <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">{camp.rating}</span>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
             style={{ backgroundColor: `${deadlineColor(days)}15`, border: `1px solid ${deadlineColor(days)}30` }}
           >
             <span className="text-xs">⏰</span>
-            <span className="font-[DM_Sans] text-xs font-bold" style={{ color: deadlineColor(days) }}>
+            <span className="font-[Montserrat] text-xs font-bold" style={{ color: deadlineColor(days) }}>
               Register in {deadlineLabel(days)} — {days <= 7 ? 'almost gone!' : 'spots filling'}
             </span>
           </div>
@@ -176,7 +176,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
         {hasAvailability && (
           <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-1.5 mb-2.5">
             <span className="text-xs">📅</span>
-            <span className="font-[DM_Sans] text-xs font-semibold text-emerald-700">
+            <span className="font-[Montserrat] text-xs font-semibold text-emerald-700">
               {forKid.name} has {openSessions.length} week{openSessions.length !== 1 ? 's' : ''} open
             </span>
           </div>
@@ -206,14 +206,14 @@ export default function CampCard({ camp, forKid, compact = false }) {
                   )
                 })}
               </div>
-              <p className="font-[DM_Sans] text-xs font-semibold text-violet-700 leading-snug">
+              <p className="font-[Montserrat] text-xs font-semibold text-violet-700 leading-snug">
                 {nameStr} {isAre} signed up{extraCount > 0 ? ` +${extraCount} more` : ''} · {sessionStr}
               </p>
             </div>
           )
         })()}
 
-        <p className="font-[DM_Sans] text-sm text-capp-dark/65 leading-relaxed mb-3 line-clamp-2">
+        <p className="font-[Montserrat] text-sm text-capp-dark/65 leading-relaxed mb-3 line-clamp-2">
           {camp.description}
         </p>
 
@@ -221,7 +221,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
           {camp.tags.map((tag) => (
             <span
               key={tag}
-              className="font-[DM_Sans] text-xs px-2.5 py-1 rounded-full"
+              className="font-[Montserrat] text-xs px-2.5 py-1 rounded-full"
               style={{ backgroundColor: camp.accentLight, color: camp.accent }}
             >
               {tag}
@@ -230,10 +230,10 @@ export default function CampCard({ camp, forKid, compact = false }) {
         </div>
 
         <div className="flex items-center justify-between border-t border-capp-dark/5 pt-3">
-          <span className="font-[DM_Sans] text-xs text-capp-dark/40">Ages {camp.ageMin}–{camp.ageMax}</span>
+          <span className="font-[Montserrat] text-xs text-capp-dark/40">Ages {camp.ageMin}–{camp.ageMax}</span>
           <div className="flex items-center gap-1">
-            <span className="font-[Fraunces] font-bold text-capp-dark text-base">${camp.price}</span>
-            <span className="font-[DM_Sans] text-xs text-capp-dark/40">/{camp.priceType}</span>
+            <span className="font-[League_Spartan] font-bold text-capp-dark text-base">${camp.price}</span>
+            <span className="font-[Montserrat] text-xs text-capp-dark/40">/{camp.priceType}</span>
           </div>
         </div>
       </div>
@@ -241,7 +241,7 @@ export default function CampCard({ camp, forKid, compact = false }) {
       <div className="px-4 pb-4">
         <button
           onClick={(e) => { e.stopPropagation(); navigate(`/camps/${camp.id}`) }}
-          className="w-full py-3 rounded-xl font-[DM_Sans] font-semibold text-sm text-capp-dark bg-capp-coral active:scale-95 transition-transform"
+          className="w-full py-3 rounded-xl font-[Montserrat] font-semibold text-sm text-capp-dark bg-capp-coral active:scale-95 transition-transform"
         >
           View Details
         </button>

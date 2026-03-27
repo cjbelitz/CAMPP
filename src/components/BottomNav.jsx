@@ -34,11 +34,11 @@ export default function BottomNav() {
               }`}
             >
               <span className="text-lg leading-none">{tab.icon}</span>
-              <span className={`font-[DM_Sans] text-[10px] ${isActive ? 'font-semibold' : 'font-medium'}`}>
+              <span className={`font-[Montserrat] text-[10px] ${isActive ? 'font-semibold' : 'font-medium'}`}>
                 {tab.label}
               </span>
               {badge > 0 && (
-                <span className="absolute top-1.5 right-[calc(50%-18px)] min-w-[16px] h-4 bg-capp-coral text-capp-dark text-[9px] font-bold font-[DM_Sans] rounded-full flex items-center justify-center px-1">
+                <span className="absolute top-1.5 right-[calc(50%-18px)] min-w-[16px] h-4 bg-capp-coral text-capp-dark text-[9px] font-bold font-[Montserrat] rounded-full flex items-center justify-center px-1">
                   {badge > 99 ? '99+' : badge}
                 </span>
               )}

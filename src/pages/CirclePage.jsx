@@ -19,9 +19,9 @@ function DirectionClaimRow({ label, emoji, dir, isMe, isDriving, onClaim }) {
       <div className="flex items-center gap-2">
         <span className="text-base">{emoji}</span>
         <div>
-          <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{label}</p>
+          <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{label}</p>
           {isDriving && (
-            <p className="font-[DM_Sans] text-xs text-capp-dark/45">
+            <p className="font-[Montserrat] text-xs text-capp-dark/45">
               {full ? 'Full' : `${seatsLeft} seat${seatsLeft !== 1 ? 's' : ''} left`}
             </p>
           )}
@@ -30,7 +30,7 @@ function DirectionClaimRow({ label, emoji, dir, isMe, isDriving, onClaim }) {
       {!isMe && (
         <button
           onClick={onClaim}
-          className={`font-[DM_Sans] text-xs font-bold px-3.5 py-2 rounded-xl active:scale-95 transition-transform ${
+          className={`font-[Montserrat] text-xs font-bold px-3.5 py-2 rounded-xl active:scale-95 transition-transform ${
             claimed
               ? 'bg-capp-dark/8 text-capp-dark/50'
               : full && isDriving
@@ -53,14 +53,14 @@ function ClaimantRow({ momId, direction, dirLabel, onConfirm }) {
   if (!claimMom) return null
   return (
     <div className="flex items-center gap-3 py-2.5 border-b border-capp-dark/5 last:border-0">
-      <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+      <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
         style={{ backgroundColor: claimMom.avatarColor }}>{claimMom.name[0]}</div>
       <div className="flex-1 min-w-0">
-        <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{claimMom.name}</p>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/40">{dirLabel}</p>
+        <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{claimMom.name}</p>
+        <p className="font-[Montserrat] text-xs text-capp-dark/40">{dirLabel}</p>
       </div>
       <button onClick={() => onConfirm(claimMom)}
-        className="font-[DM_Sans] text-xs font-bold text-white bg-capp-coral px-3 py-1.5 rounded-xl active:scale-95 transition-transform shrink-0">
+        className="font-[Montserrat] text-xs font-bold text-white bg-capp-coral px-3 py-1.5 rounded-xl active:scale-95 transition-transform shrink-0">
         Confirm →
       </button>
     </div>
@@ -83,18 +83,18 @@ function CarpoolDetailSheet({ post, mom, onMessage, onClaim, onConfirmClaimant, 
         <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-5" />
 
         {/* Role badge */}
-        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold font-[DM_Sans] mb-4 ${isDriving ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'}`}>
+        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold font-[Montserrat] mb-4 ${isDriving ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'}`}>
           <span>{isDriving ? '🚗' : '🙋'}</span>
           {isDriving ? 'Offering rides' : 'Looking for rides'}
         </div>
 
         {/* Poster */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center text-base font-bold text-white font-[Fraunces] shrink-0"
+          <div className="w-12 h-12 rounded-full flex items-center justify-center text-base font-bold text-white font-[League_Spartan] shrink-0"
             style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
           <div>
-            <p className="font-[DM_Sans] font-semibold text-capp-dark text-base">{mom.name}</p>
-            <p className="font-[DM_Sans] text-xs text-capp-dark/45">{mom.location} · {mom.kidName}'s mom</p>
+            <p className="font-[Montserrat] font-semibold text-capp-dark text-base">{mom.name}</p>
+            <p className="font-[Montserrat] text-xs text-capp-dark/45">{mom.location} · {mom.kidName}'s mom</p>
           </div>
         </div>
 
@@ -103,22 +103,22 @@ function CarpoolDetailSheet({ post, mom, onMessage, onClaim, onConfirmClaimant, 
           <div className="flex items-center gap-3">
             <span className="text-lg w-6 text-center shrink-0">🏕️</span>
             <div>
-              <p className="font-[DM_Sans] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider">Circle</p>
-              <p className="font-[DM_Sans] text-sm font-medium text-capp-dark">{post.circleName}</p>
+              <p className="font-[Montserrat] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider">Circle</p>
+              <p className="font-[Montserrat] text-sm font-medium text-capp-dark">{post.circleName}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-lg w-6 text-center shrink-0">📅</span>
             <div>
-              <p className="font-[DM_Sans] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider">Camp week</p>
-              <p className="font-[DM_Sans] text-sm font-medium text-capp-dark">{post.session}</p>
+              <p className="font-[Montserrat] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider">Camp week</p>
+              <p className="font-[Montserrat] text-sm font-medium text-capp-dark">{post.session}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-lg w-6 text-center shrink-0">📍</span>
             <div>
-              <p className="font-[DM_Sans] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider">Neighborhood</p>
-              <p className="font-[DM_Sans] text-sm font-medium text-capp-dark">{post.neighborhood}</p>
+              <p className="font-[Montserrat] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider">Neighborhood</p>
+              <p className="font-[Montserrat] text-sm font-medium text-capp-dark">{post.neighborhood}</p>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ function CarpoolDetailSheet({ post, mom, onMessage, onClaim, onConfirmClaimant, 
         {/* Claimants section — visible on my own driving posts */}
         {isMe && isDriving && allClaimants.length > 0 && (
           <div className="bg-capp-warm-bg rounded-2xl px-4 mb-4">
-            <p className="font-[DM_Sans] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider pt-3 pb-1">
+            <p className="font-[Montserrat] text-[10px] font-semibold text-capp-dark/40 uppercase tracking-wider pt-3 pb-1">
               🎉 {allClaimants.length} seat{allClaimants.length !== 1 ? 's' : ''} claimed — confirm pickup details
             </p>
             {allClaimants.map((c) => (
@@ -158,7 +158,7 @@ function CarpoolDetailSheet({ post, mom, onMessage, onClaim, onConfirmClaimant, 
 
         {!isMe && (
           <button onClick={onMessage}
-            className="w-full py-3.5 rounded-2xl bg-capp-dark/5 text-capp-dark font-[DM_Sans] font-semibold text-sm active:scale-95 transition-transform">
+            className="w-full py-3.5 rounded-2xl bg-capp-dark/5 text-capp-dark font-[Montserrat] font-semibold text-sm active:scale-95 transition-transform">
             Message {mom.name.split(' ')[0]}
           </button>
         )}
@@ -184,27 +184,27 @@ function CarpoolPostCard({ post, onPress }) {
       onClick={onPress}
       className="w-full text-left bg-white rounded-2xl px-4 py-3.5 shadow-sm active:scale-[0.98] transition-transform border border-capp-dark/[0.06] flex items-center gap-3"
     >
-      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
         style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
-          <span className="font-[DM_Sans] text-sm font-semibold text-capp-dark">
+          <span className="font-[Montserrat] text-sm font-semibold text-capp-dark">
             {isMe ? 'You' : mom.name}
           </span>
-          <span className={`font-[DM_Sans] text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+          <span className={`font-[Montserrat] text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
             hasClaimed ? 'bg-emerald-50 text-emerald-600' :
             isDriving ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
           }`}>
             {hasClaimed ? '✓ Claimed' : isDriving ? `🚗 ${totalSeats} seat${totalSeats !== 1 ? 's' : ''} left` : '🙋 Need a ride'}
           </span>
         </div>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/45 truncate">
+        <p className="font-[Montserrat] text-xs text-capp-dark/45 truncate">
           {post.session} · {post.neighborhood}
         </p>
       </div>
 
-      <span className="font-[DM_Sans] text-[11px] text-capp-dark/30 shrink-0">{formatRelativeTime(post.ts)}</span>
+      <span className="font-[Montserrat] text-[11px] text-capp-dark/30 shrink-0">{formatRelativeTime(post.ts)}</span>
     </button>
   )
 }
@@ -256,17 +256,17 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
         {posted && (
           <div className="flex flex-col items-center text-center py-6 gap-3">
             <span className="text-5xl">🚗</span>
-            <h3 className="font-[Fraunces] font-bold text-capp-dark text-xl">Carpool posted!</h3>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/55 leading-relaxed">
+            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-xl uppercase">Carpool posted!</h3>
+            <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed">
               Your post was sent to <span className="font-semibold text-capp-dark">{dest.name}</span>.
             </p>
             <div className="flex flex-col gap-2.5 w-full mt-2">
               <button onClick={() => { onClose(); onViewChat(dest) }}
-                className="w-full py-3.5 rounded-2xl bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-sm active:scale-95 transition-transform">
+                className="w-full py-3.5 rounded-2xl bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm active:scale-95 transition-transform">
                 View in {dest.name} →
               </button>
               <button onClick={onClose}
-                className="w-full py-3 rounded-2xl bg-capp-dark/5 text-capp-dark/60 font-[DM_Sans] font-medium text-sm active:scale-95 transition-transform">
+                className="w-full py-3 rounded-2xl bg-capp-dark/5 text-capp-dark/60 font-[Montserrat] font-medium text-sm active:scale-95 transition-transform">
                 Done
               </button>
             </div>
@@ -279,8 +279,8 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
             <div className="flex items-center gap-3 mb-5">
               <div className="w-11 h-11 rounded-2xl bg-orange-100 flex items-center justify-center text-2xl shrink-0">🚗</div>
               <div>
-                <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg leading-tight">Post a carpool</h3>
-                <p className="font-[DM_Sans] text-xs text-capp-dark/45 mt-0.5">Which circle or conversation?</p>
+                <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg leading-tight uppercase">Post a carpool</h3>
+                <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">Which circle or conversation?</p>
               </div>
             </div>
 
@@ -292,9 +292,9 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
                 return (
                   <div key={kid.id}>
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white font-[Fraunces] shrink-0"
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white font-[League_Spartan] shrink-0"
                         style={{ backgroundColor: kid.avatarColor }}>{kid.name[0]}</div>
-                      <p className="font-[DM_Sans] text-[11px] font-semibold text-capp-dark/40 uppercase tracking-wider">{kid.name}'s circles</p>
+                      <p className="font-[Montserrat] text-[11px] font-semibold text-capp-dark/40 uppercase tracking-wider">{kid.name}'s circles</p>
                     </div>
                     <div className="flex flex-col gap-2">
                       {kidCircles.map((circle) => {
@@ -309,8 +309,8 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
                               {camp?.icon ?? '💬'}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark truncate">{circle.name}</p>
-                              <p className="font-[DM_Sans] text-xs text-capp-dark/40">
+                              <p className="font-[Montserrat] text-sm font-semibold text-capp-dark truncate">{circle.name}</p>
+                              <p className="font-[Montserrat] text-xs text-capp-dark/40">
                                 {circle.memberIds.length} member{circle.memberIds.length !== 1 ? 's' : ''}
                               </p>
                             </div>
@@ -326,17 +326,17 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
               {/* Direct messages */}
               {contacts.length > 0 && (
                 <div>
-                  <p className="font-[DM_Sans] text-[11px] font-semibold text-capp-dark/40 uppercase tracking-wider mb-2">Send directly</p>
+                  <p className="font-[Montserrat] text-[11px] font-semibold text-capp-dark/40 uppercase tracking-wider mb-2">Send directly</p>
                   <div className="flex flex-col gap-2">
                     {contacts.map((mom) => (
                       <button key={mom.id}
                         onClick={() => pickDest({ convId: `dm-${mom.id}`, name: mom.name })}
                         className="flex items-center gap-3 bg-capp-warm-bg rounded-2xl px-4 py-3 active:scale-[0.98] transition-transform text-left">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
                           style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                          <p className="font-[DM_Sans] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
+                          <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{mom.name}</p>
+                          <p className="font-[Montserrat] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
                         </div>
                         <span className="text-capp-dark/20 text-sm">›</span>
                       </button>
@@ -346,7 +346,7 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
               )}
 
               {kids.every((k) => !circles.some((c) => c.kidId === k.id)) && contacts.length === 0 && (
-                <p className="font-[DM_Sans] text-sm text-capp-dark/40 text-center py-8">
+                <p className="font-[Montserrat] text-sm text-capp-dark/40 text-center py-8">
                   Add people to your community first to start a carpool.
                 </p>
               )}
@@ -362,13 +362,13 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
                 className="w-8 h-8 rounded-xl bg-capp-warm-bg border border-capp-dark/10 flex items-center justify-center text-sm shrink-0 active:scale-95 transition-transform">
                 ←
               </button>
-              <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg">Post a carpool</h3>
+              <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">Post a carpool</h3>
             </div>
 
             {/* Destination pill */}
             <div className="flex items-center gap-2 mb-5 mt-2 bg-orange-50 border border-orange-200 rounded-xl px-3 py-2">
               <span className="text-base">🚗</span>
-              <p className="font-[DM_Sans] text-xs text-capp-dark/60">
+              <p className="font-[Montserrat] text-xs text-capp-dark/60">
                 Sending to <span className="font-semibold text-capp-dark">{dest.name}</span>
               </p>
             </div>
@@ -376,11 +376,11 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
             <div className="flex-1 overflow-y-auto min-h-0 flex flex-col gap-5">
               {/* Role toggle */}
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">I am…</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">I am…</p>
                 <div className="flex gap-2">
                   {['driving', 'riding'].map((r) => (
                     <button key={r} onClick={() => setRole(r)}
-                      className={`flex-1 py-2.5 rounded-xl font-[DM_Sans] text-sm font-semibold transition-colors ${
+                      className={`flex-1 py-2.5 rounded-xl font-[Montserrat] text-sm font-semibold transition-colors ${
                         role === r
                           ? r === 'driving' ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'
                           : 'bg-capp-warm-bg text-capp-dark/50'
@@ -393,16 +393,16 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
 
               {/* Camp week */}
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Camp week</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Camp week</p>
                 <select value={session} onChange={(e) => setSession(e.target.value)}
-                  className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-capp-coral/40">
+                  className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-capp-coral/40">
                   {SUMMER_WEEKS.map((w) => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
 
               {/* Directions */}
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">
                   {role === 'driving' ? 'Which way are you offering?' : 'Which direction do you need?'}
                 </p>
                 <div className="flex flex-col gap-2">
@@ -419,13 +419,13 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
                       {(role === 'driving' ? offerTo : needTo) && <span className="text-white text-[10px] font-bold">✓</span>}
                     </button>
                     <div className="flex-1">
-                      <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">🌅 Ride to camp</p>
+                      <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">🌅 Ride to camp</p>
                     </div>
                     {role === 'driving' && offerTo && (
                       <div className="flex items-center gap-2">
                         <button onClick={() => setSeatsTo((s) => Math.max(1, s - 1))}
                           className="w-7 h-7 rounded-full bg-white border border-capp-dark/10 font-bold text-capp-dark flex items-center justify-center text-sm active:scale-95">−</button>
-                        <span className="font-[Fraunces] font-bold text-capp-dark text-lg w-5 text-center">{seatsTo}</span>
+                        <span className="font-[League_Spartan] font-bold text-capp-dark text-lg w-5 text-center">{seatsTo}</span>
                         <button onClick={() => setSeatsTo((s) => Math.min(6, s + 1))}
                           className="w-7 h-7 rounded-full bg-white border border-capp-dark/10 font-bold text-capp-dark flex items-center justify-center text-sm active:scale-95">+</button>
                       </div>
@@ -444,13 +444,13 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
                       {(role === 'driving' ? offerFrom : needFrom) && <span className="text-white text-[10px] font-bold">✓</span>}
                     </button>
                     <div className="flex-1">
-                      <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">🌇 Ride home</p>
+                      <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">🌇 Ride home</p>
                     </div>
                     {role === 'driving' && offerFrom && (
                       <div className="flex items-center gap-2">
                         <button onClick={() => setSeatsFrom((s) => Math.max(1, s - 1))}
                           className="w-7 h-7 rounded-full bg-white border border-capp-dark/10 font-bold text-capp-dark flex items-center justify-center text-sm active:scale-95">−</button>
-                        <span className="font-[Fraunces] font-bold text-capp-dark text-lg w-5 text-center">{seatsFrom}</span>
+                        <span className="font-[League_Spartan] font-bold text-capp-dark text-lg w-5 text-center">{seatsFrom}</span>
                         <button onClick={() => setSeatsFrom((s) => Math.min(6, s + 1))}
                           className="w-7 h-7 rounded-full bg-white border border-capp-dark/10 font-bold text-capp-dark flex items-center justify-center text-sm active:scale-95">+</button>
                       </div>
@@ -461,17 +461,17 @@ function CarpoolFlowSheet({ kids, circles, contacts, onClose, onViewChat, onPost
 
               {/* Neighborhood */}
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Your neighborhood / area</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/50 uppercase tracking-wider mb-2">Your neighborhood / area</p>
                 <input type="text" value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)}
                   placeholder="e.g. Carlsbad, Encinitas, Oceanside…"
-                  className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-capp-coral/40 placeholder:text-capp-dark/30"
+                  className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-capp-coral/40 placeholder:text-capp-dark/30"
                 />
               </div>
             </div>
 
             <div className="pt-4">
               <button onClick={post} disabled={!canPost}
-                className="w-full py-3.5 rounded-2xl bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-sm disabled:opacity-40 active:scale-95 transition-transform">
+                className="w-full py-3.5 rounded-2xl bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm disabled:opacity-40 active:scale-95 transition-transform">
                 Post carpool →
               </button>
             </div>
@@ -517,33 +517,33 @@ function InviteSheet({ onClose }) {
         {sent ? (
           <div className="flex flex-col items-center text-center py-6 gap-3">
             <span className="text-5xl">🎉</span>
-            <h3 className="font-[Fraunces] font-bold text-capp-dark text-xl">Invite sent!</h3>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/55">Your friend will get an email with a link to join CAMPP and connect with you.</p>
+            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-xl uppercase">Invite sent!</h3>
+            <p className="font-[Montserrat] text-sm text-capp-dark/55">Your friend will get an email with a link to join CAMPP and connect with you.</p>
           </div>
         ) : (
           <>
             <div className="flex items-center gap-3 mb-5">
               <div className="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center text-2xl shrink-0">👯</div>
               <div>
-                <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg leading-tight">Add a friend to your Circle</h3>
-                <p className="font-[DM_Sans] text-xs text-capp-dark/45 mt-0.5">They'll get an invite to join CAMPP and connect</p>
+                <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg leading-tight uppercase">Add a friend to your Circle</h3>
+                <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">They'll get an invite to join CAMPP and connect</p>
               </div>
             </div>
             <div className="mb-4">
-              <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">Friend's email</label>
+              <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">Friend's email</label>
               <input
                 type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="e.g. jessica@email.com" inputMode="email" autoFocus
-                className="w-full font-[DM_Sans] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors"
+                className="w-full font-[Montserrat] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors"
               />
             </div>
             <div className="flex flex-col gap-2.5">
               <button onClick={sendInvite} disabled={!email.trim()}
-                className="w-full bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold py-4 rounded-2xl active:scale-95 transition-all disabled:opacity-40">
+                className="w-full bg-capp-coral text-capp-dark font-[Montserrat] font-semibold py-4 rounded-2xl active:scale-95 transition-all disabled:opacity-40">
                 Send invite →
               </button>
               <button onClick={shareLink}
-                className="w-full bg-capp-dark/5 text-capp-dark/70 font-[DM_Sans] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform">
+                className="w-full bg-capp-dark/5 text-capp-dark/70 font-[Montserrat] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform">
                 Or share a link instead
               </button>
             </div>
@@ -575,41 +575,41 @@ function NewCircleSheet({ kid, contacts, onCreate, onClose }) {
       <div className="relative w-full bg-white rounded-t-3xl px-5 pt-5 pb-10 max-h-[88vh] flex flex-col">
         <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-4" />
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-white font-[Fraunces] shrink-0"
+          <div className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-white font-[League_Spartan] shrink-0"
             style={{ backgroundColor: kid.avatarColor }}>
             {kid.name[0]}
           </div>
           <div>
-            <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg leading-tight">New circle</h3>
-            <p className="font-[DM_Sans] text-xs text-capp-dark/45">For {kid.name}</p>
+            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg leading-tight uppercase">New circle</h3>
+            <p className="font-[Montserrat] text-xs text-capp-dark/45">For {kid.name}</p>
           </div>
         </div>
 
         <div className="mb-4">
-          <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+          <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
             Circle name
           </label>
           <input
             type="text" value={name} onChange={(e) => setName(e.target.value)} autoFocus
             placeholder="e.g. La Costa Oaks, Mrs. Park's Class…"
-            className="w-full font-[DM_Sans] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors"
+            className="w-full font-[Montserrat] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors"
           />
         </div>
 
         {contacts.length > 0 && (
           <div className="flex-1 overflow-y-auto min-h-0">
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/45 uppercase tracking-wider mb-2">Add people from your community</p>
+            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/45 uppercase tracking-wider mb-2">Add people from your community</p>
             <div className="flex flex-col gap-1">
               {contacts.map((mom) => {
                 const selected = selectedIds.includes(mom.id)
                 return (
                   <button key={mom.id} onClick={() => toggle(mom.id)}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl transition-colors text-left ${selected ? 'bg-capp-coral/8 border border-capp-coral/30' : 'bg-capp-warm-bg border border-transparent'}`}>
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
                       style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
+                      <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{mom.name}</p>
+                      <p className="font-[Montserrat] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
                     </div>
                     <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selected ? 'bg-capp-coral border-capp-coral' : 'border-capp-dark/20'}`}>
                       {selected && <span className="text-capp-dark text-[10px] font-bold">✓</span>}
@@ -623,11 +623,11 @@ function NewCircleSheet({ kid, contacts, onCreate, onClose }) {
 
         <div className="pt-4 flex flex-col gap-2.5">
           <button onClick={create} disabled={!name.trim()}
-            className="w-full bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold py-4 rounded-2xl active:scale-95 transition-all disabled:opacity-40">
+            className="w-full bg-capp-coral text-capp-dark font-[Montserrat] font-semibold py-4 rounded-2xl active:scale-95 transition-all disabled:opacity-40">
             Create circle
           </button>
           <button onClick={onClose}
-            className="w-full bg-capp-dark/5 text-capp-dark/60 font-[DM_Sans] font-medium py-3 rounded-2xl active:scale-95 transition-transform">
+            className="w-full bg-capp-dark/5 text-capp-dark/60 font-[Montserrat] font-medium py-3 rounded-2xl active:scale-95 transition-transform">
             Cancel
           </button>
         </div>
@@ -647,19 +647,19 @@ function ContactSheet({ mom, circles, onMessage, onAddToCircle, onRemove, onClos
         <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-5" />
 
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold text-white font-[Fraunces] shrink-0"
+          <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold text-white font-[League_Spartan] shrink-0"
             style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
           <div>
-            <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg">{mom.name}</h3>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/50">{mom.location} · {mom.kidName}'s mom (age {mom.kidAge})</p>
+            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">{mom.name}</h3>
+            <p className="font-[Montserrat] text-sm text-capp-dark/50">{mom.location} · {mom.kidName}'s mom (age {mom.kidAge})</p>
           </div>
         </div>
 
         {addMode ? (
           <>
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/45 uppercase tracking-wider mb-3">Add to a circle</p>
+            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/45 uppercase tracking-wider mb-3">Add to a circle</p>
             {circles.length === 0 ? (
-              <p className="font-[DM_Sans] text-sm text-capp-dark/40 text-center py-3">No circles yet — create one first.</p>
+              <p className="font-[Montserrat] text-sm text-capp-dark/40 text-center py-3">No circles yet — create one first.</p>
             ) : (
               <div className="flex flex-col gap-2 mb-4">
                 {circles.map((circle) => {
@@ -668,32 +668,32 @@ function ContactSheet({ mom, circles, onMessage, onAddToCircle, onRemove, onClos
                     <button key={circle.id} onClick={() => { if (!alreadyIn) { onAddToCircle(circle.id, mom.id); onClose() } }}
                       disabled={alreadyIn}
                       className={`flex items-center justify-between px-4 py-3 rounded-2xl border transition-colors ${alreadyIn ? 'bg-capp-dark/3 border-capp-dark/5' : 'bg-capp-warm-bg border-capp-dark/10 active:bg-capp-coral/8'}`}>
-                      <span className="font-[DM_Sans] text-sm font-medium text-capp-dark">{circle.name}</span>
+                      <span className="font-[Montserrat] text-sm font-medium text-capp-dark">{circle.name}</span>
                       {alreadyIn
-                        ? <span className="font-[DM_Sans] text-xs text-capp-dark/35">Already in</span>
-                        : <span className="font-[DM_Sans] text-xs font-semibold text-capp-coral">Add →</span>}
+                        ? <span className="font-[Montserrat] text-xs text-capp-dark/35">Already in</span>
+                        : <span className="font-[Montserrat] text-xs font-semibold text-capp-coral">Add →</span>}
                     </button>
                   )
                 })}
               </div>
             )}
             <button onClick={() => setAddMode(false)}
-              className="w-full bg-capp-dark/5 text-capp-dark/60 font-[DM_Sans] font-medium py-3 rounded-2xl active:scale-95 transition-transform">
+              className="w-full bg-capp-dark/5 text-capp-dark/60 font-[Montserrat] font-medium py-3 rounded-2xl active:scale-95 transition-transform">
               Back
             </button>
           </>
         ) : (
           <div className="flex flex-col gap-2.5">
             <button onClick={onMessage}
-              className="w-full py-3.5 rounded-2xl bg-capp-coral text-capp-dark font-[DM_Sans] font-bold text-sm active:scale-95 transition-transform">
+              className="w-full py-3.5 rounded-2xl bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm active:scale-95 transition-transform">
               Send a message
             </button>
             <button onClick={() => setAddMode(true)}
-              className="w-full py-3.5 rounded-2xl bg-capp-dark/5 text-capp-dark font-[DM_Sans] font-semibold text-sm active:scale-95 transition-transform">
+              className="w-full py-3.5 rounded-2xl bg-capp-dark/5 text-capp-dark font-[Montserrat] font-semibold text-sm active:scale-95 transition-transform">
               Add to a circle
             </button>
             <button onClick={() => { onRemove(mom.id); onClose() }}
-              className="w-full py-3 rounded-2xl text-red-400 font-[DM_Sans] font-medium text-sm active:scale-95 transition-transform">
+              className="w-full py-3 rounded-2xl text-red-400 font-[Montserrat] font-medium text-sm active:scale-95 transition-transform">
               Remove from community
             </button>
           </div>
@@ -717,25 +717,25 @@ function AddPeopleSheet({ available, onAdd, onClose }) {
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div className="relative w-full bg-white rounded-t-3xl px-5 pt-5 pb-10 max-h-[80vh] flex flex-col">
         <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-4" />
-        <h3 className="font-[Fraunces] font-bold text-capp-dark text-lg mb-1">Add people</h3>
-        <p className="font-[DM_Sans] text-sm text-capp-dark/50 mb-4">Parents from your kids' camps</p>
+        <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-1 uppercase">Add people</h3>
+        <p className="font-[Montserrat] text-sm text-capp-dark/50 mb-4">Parents from your kids' camps</p>
 
         {available.length === 0 ? (
-          <p className="font-[DM_Sans] text-sm text-capp-dark/40 text-center py-8">Everyone's already in your community!</p>
+          <p className="font-[Montserrat] text-sm text-capp-dark/40 text-center py-8">Everyone's already in your community!</p>
         ) : (
           <div className="flex-1 overflow-y-auto min-h-0 flex flex-col gap-2">
             {available.map((mom) => {
               const isAdded = added.has(mom.id)
               return (
                 <div key={mom.id} className="flex items-center gap-3 px-1 py-1">
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-base font-bold text-white font-[Fraunces] shrink-0"
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-base font-bold text-white font-[League_Spartan] shrink-0"
                     style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                    <p className="font-[DM_Sans] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
+                    <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{mom.name}</p>
+                    <p className="font-[Montserrat] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
                   </div>
                   <button onClick={() => addPerson(mom.id)} disabled={isAdded}
-                    className={`font-[DM_Sans] text-xs font-semibold px-3.5 py-1.5 rounded-xl shrink-0 transition-colors ${isAdded ? 'bg-emerald-50 text-emerald-600' : 'bg-capp-coral/10 text-capp-coral active:scale-95'}`}>
+                    className={`font-[Montserrat] text-xs font-semibold px-3.5 py-1.5 rounded-xl shrink-0 transition-colors ${isAdded ? 'bg-emerald-50 text-emerald-600' : 'bg-capp-coral/10 text-capp-coral active:scale-95'}`}>
                     {isAdded ? 'Added ✓' : '+ Add'}
                   </button>
                 </div>
@@ -744,7 +744,7 @@ function AddPeopleSheet({ available, onAdd, onClose }) {
           </div>
         )}
 
-        <button onClick={onClose} className="mt-4 w-full bg-capp-dark/5 text-capp-dark/60 font-[DM_Sans] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform">
+        <button onClick={onClose} className="mt-4 w-full bg-capp-dark/5 text-capp-dark/60 font-[Montserrat] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform">
           Done
         </button>
       </div>
@@ -768,7 +768,7 @@ function CircleRow({ circle, members, onPress }) {
       <div className="relative w-11 h-11 shrink-0">
         {members.slice(0, 2).map((m, i) => (
           <div key={m.id}
-            className="absolute w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white font-[Fraunces]"
+            className="absolute w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white font-[League_Spartan]"
             style={{ backgroundColor: m.avatarColor, left: i * 12, top: i * 8, zIndex: 2 - i }}>
             {m.name[0]}
           </div>
@@ -780,17 +780,17 @@ function CircleRow({ circle, members, onPress }) {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-0.5">
-          <span className="font-[DM_Sans] font-semibold text-capp-dark text-sm truncate max-w-[180px]">{circle.name}</span>
+          <span className="font-[Montserrat] font-semibold text-capp-dark text-sm truncate max-w-[180px]">{circle.name}</span>
           <div className="flex items-center gap-1.5 shrink-0 ml-2">
-            {last && <span className="font-[DM_Sans] text-[11px] text-capp-dark/35">{formatRelativeTime(last.ts)}</span>}
+            {last && <span className="font-[Montserrat] text-[11px] text-capp-dark/35">{formatRelativeTime(last.ts)}</span>}
             {unread > 0 && (
-              <span className="min-w-[18px] h-[18px] bg-capp-coral text-capp-dark text-[10px] font-bold font-[DM_Sans] rounded-full flex items-center justify-center px-1">
+              <span className="min-w-[18px] h-[18px] bg-capp-coral text-capp-dark text-[10px] font-bold font-[Montserrat] rounded-full flex items-center justify-center px-1">
                 {unread}
               </span>
             )}
           </div>
         </div>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/40 truncate">
+        <p className="font-[Montserrat] text-xs text-capp-dark/40 truncate">
           {last ? `${senderLabel}: ${last.body}` : `${members.length} member${members.length !== 1 ? 's' : ''}`}
         </p>
       </div>
@@ -810,21 +810,21 @@ function DMRow({ mom, onPress }) {
   return (
     <button onClick={onPress}
       className="w-full flex items-center gap-3 bg-white rounded-2xl px-4 py-3.5 shadow-sm active:scale-[0.98] transition-transform text-left">
-      <div className="w-11 h-11 rounded-full flex items-center justify-center text-base font-bold text-white font-[Fraunces] shrink-0"
+      <div className="w-11 h-11 rounded-full flex items-center justify-center text-base font-bold text-white font-[League_Spartan] shrink-0"
         style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-0.5">
-          <span className="font-[DM_Sans] font-semibold text-capp-dark text-sm">{mom.name}</span>
+          <span className="font-[Montserrat] font-semibold text-capp-dark text-sm">{mom.name}</span>
           <div className="flex items-center gap-1.5 shrink-0 ml-2">
-            {last && <span className="font-[DM_Sans] text-[11px] text-capp-dark/35">{formatRelativeTime(last.ts)}</span>}
+            {last && <span className="font-[Montserrat] text-[11px] text-capp-dark/35">{formatRelativeTime(last.ts)}</span>}
             {unread > 0 && (
-              <span className="min-w-[18px] h-[18px] bg-capp-coral text-capp-dark text-[10px] font-bold font-[DM_Sans] rounded-full flex items-center justify-center px-1">
+              <span className="min-w-[18px] h-[18px] bg-capp-coral text-capp-dark text-[10px] font-bold font-[Montserrat] rounded-full flex items-center justify-center px-1">
                 {unread}
               </span>
             )}
           </div>
         </div>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/40 truncate">
+        <p className="font-[Montserrat] text-xs text-capp-dark/40 truncate">
           {last ? `${senderLabel}: ${last.body}` : `${mom.location} · ${mom.kidName}'s mom`}
         </p>
       </div>
@@ -856,12 +856,12 @@ function KidSection({ kid, kidCircles, allContacts, onNewCircle, onCirclePress, 
         {kid.photo ? (
           <img src={kid.photo} alt={kid.name} className="w-11 h-11 rounded-full object-cover shrink-0 border-2 border-white shadow-sm" />
         ) : (
-          <div className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-white font-[Fraunces] shrink-0"
+          <div className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-white font-[League_Spartan] shrink-0"
             style={{ backgroundColor: kid.avatarColor }}>{kid.name[0]}</div>
         )}
         <div className="flex-1 text-left min-w-0">
-          <p className="font-[Fraunces] font-bold text-capp-dark">{kid.name}</p>
-          <p className="font-[DM_Sans] text-xs text-capp-dark/40">
+          <p className="font-[League_Spartan] font-bold text-capp-dark">{kid.name}</p>
+          <p className="font-[Montserrat] text-xs text-capp-dark/40">
             {kidCircles.length > 0 ? `${kidCircles.length} circle${kidCircles.length !== 1 ? 's' : ''}` : 'No circles yet'}
           </p>
         </div>
@@ -882,10 +882,10 @@ function KidSection({ kid, kidCircles, allContacts, onNewCircle, onCirclePress, 
                           value={renameVal} onChange={(e) => setRenameVal(e.target.value)}
                           autoFocus onBlur={() => commitRename(circle.id)}
                           onKeyDown={(e) => { if (e.key === 'Enter') commitRename(circle.id); if (e.key === 'Escape') setRenamingId(null) }}
-                          className="flex-1 font-[DM_Sans] text-sm bg-capp-warm-bg border-2 border-capp-coral/40 rounded-xl px-3 py-2 focus:outline-none"
+                          className="flex-1 font-[Montserrat] text-sm bg-capp-warm-bg border-2 border-capp-coral/40 rounded-xl px-3 py-2 focus:outline-none"
                         />
                         <button onClick={() => commitRename(circle.id)}
-                          className="font-[DM_Sans] text-xs font-semibold text-capp-coral px-3 py-2 rounded-xl bg-capp-coral/10">
+                          className="font-[Montserrat] text-xs font-semibold text-capp-coral px-3 py-2 rounded-xl bg-capp-coral/10">
                           Save
                         </button>
                       </div>
@@ -893,7 +893,7 @@ function KidSection({ kid, kidCircles, allContacts, onNewCircle, onCirclePress, 
                       <div className="group">
                         <CircleRow circle={circle} members={members} onPress={onCirclePress(circle, members)} />
                         <button onClick={() => startRename(circle)}
-                          className="absolute right-10 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-[DM_Sans] text-[10px] text-capp-dark/35 px-2 py-1 rounded-lg bg-capp-dark/5">
+                          className="absolute right-10 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity font-[Montserrat] text-[10px] text-capp-dark/35 px-2 py-1 rounded-lg bg-capp-dark/5">
                           rename
                         </button>
                       </div>
@@ -910,7 +910,7 @@ function KidSection({ kid, kidCircles, allContacts, onNewCircle, onCirclePress, 
             <div className="w-8 h-8 rounded-full border-2 border-dashed border-capp-dark/20 flex items-center justify-center shrink-0">
               <span className="text-capp-dark/35 text-sm font-bold">+</span>
             </div>
-            <span className="font-[DM_Sans] text-sm font-medium text-capp-dark/45">New circle</span>
+            <span className="font-[Montserrat] text-sm font-medium text-capp-dark/45">New circle</span>
           </button>
         </div>
       )}
@@ -1051,7 +1051,7 @@ export default function CirclePage() {
         state: {
           circleName: circle.name,
           circleIcon: camp?.icon ?? '💬',
-          circleAccent: camp?.accent ?? '#FFD166',
+          circleAccent: camp?.accent ?? '#FFF952',
           circleMemberIds: circle.memberIds,
         },
       })
@@ -1069,7 +1069,7 @@ export default function CirclePage() {
         state: {
           circleName: circle.name,
           circleIcon: camp?.icon ?? '💬',
-          circleAccent: camp?.accent ?? '#FFD166',
+          circleAccent: camp?.accent ?? '#FFF952',
           circleMemberIds: circle.memberIds,
         },
       })
@@ -1087,9 +1087,9 @@ export default function CirclePage() {
         <div className="flex items-center justify-between mb-4">
           <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 active:opacity-70 transition-opacity">
             <div className="w-8 h-8 rounded-xl bg-capp-coral flex items-center justify-center shadow-sm">
-              <span className="font-[Fraunces] text-capp-dark font-bold leading-none">C</span>
+              <span className="font-[League_Spartan] text-capp-dark font-bold leading-none">C</span>
             </div>
-            <span className="font-[Fraunces] font-bold text-capp-dark text-xl">CAPP</span>
+            <span className="font-[League_Spartan] font-bold text-capp-dark text-xl">CAPP</span>
           </button>
           <div className="flex items-center gap-2">
             <button onClick={() => setShowInvite(true)}
@@ -1105,7 +1105,7 @@ export default function CirclePage() {
             <NotificationBell />
           </div>
         </div>
-        <h1 className="font-[Fraunces] font-bold text-capp-dark text-2xl mb-3">My Circle</h1>
+        <h1 className="font-[League_Spartan] font-bold text-capp-dark text-2xl mb-3 uppercase">My Circle</h1>
         {/* Search bar */}
         <div className="relative">
           <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-capp-dark/30 text-base leading-none pointer-events-none">🔍</span>
@@ -1114,7 +1114,7 @@ export default function CirclePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or kid's name…"
-            className="w-full font-[DM_Sans] text-sm bg-white border border-capp-dark/10 rounded-2xl pl-9 pr-9 py-2.5 focus:outline-none focus:border-capp-coral/40 placeholder:text-capp-dark/30"
+            className="w-full font-[Montserrat] text-sm bg-white border border-capp-dark/10 rounded-2xl pl-9 pr-9 py-2.5 focus:outline-none focus:border-capp-coral/40 placeholder:text-capp-dark/30"
           />
           {search && (
             <button
@@ -1134,7 +1134,7 @@ export default function CirclePage() {
           <section>
             {searchResults.length === 0 ? (
               <div className="bg-white rounded-2xl px-5 py-8 text-center shadow-sm">
-                <p className="font-[DM_Sans] text-sm text-capp-dark/50">No one found for "{search}"</p>
+                <p className="font-[Montserrat] text-sm text-capp-dark/50">No one found for "{search}"</p>
               </div>
             ) : (
               <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -1143,11 +1143,11 @@ export default function CirclePage() {
                     <button key={mom.id}
                       onClick={() => { setSearch(''); setContactSheet(mom) }}
                       className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-capp-dark/[0.03] transition-colors text-left">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
                         style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                        <p className="font-[DM_Sans] text-xs text-capp-dark/40">{mom.kidName}'s parent · {mom.location}</p>
+                        <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{mom.name}</p>
+                        <p className="font-[Montserrat] text-xs text-capp-dark/40">{mom.kidName}'s parent · {mom.location}</p>
                       </div>
                       <span className="text-capp-dark/20 text-sm shrink-0">›</span>
                     </button>
@@ -1165,12 +1165,12 @@ export default function CirclePage() {
         {kids.length === 0 && (
           <div className="flex flex-col items-center py-16 text-center">
             <span className="text-5xl mb-4">💬</span>
-            <h2 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-2">Your circle starts here</h2>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/55 leading-relaxed mb-6">
+            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-2 uppercase">Your circle starts here</h2>
+            <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed mb-6">
               Add your kids to start building your circle community.
             </p>
             <button onClick={() => navigate('/add-kid')}
-              className="bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold px-6 py-3.5 rounded-2xl shadow-md active:scale-95 transition-transform">
+              className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold px-6 py-3.5 rounded-2xl shadow-md active:scale-95 transition-transform">
               Add a kid
             </button>
           </div>
@@ -1179,7 +1179,7 @@ export default function CirclePage() {
         {/* ── Messages ── */}
         {dmMoms.length > 0 && (
           <section>
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Messages</p>
+            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Messages</p>
             <div className="flex flex-col gap-2">
               {dmMoms.map((mom) => (
                 <DMRow key={mom.id} mom={mom} onPress={() => navigate(`/circle/dm/${mom.id}`)} />
@@ -1191,7 +1191,7 @@ export default function CirclePage() {
         {/* ── Kid sections ── */}
         {kids.length > 0 && (
           <section>
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Circles</p>
+            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Circles</p>
             <div className="flex flex-col gap-3">
               {kids.map((kid) => (
                 <KidSection
@@ -1211,20 +1211,20 @@ export default function CirclePage() {
         {/* ── Community / Contacts ── */}
         <section>
           <div className="flex items-center justify-between mb-3">
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider">Community</p>
+            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider">Community</p>
             <button onClick={() => setShowAddPeople(true)}
-              className="font-[DM_Sans] text-xs font-semibold text-capp-coral">
+              className="font-[Montserrat] text-xs font-semibold text-capp-coral">
               + Add people
             </button>
           </div>
 
           {contactMoms.length === 0 ? (
             <div className="bg-white rounded-2xl px-5 py-6 text-center shadow-sm">
-              <p className="font-[DM_Sans] text-sm text-capp-dark/50 leading-relaxed mb-4">
+              <p className="font-[Montserrat] text-sm text-capp-dark/50 leading-relaxed mb-4">
                 Add parents from your kids' camps to message them or add them to circles.
               </p>
               <button onClick={() => setShowAddPeople(true)}
-                className="bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold text-sm px-5 py-2.5 rounded-xl active:scale-95 transition-transform">
+                className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold text-sm px-5 py-2.5 rounded-xl active:scale-95 transition-transform">
                 Add people
               </button>
             </div>
@@ -1234,11 +1234,11 @@ export default function CirclePage() {
                 {contactMoms.map((mom) => (
                   <button key={mom.id} onClick={() => setContactSheet(mom)}
                     className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-capp-dark/[0.03] transition-colors text-left">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
                       style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/40 truncate">{mom.kidName}'s mom · {mom.location}</p>
+                      <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{mom.name}</p>
+                      <p className="font-[Montserrat] text-xs text-capp-dark/40 truncate">{mom.kidName}'s mom · {mom.location}</p>
                     </div>
                     <span className="text-capp-dark/20 text-sm shrink-0">›</span>
                   </button>
@@ -1251,9 +1251,9 @@ export default function CirclePage() {
         {/* ── Carpool ── */}
         <section>
           <div className="flex items-center justify-between mb-3">
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider">Carpool</p>
+            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider">Carpool</p>
             <button onClick={() => setShowCarpool(true)}
-              className="font-[DM_Sans] text-xs font-semibold text-capp-coral">
+              className="font-[Montserrat] text-xs font-semibold text-capp-coral">
               + Post
             </button>
           </div>
@@ -1262,8 +1262,8 @@ export default function CirclePage() {
               className="w-full bg-white rounded-2xl px-4 py-4 shadow-sm border border-capp-dark/[0.06] text-left active:scale-[0.98] transition-transform flex items-center gap-3">
               <span className="text-2xl">🚗</span>
               <div>
-                <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">Carpool with your circle</p>
-                <p className="font-[DM_Sans] text-xs text-capp-dark/45 mt-0.5">Find or offer rides to camp</p>
+                <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">Carpool with your circle</p>
+                <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">Find or offer rides to camp</p>
               </div>
             </button>
           ) : (
@@ -1293,7 +1293,7 @@ export default function CirclePage() {
 
       {carpoolDetail && (() => {
         const livePost = carpoolPosts.find((p) => p.id === carpoolDetail.id) ?? carpoolDetail
-        const mom = MOCK_MOMS.find((m) => m.id === livePost.momId) ?? { name: 'You', avatarColor: '#FFD166', location: '', kidName: '', kidAge: '' }
+        const mom = MOCK_MOMS.find((m) => m.id === livePost.momId) ?? { name: 'You', avatarColor: '#FFF952', location: '', kidName: '', kidAge: '' }
         return (
           <CarpoolDetailSheet
             post={livePost}

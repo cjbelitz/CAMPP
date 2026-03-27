@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-  --color-capp-coral: #FFD166;
-  --color-capp-yellow: #FFD166;
-  --color-capp-mint: #06D6A0;
+  --color-capp-coral: #FFF952;
+  --color-capp-yellow: #FFF952;
+  --color-capp-mint: #44DD9E;
   --color-capp-blue: #118AB2;
   --color-capp-dark: #0f172a;
   --color-capp-warm-bg: #FFF8F0;
 
-  --font-fraunces: 'Fraunces', serif;
-  --font-dm-sans: 'DM Sans', sans-serif;
+  --font-league-spartan: 'League Spartan', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
 }
 
 *, *::before, *::after {
@@ -23,7 +23,7 @@
 
 body {
   background-color: #FFF8F0;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;

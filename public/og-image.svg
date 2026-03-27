@@ -3,12 +3,12 @@
   <rect width="1200" height="630" fill="#FFF8F0"/>
 
   <!-- Decorative blobs -->
-  <circle cx="980" cy="120" r="180" fill="#FFD166" opacity="0.25"/>
-  <circle cx="1100" cy="520" r="140" fill="#06D6A0" opacity="0.15"/>
-  <circle cx="60" cy="500" r="120" fill="#FFD166" opacity="0.18"/>
+  <circle cx="980" cy="120" r="180" fill="#FFF952" opacity="0.25"/>
+  <circle cx="1100" cy="520" r="140" fill="#44DD9E" opacity="0.15"/>
+  <circle cx="60" cy="500" r="120" fill="#FFF952" opacity="0.18"/>
 
   <!-- Logo badge -->
-  <rect x="80" y="80" width="88" height="88" rx="20" fill="#FFD166"/>
+  <rect x="80" y="80" width="88" height="88" rx="20" fill="#FFF952"/>
   <text x="124" y="148" font-family="Georgia, serif" font-weight="700" font-size="60" text-anchor="middle" fill="#0f172a">C</text>
 
   <!-- App name -->
@@ -22,5 +22,5 @@
   <text x="80" y="460" font-family="-apple-system, Helvetica Neue, sans-serif" font-size="28" fill="#0f172a" opacity="0.4">all in one place. North County San Diego.</text>
 
   <!-- Bottom accent bar -->
-  <rect x="0" y="590" width="1200" height="40" fill="#FFD166" opacity="0.4"/>
+  <rect x="0" y="590" width="1200" height="40" fill="#FFF952" opacity="0.4"/>
 </svg>

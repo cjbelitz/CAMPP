@@ -46,25 +46,25 @@ const testimonials = [
     quote: "Finally — a site that actually lists what camps are available near me. Such a game changer.",
     name: 'Taryn L.',
     location: 'Carlsbad',
-    borderColor: '#FFD166',
+    borderColor: '#FFF952',
     initial: '#f59e0b',
   },
   {
     quote: "My son is doing surf camp AND robotics this summer. CAMPP made it stupidly easy to find both.",
     name: 'Brianna K.',
     location: 'Oceanside',
-    borderColor: '#06D6A0',
-    initial: '#06D6A0',
+    borderColor: '#44DD9E',
+    initial: '#44DD9E',
   },
 ]
 
 const categories = [
   { label: 'Sports', icon: '⚽', bg: '#FF6B6B15', border: '#FF6B6B40' },
-  { label: 'Arts',   icon: '🎨', bg: '#FFD16630', border: '#FFD16650' },
-  { label: 'STEM',   icon: '🔬', bg: '#06D6A015', border: '#06D6A040' },
+  { label: 'Arts',   icon: '🎨', bg: '#FFF95230', border: '#FFF95250' },
+  { label: 'STEM',   icon: '🔬', bg: '#44DD9E15', border: '#44DD9E40' },
   { label: 'Outdoors', icon: '🏕️', bg: '#118AB215', border: '#118AB240' },
   { label: 'Surf',   icon: '🏄', bg: '#FF6B6B15', border: '#FF6B6B40' },
-  { label: 'Music',  icon: '🎵', bg: '#FFD16630', border: '#FFD16650' },
+  { label: 'Music',  icon: '🎵', bg: '#FFF95230', border: '#FFF95250' },
 ]
 
 export default function HomePage() {
@@ -83,25 +83,25 @@ export default function HomePage() {
       <header className="px-5 pt-12 pb-4 flex items-center justify-between">
         <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 active:opacity-70 transition-opacity">
           <div className="w-9 h-9 rounded-xl bg-capp-coral flex items-center justify-center shadow-sm">
-            <span className="font-[Fraunces] text-capp-dark text-lg font-bold leading-none">C</span>
+            <span className="font-[League_Spartan] text-capp-dark text-lg font-bold leading-none">C</span>
           </div>
-          <span className="font-[Fraunces] font-bold text-capp-dark text-xl">CAMPP</span>
+          <span className="font-[League_Spartan] font-bold text-capp-dark text-xl">CAMPP</span>
         </button>
         <div className="inline-flex items-center gap-1.5 bg-capp-coral/10 border border-capp-coral/20 rounded-full px-3 py-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-capp-coral" />
-          <span className="font-[DM_Sans] text-xs font-semibold text-capp-coral">North County SD</span>
+          <span className="font-[Montserrat] text-xs font-semibold text-capp-coral">North County SD</span>
         </div>
       </header>
 
       {/* ── Hero ── */}
       <section className="px-5 pt-6 pb-8">
         {/* Headline */}
-        <h1 className="font-[Fraunces] text-[2.6rem] font-bold text-capp-dark leading-[1.1] mb-2">
+        <h1 className="font-[League_Spartan] text-[2.6rem] font-bold text-capp-dark leading-[1.1] mb-2 uppercase">
           Find the perfect<br />
           <span className="text-capp-coral italic">summer camp</span><br />
           for your kid.
         </h1>
-        <p className="font-[DM_Sans] text-sm text-capp-dark/55 leading-relaxed mb-7 max-w-xs">
+        <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed mb-7 max-w-xs">
           Browse, compare, and book the best local camps — all in one place, built for busy North County moms.
         </p>
 
@@ -113,11 +113,11 @@ export default function HomePage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search surf, STEM, arts…"
-            className="w-full font-[DM_Sans] text-sm bg-white border-2 border-capp-dark/10 rounded-2xl pl-11 pr-28 py-4 shadow-sm placeholder:text-capp-dark/30 focus:outline-none focus:border-capp-coral/50 transition-colors"
+            className="w-full font-[Montserrat] text-sm bg-white border-2 border-capp-dark/10 rounded-2xl pl-11 pr-28 py-4 shadow-sm placeholder:text-capp-dark/30 focus:outline-none focus:border-capp-coral/50 transition-colors"
           />
           <button
             type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold text-sm px-4 py-2 rounded-xl active:scale-95 transition-transform"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-capp-coral text-capp-dark font-[Montserrat] font-semibold text-sm px-4 py-2 rounded-xl active:scale-95 transition-transform"
           >
             Search
           </button>
@@ -129,7 +129,7 @@ export default function HomePage() {
             <button
               key={tag}
               onClick={() => navigate(`/camps?category=${tag}`)}
-              className="shrink-0 font-[DM_Sans] text-xs font-medium px-3.5 py-1.5 rounded-full bg-white border border-capp-dark/12 text-capp-dark/60 active:scale-95 transition-transform"
+              className="shrink-0 font-[Montserrat] text-xs font-medium px-3.5 py-1.5 rounded-full bg-white border border-capp-dark/12 text-capp-dark/60 active:scale-95 transition-transform"
             >
               {tag}
             </button>
@@ -141,8 +141,8 @@ export default function HomePage() {
       <section className="mx-4 mb-10 bg-white rounded-2xl shadow-sm px-4 py-5 flex justify-around divide-x divide-capp-dark/10">
         {stats.map((s) => (
           <div key={s.label} className="flex-1 flex flex-col items-center gap-0.5 px-2">
-            <span className="font-[Fraunces] font-bold text-lg text-capp-dark">{s.value}</span>
-            <span className="font-[DM_Sans] text-xs text-capp-dark/50 text-center leading-tight">{s.label}</span>
+            <span className="font-[League_Spartan] font-bold text-lg text-capp-dark">{s.value}</span>
+            <span className="font-[Montserrat] text-xs text-capp-dark/50 text-center leading-tight">{s.label}</span>
           </div>
         ))}
       </section>
@@ -151,12 +151,12 @@ export default function HomePage() {
       <section className="px-4 mb-12">
         <div className="flex items-baseline justify-between mb-4 px-1">
           <div>
-            <h2 className="font-[Fraunces] text-2xl font-bold text-capp-dark">Browse by type</h2>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/50">Something for every kid</p>
+            <h2 className="font-[League_Spartan] text-2xl font-bold text-capp-dark uppercase">Browse by type</h2>
+            <p className="font-[Montserrat] text-sm text-capp-dark/50">Something for every kid</p>
           </div>
           <button
             onClick={() => navigate('/camps')}
-            className="font-[DM_Sans] text-xs font-semibold text-capp-coral"
+            className="font-[Montserrat] text-xs font-semibold text-capp-coral"
           >
             See all →
           </button>
@@ -170,7 +170,7 @@ export default function HomePage() {
               style={{ backgroundColor: cat.bg, borderColor: cat.border }}
             >
               <span className="text-2xl">{cat.icon}</span>
-              <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{cat.label}</span>
+              <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">{cat.label}</span>
             </button>
           ))}
         </div>
@@ -179,8 +179,8 @@ export default function HomePage() {
       {/* ── How it works ── */}
       <section className="px-4 mb-12">
         <div className="px-1 mb-6">
-          <h2 className="font-[Fraunces] text-2xl font-bold text-capp-dark">How it works</h2>
-          <p className="font-[DM_Sans] text-sm text-capp-dark/50">Three steps to a sorted summer</p>
+          <h2 className="font-[League_Spartan] text-2xl font-bold text-capp-dark uppercase">How it works</h2>
+          <p className="font-[Montserrat] text-sm text-capp-dark/50">Three steps to a sorted summer</p>
         </div>
         <div className="flex flex-col gap-4">
           {steps.map((step) => (
@@ -190,10 +190,10 @@ export default function HomePage() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className={`font-[DM_Sans] text-xs font-bold ${step.textColor}`}>{step.number}</span>
-                  <h3 className="font-[Fraunces] font-bold text-capp-dark text-base">{step.title}</h3>
+                  <span className={`font-[Montserrat] text-xs font-bold ${step.textColor}`}>{step.number}</span>
+                  <h3 className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase">{step.title}</h3>
                 </div>
-                <p className="font-[DM_Sans] text-sm text-capp-dark/60 leading-relaxed">{step.desc}</p>
+                <p className="font-[Montserrat] text-sm text-capp-dark/60 leading-relaxed">{step.desc}</p>
               </div>
             </div>
           ))}
@@ -203,8 +203,8 @@ export default function HomePage() {
       {/* ── Testimonials ── */}
       <section className="px-4 mb-12">
         <div className="px-1 mb-5">
-          <h2 className="font-[Fraunces] text-2xl font-bold text-capp-dark">What moms are saying</h2>
-          <p className="font-[DM_Sans] text-sm text-capp-dark/50">Real reviews from your neighborhood</p>
+          <h2 className="font-[League_Spartan] text-2xl font-bold text-capp-dark uppercase">What moms are saying</h2>
+          <p className="font-[Montserrat] text-sm text-capp-dark/50">Real reviews from your neighborhood</p>
         </div>
         <div className="flex flex-col gap-4">
           {testimonials.map((t) => (
@@ -218,19 +218,19 @@ export default function HomePage() {
                   <span key={i} className="text-capp-yellow text-xs">★</span>
                 ))}
               </div>
-              <p className="font-[DM_Sans] text-sm text-capp-dark/80 leading-relaxed mb-4">
+              <p className="font-[Montserrat] text-sm text-capp-dark/80 leading-relaxed mb-4">
                 "{t.quote}"
               </p>
               <div className="flex items-center gap-2.5">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white font-[DM_Sans]"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white font-[Montserrat]"
                   style={{ backgroundColor: t.initial }}
                 >
                   {t.name[0]}
                 </div>
                 <div>
-                  <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{t.name}</p>
-                  <p className="font-[DM_Sans] text-xs text-capp-dark/40">{t.location}</p>
+                  <p className="font-[Montserrat] text-xs font-semibold text-capp-dark">{t.name}</p>
+                  <p className="font-[Montserrat] text-xs text-capp-dark/40">{t.location}</p>
                 </div>
               </div>
             </div>
@@ -243,15 +243,15 @@ export default function HomePage() {
         {/* Decorative circles */}
         <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10" />
         <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-white/10" />
-        <h2 className="font-[Fraunces] text-2xl font-bold text-capp-dark mb-2 relative">
+        <h2 className="font-[League_Spartan] text-2xl font-bold text-capp-dark mb-2 relative uppercase">
           Ready to sort your summer?
         </h2>
-        <p className="font-[DM_Sans] text-sm text-capp-dark/65 mb-6 leading-relaxed relative">
+        <p className="font-[Montserrat] text-sm text-capp-dark/65 mb-6 leading-relaxed relative">
           Join hundreds of North County moms who've already found their perfect camps.
         </p>
         <button
           onClick={() => navigate('/camps')}
-          className="w-full bg-white text-capp-dark font-[DM_Sans] font-semibold text-base px-8 py-4 rounded-2xl shadow active:scale-95 transition-transform relative"
+          className="w-full bg-white text-capp-dark font-[Montserrat] font-semibold text-base px-8 py-4 rounded-2xl shadow active:scale-95 transition-transform relative"
         >
           Browse All Camps
         </button>
@@ -261,11 +261,11 @@ export default function HomePage() {
       <footer className="px-6 pb-6 text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="w-6 h-6 rounded-lg bg-capp-coral flex items-center justify-center">
-            <span className="font-[Fraunces] text-capp-dark text-xs font-bold">C</span>
+            <span className="font-[League_Spartan] text-capp-dark text-xs font-bold">C</span>
           </div>
-          <span className="font-[Fraunces] font-bold text-capp-dark text-sm">CAMPP</span>
+          <span className="font-[League_Spartan] font-bold text-capp-dark text-sm">CAMPP</span>
         </div>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/35">© 2025 CAMPP · Made with ☀️ in North County San Diego</p>
+        <p className="font-[Montserrat] text-xs text-capp-dark/35">© 2025 CAMPP · Made with ☀️ in North County San Diego</p>
       </footer>
     </div>
   )

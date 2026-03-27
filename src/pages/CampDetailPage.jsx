@@ -80,10 +80,10 @@ export default function CampDetailPage() {
     return (
       <div className="min-h-screen bg-capp-warm-bg flex flex-col items-center justify-center gap-4 px-6 text-center">
         <span className="text-5xl">🏕️</span>
-        <h2 className="font-[Fraunces] font-bold text-capp-dark text-2xl">Camp not found</h2>
+        <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl uppercase">Camp not found</h2>
         <button
           onClick={() => navigate('/camps')}
-          className="bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold px-6 py-3 rounded-2xl"
+          className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold px-6 py-3 rounded-2xl"
         >
           Back to Browse
         </button>
@@ -119,19 +119,19 @@ export default function CampDetailPage() {
           <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center text-5xl mb-4 shadow-lg">
             {camp.icon}
           </div>
-          <span className="font-[DM_Sans] text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
+          <span className="font-[Montserrat] text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
             {camp.category}
           </span>
-          <h1 className="font-[Fraunces] font-bold text-white text-2xl leading-tight mb-1">
+          <h1 className="font-[League_Spartan] font-bold text-white text-2xl leading-tight mb-1 uppercase">
             {camp.name}
           </h1>
           <div className="flex items-center gap-1.5 text-white/80 mb-3">
             <span className="text-xs">📍</span>
-            <span className="font-[DM_Sans] text-sm">{camp.location}</span>
+            <span className="font-[Montserrat] text-sm">{camp.location}</span>
           </div>
           <div className="flex items-center gap-2">
             <StatusBadge status={camp.status} size="lg" />
-            <span className="font-[DM_Sans] text-xs font-semibold text-white/80 bg-white/20 px-2.5 py-1 rounded-full">
+            <span className="font-[Montserrat] text-xs font-semibold text-white/80 bg-white/20 px-2.5 py-1 rounded-full">
               {camp.spotsLeft === 1 ? '1 spot left' : `${camp.spotsLeft} spots left`}
             </span>
           </div>
@@ -145,18 +145,18 @@ export default function CampDetailPage() {
       <div className="mx-4 -mt-1 bg-white rounded-2xl shadow-sm px-4 py-4 flex justify-around divide-x divide-capp-dark/10">
         <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
           <span className="text-xl">👦</span>
-          <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark">Ages {camp.ageMin}–{camp.ageMax}</span>
-          <span className="font-[DM_Sans] text-xs text-capp-dark/40">Age range</span>
+          <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">Ages {camp.ageMin}–{camp.ageMax}</span>
+          <span className="font-[Montserrat] text-xs text-capp-dark/40">Age range</span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
           <span className="text-xl">📅</span>
-          <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark text-center leading-tight">{camp.dates}</span>
-          <span className="font-[DM_Sans] text-xs text-capp-dark/40">Available</span>
+          <span className="font-[Montserrat] text-xs font-semibold text-capp-dark text-center leading-tight">{camp.dates}</span>
+          <span className="font-[Montserrat] text-xs text-capp-dark/40">Available</span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
           <span className="text-xl">⭐</span>
-          <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{camp.rating} / 5</span>
-          <span className="font-[DM_Sans] text-xs text-capp-dark/40">{camp.reviews} reviews</span>
+          <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">{camp.rating} / 5</span>
+          <span className="font-[Montserrat] text-xs text-capp-dark/40">{camp.reviews} reviews</span>
         </div>
       </div>
 
@@ -164,8 +164,8 @@ export default function CampDetailPage() {
 
         {/* ── About ── */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-[Fraunces] font-bold text-capp-dark text-lg mb-2">About this camp</h2>
-          <p className="font-[DM_Sans] text-sm text-capp-dark/70 leading-relaxed mb-3">
+          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-2 uppercase">About this camp</h2>
+          <p className="font-[Montserrat] text-sm text-capp-dark/70 leading-relaxed mb-3">
             {camp.description}
           </p>
           {camp.registrationUrl && (
@@ -174,7 +174,7 @@ export default function CampDetailPage() {
                 href={camp.registrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-[DM_Sans] text-sm font-semibold text-capp-coral active:opacity-70 transition-opacity"
+                className="inline-flex items-center gap-1.5 font-[Montserrat] text-sm font-semibold text-capp-coral active:opacity-70 transition-opacity"
               >
                 🔗 Visit website
                 <span className="text-capp-coral/60 text-xs">↗</span>
@@ -182,7 +182,7 @@ export default function CampDetailPage() {
               {saved && (
                 <button
                   onClick={() => markRegistered(camp.id, !isRegistered(camp.id))}
-                  className={`inline-flex items-center gap-1.5 font-[DM_Sans] text-xs font-bold px-3 py-1.5 rounded-xl active:scale-95 transition-transform ${
+                  className={`inline-flex items-center gap-1.5 font-[Montserrat] text-xs font-bold px-3 py-1.5 rounded-xl active:scale-95 transition-transform ${
                     isRegistered(camp.id)
                       ? 'bg-yellow-200 text-yellow-800 border border-yellow-300'
                       : 'bg-capp-dark/6 text-capp-dark/50'
@@ -202,8 +202,8 @@ export default function CampDetailPage() {
           return (
             <section className="bg-white rounded-2xl p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <h2 className="font-[Fraunces] font-bold text-capp-dark text-lg">In your circle</h2>
-                <span className="font-[DM_Sans] text-xs font-bold text-violet-700 bg-violet-100 px-2 py-0.5 rounded-full">
+                <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">In your circle</h2>
+                <span className="font-[Montserrat] text-xs font-bold text-violet-700 bg-violet-100 px-2 py-0.5 rounded-full">
                   {signups.length} kid{signups.length !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -213,27 +213,27 @@ export default function CampDetailPage() {
                   return (
                     <div key={`${signup.kidName}-${signup.session}`} className="flex items-center gap-3">
                       <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
                         style={{ backgroundColor: mom?.avatarColor ?? '#A78BFA' }}
                       >
                         {signup.kidName[0]}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark leading-tight">
+                        <p className="font-[Montserrat] text-sm font-semibold text-capp-dark leading-tight">
                           {signup.kidName}
                         </p>
-                        <p className="font-[DM_Sans] text-xs text-capp-dark/45 mt-0.5">
+                        <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">
                           {signup.momName}'s kid
                         </p>
                       </div>
-                      <span className="font-[DM_Sans] text-xs font-semibold text-violet-700 bg-violet-50 border border-violet-200 px-2.5 py-1 rounded-full shrink-0">
+                      <span className="font-[Montserrat] text-xs font-semibold text-violet-700 bg-violet-50 border border-violet-200 px-2.5 py-1 rounded-full shrink-0">
                         {signup.session}
                       </span>
                     </div>
                   )
                 })}
               </div>
-              <p className="font-[DM_Sans] text-xs text-capp-dark/35 mt-4">
+              <p className="font-[Montserrat] text-xs text-capp-dark/35 mt-4">
                 Based on your camp circles — reach out to coordinate!
               </p>
             </section>
@@ -242,7 +242,7 @@ export default function CampDetailPage() {
 
         {/* ── What's included ── */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-[Fraunces] font-bold text-capp-dark text-lg mb-3">What's included</h2>
+          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-3 uppercase">What's included</h2>
           <ul className="flex flex-col gap-2.5">
             {camp.tags.map((tag) => (
               <li key={tag} className="flex items-center gap-3">
@@ -252,7 +252,7 @@ export default function CampDetailPage() {
                 >
                   ✓
                 </span>
-                <span className="font-[DM_Sans] text-sm text-capp-dark/80">{tag}</span>
+                <span className="font-[Montserrat] text-sm text-capp-dark/80">{tag}</span>
               </li>
             ))}
           </ul>
@@ -261,10 +261,10 @@ export default function CampDetailPage() {
         {/* ── Pick a session ── */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="font-[Fraunces] font-bold text-capp-dark text-lg">Pick a session</h2>
+            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">Pick a session</h2>
             <SpotsLeft spotsLeft={camp.spotsLeft} status={camp.status} />
           </div>
-          <p className="font-[DM_Sans] text-xs text-capp-dark/40 mb-3">Mon–Fri, 9am–3pm</p>
+          <p className="font-[Montserrat] text-xs text-capp-dark/40 mb-3">Mon–Fri, 9am–3pm</p>
 
           {/* Deadline urgency banner */}
           {camp.regDeadline && (() => {
@@ -279,12 +279,12 @@ export default function CampDetailPage() {
                 <span className="text-base shrink-0">{days <= 7 ? '🚨' : '⏰'}</span>
                 <div>
                   <p
-                    className="font-[DM_Sans] text-sm font-bold"
+                    className="font-[Montserrat] text-sm font-bold"
                     style={{ color }}
                   >
                     {days <= 0 ? 'Registration deadline passed' : days === 1 ? 'Register today — last day!' : `${days} days left to register`}
                   </p>
-                  <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">
+                  <p className="font-[Montserrat] text-xs text-capp-dark/50 mt-0.5">
                     {days <= 7 ? 'Spots are going fast — pick a session below.' : 'Secure your spot before it fills up.'}
                   </p>
                 </div>
@@ -296,7 +296,7 @@ export default function CampDetailPage() {
               <button
                 key={s}
                 onClick={() => setSelectedSession(s)}
-                className={`py-3 px-4 rounded-xl border text-sm font-[DM_Sans] font-medium transition-colors text-left ${
+                className={`py-3 px-4 rounded-xl border text-sm font-[Montserrat] font-medium transition-colors text-left ${
                   selectedSession === s
                     ? 'text-white border-transparent'
                     : 'bg-capp-warm-bg text-capp-dark/70 border-capp-dark/10'
@@ -311,14 +311,14 @@ export default function CampDetailPage() {
 
         {/* ── What to bring ── */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-[Fraunces] font-bold text-capp-dark text-lg mb-3">What to bring</h2>
+          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-3 uppercase">What to bring</h2>
           <ul className="flex flex-col gap-2.5">
             {whatToBring.map((item) => (
               <li key={item} className="flex items-center gap-3">
                 <span className="w-5 h-5 rounded-full bg-capp-yellow/30 flex items-center justify-center text-xs shrink-0">
                   🎒
                 </span>
-                <span className="font-[DM_Sans] text-sm text-capp-dark/70">{item}</span>
+                <span className="font-[Montserrat] text-sm text-capp-dark/70">{item}</span>
               </li>
             ))}
           </ul>
@@ -327,11 +327,11 @@ export default function CampDetailPage() {
         {/* ── Reviews ── */}
         <section>
           <div className="flex items-baseline justify-between mb-3">
-            <h2 className="font-[Fraunces] font-bold text-capp-dark text-lg">Reviews</h2>
+            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">Reviews</h2>
             <div className="flex items-center gap-1">
               <span className="text-capp-yellow text-sm">★</span>
-              <span className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{camp.rating}</span>
-              <span className="font-[DM_Sans] text-xs text-capp-dark/40">({camp.reviews})</span>
+              <span className="font-[Montserrat] text-sm font-semibold text-capp-dark">{camp.rating}</span>
+              <span className="font-[Montserrat] text-xs text-capp-dark/40">({camp.reviews})</span>
             </div>
           </div>
 
@@ -342,19 +342,19 @@ export default function CampDetailPage() {
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-[DM_Sans]"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-[Montserrat]"
                       style={{ backgroundColor: camp.accentLight, color: camp.accent }}
                     >
                       {r.name[0]}
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{r.name}</p>
-                        <span className="font-[DM_Sans] text-[10px] font-semibold text-white px-1.5 py-0.5 rounded-full" style={{ backgroundColor: camp.accent }}>
+                        <p className="font-[Montserrat] text-xs font-semibold text-capp-dark">{r.name}</p>
+                        <span className="font-[Montserrat] text-[10px] font-semibold text-white px-1.5 py-0.5 rounded-full" style={{ backgroundColor: camp.accent }}>
                           Your review
                         </span>
                       </div>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/40">{r.location} · {r.date}</p>
+                      <p className="font-[Montserrat] text-xs text-capp-dark/40">{r.location} · {r.date}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -365,13 +365,13 @@ export default function CampDetailPage() {
                     </div>
                     <button
                       onClick={() => { setReviewRating(r.rating); setReviewBody(r.body); setReviewName(r.name); setShowReviewForm(true) }}
-                      className="font-[DM_Sans] text-xs font-semibold text-capp-coral"
+                      className="font-[Montserrat] text-xs font-semibold text-capp-coral"
                     >
                       Edit
                     </button>
                   </div>
                 </div>
-                <p className="font-[DM_Sans] text-sm text-capp-dark/70 leading-relaxed">"{r.body}"</p>
+                <p className="font-[Montserrat] text-sm text-capp-dark/70 leading-relaxed">"{r.body}"</p>
               </div>
             ))}
 
@@ -381,14 +381,14 @@ export default function CampDetailPage() {
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-[DM_Sans]"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-[Montserrat]"
                       style={{ backgroundColor: camp.accentLight, color: camp.accent }}
                     >
                       {r.name[0]}
                     </div>
                     <div>
-                      <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark">{r.name}</p>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/40">{r.location} · {r.date}</p>
+                      <p className="font-[Montserrat] text-xs font-semibold text-capp-dark">{r.name}</p>
+                      <p className="font-[Montserrat] text-xs text-capp-dark/40">{r.location} · {r.date}</p>
                     </div>
                   </div>
                   <div className="flex gap-0.5">
@@ -397,7 +397,7 @@ export default function CampDetailPage() {
                     ))}
                   </div>
                 </div>
-                <p className="font-[DM_Sans] text-sm text-capp-dark/70 leading-relaxed">"{r.body}"</p>
+                <p className="font-[Montserrat] text-sm text-capp-dark/70 leading-relaxed">"{r.body}"</p>
               </div>
             ))}
           </div>
@@ -406,7 +406,7 @@ export default function CampDetailPage() {
           {canReview && !existingReview && !showReviewForm && (
             <button
               onClick={() => { setShowReviewForm(true); setReviewName(user?.name ?? '') }}
-              className="mt-3 w-full py-3.5 rounded-2xl border-2 border-dashed font-[DM_Sans] font-semibold text-sm transition-colors active:bg-capp-warm-bg"
+              className="mt-3 w-full py-3.5 rounded-2xl border-2 border-dashed font-[Montserrat] font-semibold text-sm transition-colors active:bg-capp-warm-bg"
               style={{ borderColor: `${camp.accent}50`, color: camp.accent }}
             >
               ✍️ Write a review
@@ -417,7 +417,7 @@ export default function CampDetailPage() {
           {showReviewForm && (
             <div className="mt-3 bg-white rounded-2xl p-4 shadow-sm flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-[Fraunces] font-bold text-capp-dark text-base">
+                <h3 className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase">
                   {existingReview ? 'Edit your review' : 'Write a review'}
                 </h3>
                 <button
@@ -429,12 +429,12 @@ export default function CampDetailPage() {
               </div>
 
               <div>
-                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-2">Your rating</p>
+                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-2">Your rating</p>
                 <StarPicker value={reviewRating} onChange={setReviewRating} />
               </div>
 
               <div>
-                <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+                <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
                   Your name
                 </label>
                 <input
@@ -442,12 +442,12 @@ export default function CampDetailPage() {
                   value={reviewName}
                   onChange={(e) => setReviewName(e.target.value)}
                   placeholder="Display name"
-                  className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors"
+                  className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors"
                 />
               </div>
 
               <div>
-                <label className="font-[DM_Sans] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+                <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
                   Your experience
                 </label>
                 <textarea
@@ -455,14 +455,14 @@ export default function CampDetailPage() {
                   onChange={(e) => setReviewBody(e.target.value)}
                   placeholder="What did your kid love about this camp?"
                   rows={4}
-                  className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors resize-none"
+                  className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors resize-none"
                 />
               </div>
 
               <button
                 onClick={handleSubmitReview}
                 disabled={!reviewRating || !reviewBody.trim()}
-                className="w-full py-3.5 rounded-2xl font-[DM_Sans] font-semibold text-sm text-white active:scale-95 transition-all disabled:opacity-40"
+                className="w-full py-3.5 rounded-2xl font-[Montserrat] font-semibold text-sm text-white active:scale-95 transition-all disabled:opacity-40"
                 style={{ backgroundColor: camp.accent }}
               >
                 {existingReview ? 'Update review' : 'Submit review'}
@@ -478,7 +478,7 @@ export default function CampDetailPage() {
         {/* Who's going? */}
         {kids.length > 0 && (
           <div className="max-w-[430px] mx-auto flex items-center gap-2.5 mb-2.5">
-            <span className="font-[DM_Sans] text-xs text-capp-dark/40 shrink-0">Who's going?</span>
+            <span className="font-[Montserrat] text-xs text-capp-dark/40 shrink-0">Who's going?</span>
             <div className="flex gap-1.5">
               {kids.map((kid) => (
                 <button
@@ -497,7 +497,7 @@ export default function CampDetailPage() {
                       ? { boxShadow: `0 0 0 2.5px white, 0 0 0 4.5px ${kid.avatarColor}` }
                       : {}}
                   />
-                  <span className="font-[DM_Sans] text-[9px] text-capp-dark/50">{kid.name}</span>
+                  <span className="font-[Montserrat] text-[9px] text-capp-dark/50">{kid.name}</span>
                 </button>
               ))}
             </div>
@@ -506,9 +506,9 @@ export default function CampDetailPage() {
 
         <div className="flex items-center gap-3 max-w-[430px] mx-auto mb-2">
           <div>
-            <p className="font-[DM_Sans] text-xs text-capp-dark/40">Starting at</p>
-            <p className="font-[Fraunces] font-bold text-capp-dark text-xl">
-              ${camp.price}<span className="font-[DM_Sans] text-sm font-normal text-capp-dark/40">/{camp.priceType}</span>
+            <p className="font-[Montserrat] text-xs text-capp-dark/40">Starting at</p>
+            <p className="font-[League_Spartan] font-bold text-capp-dark text-xl">
+              ${camp.price}<span className="font-[Montserrat] text-sm font-normal text-capp-dark/40">/{camp.priceType}</span>
             </p>
           </div>
           <div className="flex-1 flex gap-2">
@@ -520,7 +520,7 @@ export default function CampDetailPage() {
                   saveWithSession(camp.id, selectedSession, selectedKidId)
                 }
               }}
-              className="flex-1 py-3.5 rounded-2xl font-[DM_Sans] font-semibold text-base transition-all active:scale-95 text-capp-dark bg-capp-coral"
+              className="flex-1 py-3.5 rounded-2xl font-[Montserrat] font-semibold text-base transition-all active:scale-95 text-capp-dark bg-capp-coral"
             >
               {saved
                 ? `❤️ Saved${persistedSession ? ` — ${persistedSession}` : ''}`
@@ -533,7 +533,7 @@ export default function CampDetailPage() {
                 href={camp.registrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-4 py-3.5 rounded-2xl font-[DM_Sans] font-semibold text-sm bg-white border-2 border-capp-coral/30 text-capp-coral whitespace-nowrap active:scale-95 transition-all shrink-0"
+                className="flex items-center gap-1 px-4 py-3.5 rounded-2xl font-[Montserrat] font-semibold text-sm bg-white border-2 border-capp-coral/30 text-capp-coral whitespace-nowrap active:scale-95 transition-all shrink-0"
               >
                 Register →
               </a>
@@ -544,12 +544,12 @@ export default function CampDetailPage() {
         {!camp.registrationUrl && (
           <>
             {saved && selectedSession && selectedSession !== persistedSession && (
-              <p className="font-[DM_Sans] text-xs text-capp-dark/40 text-center">
+              <p className="font-[Montserrat] text-xs text-capp-dark/40 text-center">
                 Tap again to update your session to {selectedSession}
               </p>
             )}
             {!saved && !selectedSession && (
-              <p className="font-[DM_Sans] text-xs text-capp-dark/40 text-center">
+              <p className="font-[Montserrat] text-xs text-capp-dark/40 text-center">
                 Pick a session above to lock in your week
               </p>
             )}

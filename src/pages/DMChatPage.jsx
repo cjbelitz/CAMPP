@@ -40,7 +40,7 @@ export default function DMChatPage() {
   if (!mom) {
     return (
       <div className="min-h-screen bg-capp-warm-bg flex items-center justify-center">
-        <p className="font-[DM_Sans] text-capp-dark/50">Conversation not found</p>
+        <p className="font-[Montserrat] text-capp-dark/50">Conversation not found</p>
       </div>
     )
   }
@@ -88,14 +88,14 @@ export default function DMChatPage() {
           ←
         </button>
         <div
-          className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-white font-[Fraunces] shrink-0 shadow-sm"
+          className="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold text-white font-[League_Spartan] shrink-0 shadow-sm"
           style={{ backgroundColor: mom.avatarColor }}
         >
           {mom.name[0]}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="font-[Fraunces] font-bold text-capp-dark text-base leading-tight">{mom.name}</h2>
-          <p className="font-[DM_Sans] text-xs text-capp-dark/50">{mom.location} · {mom.kidName}'s mom</p>
+          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-base leading-tight uppercase">{mom.name}</h2>
+          <p className="font-[Montserrat] text-xs text-capp-dark/50">{mom.location} · {mom.kidName}'s mom</p>
         </div>
       </div>
 
@@ -109,7 +109,7 @@ export default function DMChatPage() {
             style={{ backgroundColor: `${sharedCamp.accent}15`, border: `1px solid ${sharedCamp.accent}30` }}
           >
             <span className="text-base">{sharedCamp.icon}</span>
-            <span className="font-[DM_Sans] text-xs font-medium text-capp-dark/60">
+            <span className="font-[Montserrat] text-xs font-medium text-capp-dark/60">
               Met through {sharedCamp.name}
             </span>
           </div>
@@ -120,7 +120,7 @@ export default function DMChatPage() {
             return (
               <div key={`sep-${i}`} className="flex items-center gap-3 my-3">
                 <div className="flex-1 h-px bg-capp-dark/8" />
-                <span className="font-[DM_Sans] text-[10px] text-capp-dark/35 font-medium">
+                <span className="font-[Montserrat] text-[10px] text-capp-dark/35 font-medium">
                   {formatDaySeparator(item.ts)}
                 </span>
                 <div className="flex-1 h-px bg-capp-dark/8" />
@@ -132,7 +132,7 @@ export default function DMChatPage() {
             <div key={`run-${i}`} className={`flex gap-2 mb-2 ${item.isMe ? 'justify-end' : 'justify-start'}`}>
               {!item.isMe && (
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white font-[DM_Sans] shrink-0 mt-1"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white font-[Montserrat] shrink-0 mt-1"
                   style={{ backgroundColor: mom.avatarColor }}
                 >
                   {mom.name[0]}
@@ -148,9 +148,9 @@ export default function DMChatPage() {
                           : 'bg-white text-capp-dark shadow-sm rounded-bl-sm'
                       }`}
                     >
-                      <p className="font-[DM_Sans] text-sm leading-relaxed">{msg.body}</p>
+                      <p className="font-[Montserrat] text-sm leading-relaxed">{msg.body}</p>
                     </div>
-                    <p className={`font-[DM_Sans] text-[9px] text-capp-dark/30 mt-0.5 ${item.isMe ? 'text-right' : 'text-left ml-1'}`}>
+                    <p className={`font-[Montserrat] text-[9px] text-capp-dark/30 mt-0.5 ${item.isMe ? 'text-right' : 'text-left ml-1'}`}>
                       {formatChatTime(msg.ts)}
                     </p>
                   </div>
@@ -163,14 +163,14 @@ export default function DMChatPage() {
         {messages.length === 0 && (
           <div className="flex flex-col items-center py-12 text-center">
             <div
-              className="w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold text-white font-[Fraunces] mb-3 shadow-md"
+              className="w-16 h-16 rounded-full flex items-center justify-center text-3xl font-bold text-white font-[League_Spartan] mb-3 shadow-md"
               style={{ backgroundColor: mom.avatarColor }}
             >
               {mom.name[0]}
             </div>
-            <p className="font-[Fraunces] font-bold text-capp-dark text-lg">{mom.name}</p>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/50 mt-1">{mom.location}</p>
-            <p className="font-[DM_Sans] text-xs text-capp-dark/35 mt-3">
+            <p className="font-[League_Spartan] font-bold text-capp-dark text-lg">{mom.name}</p>
+            <p className="font-[Montserrat] text-sm text-capp-dark/50 mt-1">{mom.location}</p>
+            <p className="font-[Montserrat] text-xs text-capp-dark/35 mt-3">
               Say hi to start the conversation ☀️
             </p>
           </div>
@@ -193,7 +193,7 @@ export default function DMChatPage() {
             }}
             onKeyDown={onKeyDown}
             placeholder={`Message ${mom.name.split(' ')[0]}…`}
-            className="flex-1 font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-2xl px-4 py-2.5 resize-none focus:outline-none focus:border-capp-coral/40 transition-colors placeholder:text-capp-dark/30"
+            className="flex-1 font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-2xl px-4 py-2.5 resize-none focus:outline-none focus:border-capp-coral/40 transition-colors placeholder:text-capp-dark/30"
             style={{ minHeight: '42px', maxHeight: '96px' }}
           />
           <button

@@ -26,9 +26,9 @@ function Card({ children }) {
 function CardHeader({ label, onAction, actionLabel }) {
   return (
     <div className="flex items-center justify-between px-4 pt-4 pb-3">
-      <p className="font-[DM_Sans] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">{label}</p>
+      <p className="font-[Montserrat] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">{label}</p>
       {onAction && (
-        <button onClick={onAction} className="font-[DM_Sans] text-xs font-semibold text-capp-coral">
+        <button onClick={onAction} className="font-[Montserrat] text-xs font-semibold text-capp-coral">
           {actionLabel}
         </button>
       )}
@@ -58,24 +58,24 @@ function DeadlineRow({ camp, session, isLast }) {
         {camp.icon}
       </span>
       <div className="flex-1 min-w-0">
-        <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark leading-tight truncate">{camp.name}</p>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/40 mt-0.5">
+        <p className="font-[Montserrat] text-sm font-semibold text-capp-dark leading-tight truncate">{camp.name}</p>
+        <p className="font-[Montserrat] text-xs text-capp-dark/40 mt-0.5">
           {hasSession ? `${session} · ${camp.location}` : `${camp.location}`}
         </p>
       </div>
       {hasSession ? (
-        <span className="font-[DM_Sans] text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full shrink-0">
+        <span className="font-[Montserrat] text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full shrink-0">
           ✓ Saved
         </span>
       ) : (
         <div className="flex flex-col items-end shrink-0">
           <span
-            className="font-[DM_Sans] text-xs font-bold text-white px-2.5 py-1 rounded-full"
+            className="font-[Montserrat] text-xs font-bold text-white px-2.5 py-1 rounded-full"
             style={{ backgroundColor: color }}
           >
             {label}
           </span>
-          <span className="font-[DM_Sans] text-[10px] text-capp-dark/30 mt-0.5">to register</span>
+          <span className="font-[Montserrat] text-[10px] text-capp-dark/30 mt-0.5">to register</span>
         </div>
       )}
       {!isLast && <span />}
@@ -95,14 +95,14 @@ function UpcomingRow({ camp, session, isLast }) {
         className="w-10 h-10 rounded-xl flex flex-col items-center justify-center shrink-0"
         style={{ backgroundColor: `${camp.accent}18` }}
       >
-        <span className="font-[DM_Sans] text-[9px] font-bold uppercase" style={{ color: camp.accent }}>{month}</span>
-        <span className="font-[Fraunces] font-bold text-capp-dark text-sm leading-none">{day}</span>
+        <span className="font-[Montserrat] text-[9px] font-bold uppercase" style={{ color: camp.accent }}>{month}</span>
+        <span className="font-[League_Spartan] font-bold text-capp-dark text-sm leading-none">{day}</span>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark truncate">{camp.name}</p>
-        <p className="font-[DM_Sans] text-xs text-capp-dark/40 mt-0.5">{session} · {camp.location}</p>
+        <p className="font-[Montserrat] text-sm font-semibold text-capp-dark truncate">{camp.name}</p>
+        <p className="font-[Montserrat] text-xs text-capp-dark/40 mt-0.5">{session} · {camp.location}</p>
       </div>
-      <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 shrink-0">{countdown}</span>
+      <span className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 shrink-0">{countdown}</span>
     </div>
   )
 }
@@ -112,7 +112,7 @@ function PastCampPill({ campId }) {
   if (!camp) return null
   return (
     <span
-      className="shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-[DM_Sans] font-semibold border"
+      className="shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-[Montserrat] font-semibold border"
       style={{ backgroundColor: `${camp.accent}12`, borderColor: `${camp.accent}30`, color: camp.accent }}
     >
       {camp.icon} {camp.name}
@@ -131,16 +131,16 @@ function KidSection({ kid }) {
         <KidAvatar kid={kid} size={44} rounded="xl" className="shadow-sm shrink-0" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h2 className="font-[Fraunces] font-bold text-capp-dark text-base">{kid.name}</h2>
-            <span className="font-[DM_Sans] text-xs text-capp-dark/40">{kid.age}y</span>
+            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase">{kid.name}</h2>
+            <span className="font-[Montserrat] text-xs text-capp-dark/40">{kid.age}y</span>
             {kid.isExample && (
-              <span className="font-[DM_Sans] text-[10px] text-capp-dark/30 bg-capp-dark/5 px-1.5 py-0.5 rounded-full">
+              <span className="font-[Montserrat] text-[10px] text-capp-dark/30 bg-capp-dark/5 px-1.5 py-0.5 rounded-full">
                 example
               </span>
             )}
           </div>
           {kid.interests.length > 0 && (
-            <p className="font-[DM_Sans] text-xs text-capp-dark/45 truncate">{kid.interests.join(' · ')}</p>
+            <p className="font-[Montserrat] text-xs text-capp-dark/45 truncate">{kid.interests.join(' · ')}</p>
           )}
         </div>
         <button
@@ -158,16 +158,16 @@ function KidSection({ kid }) {
       )}
 
       <div className="flex items-center justify-between mb-2.5">
-        <p className="font-[Fraunces] font-bold text-capp-dark text-base">For {kid.name}</p>
-        <button onClick={() => navigate('/camps')} className="font-[DM_Sans] text-xs font-semibold text-capp-coral">
+        <p className="font-[League_Spartan] font-bold text-capp-dark text-base">For {kid.name}</p>
+        <button onClick={() => navigate('/camps')} className="font-[Montserrat] text-xs font-semibold text-capp-coral">
           See all →
         </button>
       </div>
 
       {suggested.length === 0 ? (
         <div className="bg-white rounded-2xl p-5 text-center shadow-sm">
-          <p className="font-[DM_Sans] text-sm text-capp-dark/50 mb-2">No camps match {kid.name}'s age and interests yet.</p>
-          <button onClick={() => navigate('/camps')} className="font-[DM_Sans] text-sm font-semibold text-capp-coral">
+          <p className="font-[Montserrat] text-sm text-capp-dark/50 mb-2">No camps match {kid.name}'s age and interests yet.</p>
+          <button onClick={() => navigate('/camps')} className="font-[Montserrat] text-sm font-semibold text-capp-coral">
             Browse all camps →
           </button>
         </div>
@@ -187,7 +187,7 @@ function KidSection({ kid }) {
             className="shrink-0 w-[120px] rounded-2xl border-2 border-dashed border-capp-dark/15 flex flex-col items-center justify-center gap-2 text-capp-dark/35 active:bg-capp-warm-bg transition-colors"
           >
             <span className="text-2xl">🏕️</span>
-            <span className="font-[DM_Sans] text-xs font-semibold">See all →</span>
+            <span className="font-[Montserrat] text-xs font-semibold">See all →</span>
           </button>
         </div>
       )}
@@ -226,12 +226,12 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-capp-coral flex items-center justify-center shadow-sm">
-              <span className="font-[Fraunces] text-capp-dark font-bold leading-none">C</span>
+              <span className="font-[League_Spartan] text-capp-dark font-bold leading-none">C</span>
             </div>
-            <span className="font-[Fraunces] font-bold text-capp-dark text-xl">CAMPP</span>
+            <span className="font-[League_Spartan] font-bold text-capp-dark text-xl">CAMPP</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-[DM_Sans] text-xs font-semibold text-capp-coral bg-capp-coral/10 border border-capp-coral/20 rounded-full px-2.5 py-1">
+            <span className="font-[Montserrat] text-xs font-semibold text-capp-coral bg-capp-coral/10 border border-capp-coral/20 rounded-full px-2.5 py-1">
               N. County SD
             </span>
             <button
@@ -251,8 +251,8 @@ export default function DashboardPage() {
             </button>
           </div>
         </div>
-        <h1 className="font-[Fraunces] font-bold text-capp-dark text-2xl leading-tight">{getGreeting(user?.name)}</h1>
-        <p className="font-[DM_Sans] text-sm text-capp-dark/50 mt-0.5">
+        <h1 className="font-[League_Spartan] font-bold text-capp-dark text-2xl leading-tight uppercase">{getGreeting(user?.name)}</h1>
+        <p className="font-[Montserrat] text-sm text-capp-dark/50 mt-0.5">
           {kids.length === 0 ? 'Add your kids to get started' : "Here's your summer at a glance"}
         </p>
       </div>
@@ -264,8 +264,8 @@ export default function DashboardPage() {
           <div className="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3 flex items-start gap-2.5">
             <span className="text-base mt-0.5 shrink-0">💡</span>
             <div>
-              <p className="font-[DM_Sans] text-xs font-semibold text-amber-800">These are sample profiles</p>
-              <p className="font-[DM_Sans] text-xs text-amber-700/80 mt-0.5">Tap ✏️ on any kid to fill in your own details.</p>
+              <p className="font-[Montserrat] text-xs font-semibold text-amber-800">These are sample profiles</p>
+              <p className="font-[Montserrat] text-xs text-amber-700/80 mt-0.5">Tap ✏️ on any kid to fill in your own details.</p>
             </div>
           </div>
         )}
@@ -276,13 +276,13 @@ export default function DashboardPage() {
             <div className="w-16 h-16 rounded-full bg-capp-coral/10 flex items-center justify-center text-3xl mx-auto mb-4">
               👧
             </div>
-            <h2 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-2">Add your first kid</h2>
-            <p className="font-[DM_Sans] text-sm text-capp-dark/55 leading-relaxed mb-5">
+            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-2 uppercase">Add your first kid</h2>
+            <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed mb-5">
               We'll track their schedule, suggest the right camps, and help you plan the whole summer.
             </p>
             <button
               onClick={() => navigate('/add-kid')}
-              className="bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold px-6 py-3 rounded-2xl active:scale-95 transition-transform"
+              className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold px-6 py-3 rounded-2xl active:scale-95 transition-transform"
             >
               Add a kid
             </button>
@@ -306,7 +306,7 @@ export default function DashboardPage() {
             <div className="px-4 pb-4 pt-1">
               <button
                 onClick={() => navigate('/camps')}
-                className="w-full py-2.5 rounded-xl bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold text-sm active:scale-95 transition-transform"
+                className="w-full py-2.5 rounded-xl bg-capp-coral text-capp-dark font-[Montserrat] font-semibold text-sm active:scale-95 transition-transform"
               >
                 Save a camp to track deadlines
               </button>
