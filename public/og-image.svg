@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#FFF8F0"/>
+
+  <!-- Decorative blobs -->
+  <circle cx="980" cy="120" r="180" fill="#FFD166" opacity="0.25"/>
+  <circle cx="1100" cy="520" r="140" fill="#06D6A0" opacity="0.15"/>
+  <circle cx="60" cy="500" r="120" fill="#FFD166" opacity="0.18"/>
+
+  <!-- Logo badge -->
+  <rect x="80" y="80" width="88" height="88" rx="20" fill="#FFD166"/>
+  <text x="124" y="148" font-family="Georgia, serif" font-weight="700" font-size="60" text-anchor="middle" fill="#0f172a">C</text>
+
+  <!-- App name -->
+  <text x="80" y="260" font-family="Georgia, serif" font-weight="700" font-size="96" fill="#0f172a">CAPP</text>
+
+  <!-- Tagline -->
+  <text x="80" y="330" font-family="-apple-system, Helvetica Neue, sans-serif" font-size="40" fill="#0f172a" opacity="0.5">Summer, sorted.</text>
+
+  <!-- Description -->
+  <text x="80" y="420" font-family="-apple-system, Helvetica Neue, sans-serif" font-size="28" fill="#0f172a" opacity="0.4">Find, save, and plan summer camps for your kids —</text>
+  <text x="80" y="460" font-family="-apple-system, Helvetica Neue, sans-serif" font-size="28" fill="#0f172a" opacity="0.4">all in one place. North County San Diego.</text>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="#FFD166" opacity="0.4"/>
+</svg>
