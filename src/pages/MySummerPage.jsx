@@ -1,10 +1,120 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSaved } from '../context/SavedCampsContext'
 import { useKids } from '../context/KidsContext'
 import { camps, SUMMER_WEEKS } from '../data/camps'
 import { daysUntil, deadlineColor, deadlineLabel } from '../utils/formatRelativeTime'
 import KidAvatar from '../components/KidAvatar'
+
+const EVENT_TYPES = [
+  { type: 'vacation',    label: 'Family Vacation', emoji: '🏖️', color: '#818CF8' },
+  { type: 'family',      label: 'Family in Town',  emoji: '🏡', color: '#34D399' },
+  { type: 'appointment', label: 'Appointment',     emoji: '📅', color: '#F87171' },
+  { type: 'custom',      label: 'Custom',          emoji: '✏️', color: '#A78BFA' },
+]
+
+function useCustomEvents() {
+  const [events, setEvents] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('capp-custom-events') ?? 'null') ?? [] }
+    catch { return [] }
+  })
+  useEffect(() => {
+    localStorage.setItem('capp-custom-events', JSON.stringify(events))
+  }, [events])
+  const addEvent = (event) => setEvents((prev) => [...prev, { ...event, id: `ev-${Date.now()}` }])
+  const removeEvent = (id) => setEvents((prev) => prev.filter((e) => e.id !== id))
+  return { events, addEvent, removeEvent }
+}
+
+function AddEventSheet({ onClose, onAdd }) {
+  const [selectedType, setSelectedType] = useState(EVENT_TYPES[0])
+  const [customLabel, setCustomLabel] = useState('')
+  const [selectedWeek, setSelectedWeek] = useState(SUMMER_WEEKS[0])
+
+  const label = selectedType.type === 'custom' ? customLabel.trim() : selectedType.label
+  const canAdd = label.length > 0
+
+  function handleAdd() {
+    if (!canAdd) return
+    onAdd({
+      label,
+      emoji: selectedType.emoji,
+      color: selectedType.color,
+      week: selectedWeek,
+      type: selectedType.type,
+    })
+    onClose()
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end" onClick={onClose}>
+      <div
+        className="w-full bg-white rounded-t-3xl shadow-2xl px-5 pt-5 pb-8"
+        style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Handle */}
+        <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-5" />
+
+        <h2 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-4">Add to Calendar</h2>
+
+        {/* Event type pills */}
+        <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event type</p>
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {EVENT_TYPES.map((et) => (
+            <button
+              key={et.type}
+              onClick={() => setSelectedType(et)}
+              className="flex items-center gap-2.5 px-3 py-3 rounded-xl border-2 transition-all active:scale-95 text-left"
+              style={selectedType.type === et.type
+                ? { backgroundColor: `${et.color}18`, borderColor: et.color }
+                : { backgroundColor: 'white', borderColor: '#e2e8f0' }}
+            >
+              <span className="text-xl">{et.emoji}</span>
+              <span className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{et.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Custom label input */}
+        {selectedType.type === 'custom' && (
+          <div className="mb-4">
+            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event name</p>
+            <input
+              type="text"
+              placeholder="e.g. Beach trip, Grandma visiting…"
+              value={customLabel}
+              onChange={(e) => setCustomLabel(e.target.value)}
+              className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-3 focus:outline-none focus:border-capp-coral/40"
+              autoFocus
+            />
+          </div>
+        )}
+
+        {/* Week selector */}
+        <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Week</p>
+        <select
+          value={selectedWeek}
+          onChange={(e) => setSelectedWeek(e.target.value)}
+          className="w-full font-[DM_Sans] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-3 mb-5 focus:outline-none"
+        >
+          {SUMMER_WEEKS.map((w) => (
+            <option key={w} value={w}>{w}</option>
+          ))}
+        </select>
+
+        <button
+          onClick={handleAdd}
+          disabled={!canAdd}
+          className="w-full py-4 rounded-2xl font-[DM_Sans] font-bold text-sm transition-all active:scale-95"
+          style={{ backgroundColor: canAdd ? selectedType.color : '#e2e8f0', color: canAdd ? 'white' : '#94a3b8' }}
+        >
+          Add to My Summer
+        </button>
+      </div>
+    </div>
+  )
+}
 
 function DeadlineBadge({ regDeadline }) {
   if (!regDeadline) return null
@@ -17,37 +127,30 @@ function DeadlineBadge({ regDeadline }) {
   const color = deadlineColor(days)
   const label = deadlineLabel(days)
   return (
-    <span
-      className="font-[DM_Sans] text-xs font-bold text-white px-2.5 py-0.5 rounded-full"
-      style={{ backgroundColor: color }}
-    >
+    <span className="font-[DM_Sans] text-xs font-bold text-white px-2.5 py-0.5 rounded-full" style={{ backgroundColor: color }}>
       ⏰ {label} left
     </span>
   )
 }
 
-// Parse "Jun 16–20" → { mon: "Jun", day: "16" }
 function parseWeekLabel(week) {
   const [monthPart] = week.split('–')
   const parts = monthPart.trim().split(' ')
   return { mon: parts[0], day: parts[1] }
 }
 
-function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, selectedKidId, onKidSelect, isRegistered }) {
+function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, selectedKidId, onKidSelect, isRegistered, customEvents, onRemoveEvent }) {
   const [assigningId, setAssigningId] = useState(null)
 
-  // Kid camp counts (always full, not filtered)
   const kidCampCounts = {}
   savedEntries.forEach((e) => {
     if (e.kidId) kidCampCounts[e.kidId] = (kidCampCounts[e.kidId] ?? 0) + 1
   })
 
-  // Filter entries for the timeline
   const timelineEntries = selectedKidId
     ? savedEntries.filter((e) => e.kidId === selectedKidId)
     : savedEntries
 
-  // Build week → entries map from filtered entries
   const weekMap = {}
   SUMMER_WEEKS.forEach((w) => { weekMap[w] = [] })
   timelineEntries.forEach((entry) => {
@@ -55,14 +158,19 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
     const camp = allCamps.find((c) => c.id === entry.id)
     if (!camp) return
     const kid = entry.kidId ? kids.find((k) => k.id === entry.kidId) : null
-    weekMap[entry.session].push({ camp, kid, entry })
+    weekMap[entry.session].push({ type: 'camp', camp, kid, entry })
+  })
+
+  // Add custom events to weekMap
+  customEvents.forEach((ev) => {
+    if (weekMap[ev.week]) weekMap[ev.week].push({ type: 'event', event: ev })
   })
 
   const hasAnyCamps = savedEntries.length > 0
 
   return (
     <div>
-      {/* Kid profile cards — clickable to filter */}
+      {/* Kid profile cards */}
       {kids.length > 0 && (
         <div className="flex justify-center gap-5 mb-4 flex-wrap">
           {kids.map((kid) => {
@@ -82,9 +190,7 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                     rounded="full"
                     className="shadow-md"
                     style={{
-                      border: isSelected
-                        ? `3px solid ${kid.avatarColor}`
-                        : '3px solid white',
+                      border: isSelected ? `3px solid ${kid.avatarColor}` : '3px solid white',
                       boxShadow: isSelected
                         ? `0 0 0 3px ${kid.avatarColor}55, 0 4px 12px rgba(0,0,0,0.15)`
                         : '0 2px 8px rgba(0,0,0,0.12)',
@@ -100,12 +206,8 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                   )}
                 </div>
                 <div className="text-center">
-                  <p className={`font-[Fraunces] font-bold text-sm leading-tight ${isSelected ? 'text-capp-dark' : 'text-capp-dark'}`}>
-                    {kid.name}
-                  </p>
-                  <p className="font-[DM_Sans] text-[10px] text-capp-dark/40">
-                    {kid.age}y · {count} camp{count !== 1 ? 's' : ''}
-                  </p>
+                  <p className="font-[Fraunces] font-bold text-sm leading-tight text-capp-dark">{kid.name}</p>
+                  <p className="font-[DM_Sans] text-[10px] text-capp-dark/40">{kid.age}y · {count} camp{count !== 1 ? 's' : ''}</p>
                 </div>
               </button>
             )
@@ -113,27 +215,18 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
         </div>
       )}
 
-      {/* Filter indicator */}
       {selectedKidId && (() => {
         const kid = kids.find((k) => k.id === selectedKidId)
         return (
           <div className="flex items-center justify-between bg-capp-dark/5 rounded-xl px-3 py-2 mb-3">
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60">
-              Showing {kid?.name}'s camps
-            </p>
-            <button
-              onClick={() => onKidSelect(null)}
-              className="font-[DM_Sans] text-xs font-semibold text-capp-coral"
-            >
-              Show all →
-            </button>
+            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/60">Showing {kid?.name}'s camps</p>
+            <button onClick={() => onKidSelect(null)} className="font-[DM_Sans] text-xs font-semibold text-capp-coral">Show all →</button>
           </div>
         )
       })()}
 
       <div className="h-px bg-capp-dark/6 mb-4" />
 
-      {/* Timeline rows */}
       <div className="flex flex-col">
         {SUMMER_WEEKS.map((week, idx) => {
           const entries = weekMap[week] || []
@@ -141,28 +234,21 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
           const { mon, day } = parseWeekLabel(week)
           const isLastWeek = idx === SUMMER_WEEKS.length - 1
 
-          const kidIds = entries.map((e) => e.entry.kidId).filter(Boolean)
+          const kidIds = entries.filter((e) => e.type === 'camp').map((e) => e.entry.kidId).filter(Boolean)
           const hasConflict = kidIds.length !== new Set(kidIds).size
 
           return (
             <div key={week} className="flex gap-0 items-stretch">
-              {/* Date + timeline line */}
               <div className="flex flex-col items-center w-14 shrink-0">
                 <div className={`w-2.5 h-2.5 rounded-full mt-3 shrink-0 transition-colors ${isEmpty ? 'bg-capp-dark/12' : 'bg-capp-dark/35'}`} />
                 {!isLastWeek && <div className="w-px flex-1 bg-capp-dark/8 my-1" />}
               </div>
 
-              {/* Date label */}
               <div className="w-10 shrink-0 pt-1.5 mr-3">
-                <p className={`font-[DM_Sans] text-[9px] font-semibold uppercase tracking-wide leading-none ${isEmpty ? 'text-capp-dark/20' : 'text-capp-dark/40'}`}>
-                  {mon}
-                </p>
-                <p className={`font-[Fraunces] font-bold text-sm leading-tight ${isEmpty ? 'text-capp-dark/18' : 'text-capp-dark'}`}>
-                  {day}
-                </p>
+                <p className={`font-[DM_Sans] text-[9px] font-semibold uppercase tracking-wide leading-none ${isEmpty ? 'text-capp-dark/20' : 'text-capp-dark/40'}`}>{mon}</p>
+                <p className={`font-[Fraunces] font-bold text-sm leading-tight ${isEmpty ? 'text-capp-dark/18' : 'text-capp-dark'}`}>{day}</p>
               </div>
 
-              {/* Content area */}
               <div className="flex-1 flex flex-col gap-1.5 py-1.5 pb-3 min-w-0">
                 {isEmpty ? (
                   <div className="h-7 flex items-center">
@@ -176,59 +262,80 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                         <p className="font-[DM_Sans] text-xs font-semibold text-amber-700">Same kid has two camps this week</p>
                       </div>
                     )}
-                    {entries.map(({ camp, kid, entry }) => {
+                    {entries.map((item) => {
+                      if (item.type === 'event') {
+                        const ev = item.event
+                        return (
+                          <div
+                            key={ev.id}
+                            className="flex items-center gap-2 rounded-xl px-3 py-2"
+                            style={{ backgroundColor: `${ev.color}18`, border: `1.5px solid ${ev.color}45` }}
+                          >
+                            <span className="text-base shrink-0">{ev.emoji}</span>
+                            <p className="font-[DM_Sans] text-xs font-semibold flex-1 min-w-0 truncate" style={{ color: ev.color }}>
+                              {ev.label}
+                            </p>
+                            <button
+                              onClick={() => onRemoveEvent(ev.id)}
+                              className="text-[10px] text-capp-dark/25 hover:text-capp-dark/50 active:opacity-60 shrink-0"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        )
+                      }
+                      const { camp, kid, entry } = item
                       const registered = isRegistered(camp.id)
                       return (
-                      <div key={`${camp.id}-${entry.session}`} className="relative">
-                        <button
-                          onClick={() => navigate(`/camps/${camp.id}`)}
-                          className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:scale-[0.98] transition-transform w-full"
-                          style={registered ? {
-                            backgroundColor: '#FEFCE8',
-                            border: '1.5px solid #EAB30855',
-                          } : {
-                            backgroundColor: kid ? `${kid.avatarColor}18` : 'rgba(0,0,0,0.04)',
-                            border: `1.5px solid ${kid ? `${kid.avatarColor}45` : 'rgba(0,0,0,0.08)'}`,
-                          }}
-                        >
-                          <span className="text-base shrink-0">{camp.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark leading-tight truncate">
-                              {registered && <span className="text-yellow-600 mr-1">✓</span>}{camp.name}
-                            </p>
-                            <p className="font-[DM_Sans] text-[10px] text-capp-dark/40 mt-0.5">
-                              ${camp.price}/wk · {camp.location}
-                            </p>
-                          </div>
-                          {kid ? (
-                            <KidAvatar kid={kid} size={24} rounded="full" className="shrink-0" />
-                          ) : (
-                            <button
-                              onClick={(e) => { e.stopPropagation(); setAssigningId(assigningId === camp.id ? null : camp.id) }}
-                              className="text-[10px] font-[DM_Sans] text-capp-coral font-semibold shrink-0 active:opacity-60"
-                            >
-                              Assign
-                            </button>
-                          )}
-                        </button>
-
-                        {assigningId === camp.id && (
-                          <div className="flex items-center gap-3 mt-1.5 pl-1">
-                            <span className="font-[DM_Sans] text-[10px] text-capp-dark/40">Who?</span>
-                            {kids.map((k) => (
+                        <div key={`${camp.id}-${entry.session}`} className="relative">
+                          <button
+                            onClick={() => navigate(`/camps/${camp.id}`)}
+                            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:scale-[0.98] transition-transform w-full"
+                            style={registered ? {
+                              backgroundColor: '#FEFCE8',
+                              border: '1.5px solid #EAB30855',
+                            } : {
+                              backgroundColor: kid ? `${kid.avatarColor}18` : 'rgba(0,0,0,0.04)',
+                              border: `1.5px solid ${kid ? `${kid.avatarColor}45` : 'rgba(0,0,0,0.08)'}`,
+                            }}
+                          >
+                            <span className="text-base shrink-0">{camp.icon}</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark leading-tight truncate">
+                                {registered && <span className="text-yellow-600 mr-1">✓</span>}{camp.name}
+                              </p>
+                              <p className="font-[DM_Sans] text-[10px] text-capp-dark/40 mt-0.5">${camp.price}/wk · {camp.location}</p>
+                            </div>
+                            {kid ? (
+                              <KidAvatar kid={kid} size={24} rounded="full" className="shrink-0" />
+                            ) : (
                               <button
-                                key={k.id}
-                                onClick={() => { assignKid(camp.id, k.id); setAssigningId(null) }}
-                                className="flex flex-col items-center gap-1 active:scale-90 transition-transform"
+                                onClick={(e) => { e.stopPropagation(); setAssigningId(assigningId === camp.id ? null : camp.id) }}
+                                className="text-[10px] font-[DM_Sans] text-capp-coral font-semibold shrink-0 active:opacity-60"
                               >
-                                <KidAvatar kid={k} size={32} rounded="full" />
-                                <span className="font-[DM_Sans] text-[9px] text-capp-dark/60">{k.name}</span>
+                                Assign
                               </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )})}
+                            )}
+                          </button>
+
+                          {assigningId === camp.id && (
+                            <div className="flex items-center gap-3 mt-1.5 pl-1">
+                              <span className="font-[DM_Sans] text-[10px] text-capp-dark/40">Who?</span>
+                              {kids.map((k) => (
+                                <button
+                                  key={k.id}
+                                  onClick={() => { assignKid(camp.id, k.id); setAssigningId(null) }}
+                                  className="flex flex-col items-center gap-1 active:scale-90 transition-transform"
+                                >
+                                  <KidAvatar kid={k} size={32} rounded="full" />
+                                  <span className="font-[DM_Sans] text-[9px] text-capp-dark/60">{k.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </>
                 )}
               </div>
@@ -237,7 +344,7 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
         })}
       </div>
 
-      {!hasAnyCamps && (
+      {!hasAnyCamps && customEvents.length === 0 && (
         <p className="font-[DM_Sans] text-sm text-capp-dark/35 text-center mt-4">
           Save camps to see them on your timeline
         </p>
@@ -256,14 +363,15 @@ export default function MySummerPage() {
   const navigate = useNavigate()
   const { savedIds, savedEntries, unsave, assignKid, markRegistered, isRegistered } = useSaved()
   const { kids } = useKids()
+  const { events: customEvents, addEvent, removeEvent } = useCustomEvents()
   const savedCamps = camps.filter((c) => savedIds.includes(c.id))
   const getSession = (id) => savedEntries.find((e) => e.id === id)?.session ?? null
   const [view, setView] = useState('calendar')
   const [selectedKidId, setSelectedKidId] = useState(null)
+  const [showAddEvent, setShowAddEvent] = useState(false)
 
   const selectedKid = selectedKidId ? kids.find((k) => k.id === selectedKidId) : null
 
-  // Filtered entries + total for selected kid (or all)
   const filteredEntries = selectedKidId
     ? savedEntries.filter((e) => e.kidId === selectedKidId)
     : savedEntries
@@ -272,7 +380,6 @@ export default function MySummerPage() {
     return sum + (c?.price ?? 0)
   }, 0)
   const filteredCamps = camps.filter((c) => filteredEntries.some((e) => e.id === c.id))
-
   const total = savedCamps.reduce((sum, c) => sum + c.price, 0)
 
   return (
@@ -297,38 +404,42 @@ export default function MySummerPage() {
                   : `${savedCamps.length} camp${savedCamps.length !== 1 ? 's' : ''} · $${total.toLocaleString()} est.`}
             </p>
           </div>
-          {savedCamps.length > 0 && (
-            <div className="flex gap-1 bg-capp-dark/6 rounded-xl p-1">
-              <button
-                onClick={() => setView('calendar')}
-                className={`px-3 py-1.5 rounded-lg font-[DM_Sans] text-xs font-semibold transition-all ${
-                  view === 'calendar' ? 'bg-white text-capp-dark shadow-sm' : 'text-capp-dark/40'
-                }`}
-              >
-                📅 Calendar
-              </button>
-              <button
-                onClick={() => setView('list')}
-                className={`px-3 py-1.5 rounded-lg font-[DM_Sans] text-xs font-semibold transition-all ${
-                  view === 'list' ? 'bg-white text-capp-dark shadow-sm' : 'text-capp-dark/40'
-                }`}
-              >
-                ☰ List
-              </button>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowAddEvent(true)}
+              className="px-3 py-2 rounded-xl bg-capp-dark text-white font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform"
+            >
+              + Event
+            </button>
+            {savedCamps.length > 0 && (
+              <div className="flex gap-1 bg-capp-dark/6 rounded-xl p-1">
+                <button
+                  onClick={() => setView('calendar')}
+                  className={`px-3 py-1.5 rounded-lg font-[DM_Sans] text-xs font-semibold transition-all ${
+                    view === 'calendar' ? 'bg-white text-capp-dark shadow-sm' : 'text-capp-dark/40'
+                  }`}
+                >
+                  📅 Calendar
+                </button>
+                <button
+                  onClick={() => setView('list')}
+                  className={`px-3 py-1.5 rounded-lg font-[DM_Sans] text-xs font-semibold transition-all ${
+                    view === 'list' ? 'bg-white text-capp-dark shadow-sm' : 'text-capp-dark/40'
+                  }`}
+                >
+                  ☰ List
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {savedCamps.length === 0 ? (
+      {savedCamps.length === 0 && customEvents.length === 0 ? (
         /* ── Empty state ── */
         <div className="flex flex-col items-center justify-center px-8 py-20 text-center">
-          <div className="w-20 h-20 rounded-full bg-capp-coral/10 flex items-center justify-center text-4xl mb-4">
-            🏕️
-          </div>
-          <h2 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-2">
-            Start building your summer
-          </h2>
+          <div className="w-20 h-20 rounded-full bg-capp-coral/10 flex items-center justify-center text-4xl mb-4">🏕️</div>
+          <h2 className="font-[Fraunces] font-bold text-capp-dark text-xl mb-2">Start building your summer</h2>
           <p className="font-[DM_Sans] text-sm text-capp-dark/55 leading-relaxed mb-6">
             Tap the heart on any camp to save it here. Plan your whole summer before you commit to anything.
           </p>
@@ -339,41 +450,38 @@ export default function MySummerPage() {
             Browse Camps
           </button>
         </div>
-      ) : view === 'calendar' ? (
+      ) : view === 'calendar' || savedCamps.length === 0 ? (
         /* ── Calendar view ── */
         <div className="px-4 pt-5 flex flex-col gap-4">
-
-          {/* Cost summary */}
-          <div
-            className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md transition-all"
-            style={{ backgroundColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
-          >
-            <div>
-              <p className="font-[DM_Sans] text-xs text-capp-dark/60 mb-0.5">
-                {selectedKid ? `${selectedKid.name}'s summer` : 'Estimated total'}
-              </p>
-              <p className="font-[Fraunces] font-bold text-capp-dark text-3xl">
-                ${filteredTotal.toLocaleString()}
-              </p>
-              <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">
-                {filteredCamps.length} camp{filteredCamps.length !== 1 ? 's' : ''} · {selectedKid ? `${selectedKid.name}'s schedule ✓` : 'Summer sorted ✓'}
-              </p>
+          {savedCamps.length > 0 && (
+            <div
+              className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md transition-all"
+              style={{ backgroundColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
+            >
+              <div>
+                <p className="font-[DM_Sans] text-xs text-capp-dark/60 mb-0.5">
+                  {selectedKid ? `${selectedKid.name}'s summer` : 'Estimated total'}
+                </p>
+                <p className="font-[Fraunces] font-bold text-capp-dark text-3xl">${filteredTotal.toLocaleString()}</p>
+                <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">
+                  {filteredCamps.length} camp{filteredCamps.length !== 1 ? 's' : ''} · {selectedKid ? `${selectedKid.name}'s schedule ✓` : 'Summer sorted ✓'}
+                </p>
+              </div>
+              <div className="flex -space-x-2">
+                {(selectedKid ? [selectedKid] : kids).map((kid) => (
+                  <KidAvatar
+                    key={kid.id}
+                    kid={kid}
+                    size={36}
+                    rounded="full"
+                    className="border-2"
+                    style={{ borderColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="flex -space-x-2">
-              {(selectedKid ? [selectedKid] : kids).map((kid) => (
-                <KidAvatar
-                  key={kid.id}
-                  kid={kid}
-                  size={36}
-                  rounded="full"
-                  className="border-2"
-                  style={{ borderColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
-                />
-              ))}
-            </div>
-          </div>
+          )}
 
-          {/* Calendar */}
           <div className="bg-white rounded-2xl shadow-sm px-4 pt-5 pb-2">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-[Fraunces] font-bold text-capp-dark text-base">Summer 2026</h2>
@@ -388,6 +496,8 @@ export default function MySummerPage() {
               selectedKidId={selectedKidId}
               onKidSelect={setSelectedKidId}
               isRegistered={isRegistered}
+              customEvents={customEvents}
+              onRemoveEvent={removeEvent}
             />
           </div>
 
@@ -402,15 +512,12 @@ export default function MySummerPage() {
         /* ── List view ── */
         <div className="px-4 pt-4 flex flex-col gap-3">
 
-          {/* Kid filter row */}
           {kids.length > 0 && (
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
               <button
                 onClick={() => setSelectedKidId(null)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-full font-[DM_Sans] text-xs font-semibold shrink-0 transition-all ${
-                  !selectedKidId
-                    ? 'bg-capp-dark text-white'
-                    : 'bg-white text-capp-dark/50 border border-capp-dark/10'
+                  !selectedKidId ? 'bg-capp-dark text-white' : 'bg-white text-capp-dark/50 border border-capp-dark/10'
                 }`}
               >
                 All kids
@@ -433,7 +540,6 @@ export default function MySummerPage() {
             </div>
           )}
 
-          {/* Cost summary card */}
           <div
             className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md transition-all"
             style={{ backgroundColor: selectedKid ? selectedKid.avatarColor : '#FFD166' }}
@@ -442,27 +548,48 @@ export default function MySummerPage() {
               <p className="font-[DM_Sans] text-xs text-capp-dark/60 mb-0.5">
                 {selectedKid ? `${selectedKid.name}'s summer` : 'Estimated total'}
               </p>
-              <p className="font-[Fraunces] font-bold text-capp-dark text-3xl">
-                ${filteredTotal.toLocaleString()}
-              </p>
+              <p className="font-[Fraunces] font-bold text-capp-dark text-3xl">${filteredTotal.toLocaleString()}</p>
               <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">
                 {filteredCamps.length} camp{filteredCamps.length !== 1 ? 's' : ''} · {selectedKid ? `${selectedKid.name}'s schedule ✓` : 'Summer sorted ✓'}
               </p>
             </div>
             <div className="flex gap-1.5">
               {filteredCamps.slice(0, 4).map((c) => (
-                <span
-                  key={c.id}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-xl"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-                >
+                <span key={c.id} className="w-9 h-9 rounded-xl flex items-center justify-center text-xl" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
                   {c.icon}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Saved camp cards */}
+          {/* Custom events in list view */}
+          {customEvents.length > 0 && (
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+              <div className="px-4 pt-4 pb-2 border-b border-capp-dark/5">
+                <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide">Family Events</p>
+              </div>
+              <div className="flex flex-col divide-y divide-capp-dark/5">
+                {customEvents.map((ev) => (
+                  <div key={ev.id} className="flex items-center gap-3 px-4 py-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: `${ev.color}18` }}>
+                      {ev.emoji}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark truncate">{ev.label}</p>
+                      <p className="font-[DM_Sans] text-xs text-capp-dark/40">{ev.week}</p>
+                    </div>
+                    <button
+                      onClick={() => removeEvent(ev.id)}
+                      className="text-capp-dark/20 text-sm active:opacity-60 shrink-0"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {filteredCamps.map((camp) => {
             const session = getSession(camp.id)
             const days = camp.regDeadline ? daysUntil(camp.regDeadline) : null
@@ -472,64 +599,35 @@ export default function MySummerPage() {
             const registered = isRegistered(camp.id)
 
             return (
-              <div key={camp.id}
-                className="rounded-2xl shadow-sm overflow-hidden"
-                style={{ backgroundColor: registered ? '#FEFCE8' : 'white' }}
-              >
-                <div
-                  className="h-1.5 w-full"
-                  style={{ backgroundColor: registered ? '#EAB308' : isUrgent ? '#EF4444' : (kid?.avatarColor ?? camp.accent) }}
-                />
+              <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: registered ? '#FEFCE8' : 'white' }}>
+                <div className="h-1.5 w-full" style={{ backgroundColor: registered ? '#EAB308' : isUrgent ? '#EF4444' : (kid?.avatarColor ?? camp.accent) }} />
                 <div className="p-4">
                   <div className="flex items-start gap-3">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-                      style={{ backgroundColor: camp.accentLight }}
-                    >
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style={{ backgroundColor: camp.accentLight }}>
                       {camp.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-[Fraunces] font-bold text-capp-dark text-base leading-tight">
-                        {camp.name}
-                      </h3>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">
-                        📍 {camp.location} · Ages {camp.ageMin}–{camp.ageMax}
-                      </p>
-
+                      <h3 className="font-[Fraunces] font-bold text-capp-dark text-base leading-tight">{camp.name}</h3>
+                      <p className="font-[DM_Sans] text-xs text-capp-dark/50 mt-0.5">📍 {camp.location} · Ages {camp.ageMin}–{camp.ageMax}</p>
                       <div className="flex flex-wrap items-center gap-1.5 mt-2">
                         {registered && (
-                          <span className="font-[DM_Sans] text-xs font-bold text-yellow-800 bg-yellow-200 border border-yellow-300 px-2 py-0.5 rounded-full">
-                            ✓ Registered
-                          </span>
+                          <span className="font-[DM_Sans] text-xs font-bold text-yellow-800 bg-yellow-200 border border-yellow-300 px-2 py-0.5 rounded-full">✓ Registered</span>
                         )}
                         {session ? (
-                          <span className="font-[DM_Sans] text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                            {session}
-                          </span>
+                          <span className="font-[DM_Sans] text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">{session}</span>
                         ) : (
-                          <span className="font-[DM_Sans] text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
-                            No session yet
-                          </span>
+                          <span className="font-[DM_Sans] text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">No session yet</span>
                         )}
                         {!registered && <DeadlineBadge regDeadline={camp.regDeadline} />}
                         {kid && (
-                          <span
-                            className="font-[DM_Sans] text-xs font-semibold text-white px-2 py-0.5 rounded-full"
-                            style={{ backgroundColor: kid.avatarColor }}
-                          >
+                          <span className="font-[DM_Sans] text-xs font-semibold text-white px-2 py-0.5 rounded-full" style={{ backgroundColor: kid.avatarColor }}>
                             {kid.name}
                           </span>
                         )}
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2 shrink-0">
-                      <button
-                        onClick={() => unsave(camp.id)}
-                        className="text-xl active:scale-90 transition-transform"
-                        aria-label="Remove from saved"
-                      >
-                        ❤️
-                      </button>
+                      <button onClick={() => unsave(camp.id)} className="text-xl active:scale-90 transition-transform" aria-label="Remove from saved">❤️</button>
                       <span className="font-[Fraunces] font-bold text-capp-dark text-base">${camp.price}</span>
                     </div>
                   </div>
@@ -537,25 +635,18 @@ export default function MySummerPage() {
                   {!registered && days !== null && days <= 7 && (
                     <div className="mt-3 flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2">
                       <span className="text-sm">🚨</span>
-                      <p className="font-[DM_Sans] text-xs font-semibold text-red-700">
-                        Only {days} day{days !== 1 ? 's' : ''} left to register — don't lose your spot!
-                      </p>
+                      <p className="font-[DM_Sans] text-xs font-semibold text-red-700">Only {days} day{days !== 1 ? 's' : ''} left to register — don't lose your spot!</p>
                     </div>
                   )}
 
                   <div className="flex gap-2 mt-3">
-                    <button
-                      onClick={() => navigate(`/camps/${camp.id}`)}
-                      className="flex-1 py-2.5 rounded-xl font-[DM_Sans] font-semibold text-sm text-capp-dark bg-capp-coral active:scale-95 transition-transform"
-                    >
+                    <button onClick={() => navigate(`/camps/${camp.id}`)} className="flex-1 py-2.5 rounded-xl font-[DM_Sans] font-semibold text-sm text-capp-dark bg-capp-coral active:scale-95 transition-transform">
                       View Details
                     </button>
                     <button
                       onClick={() => markRegistered(camp.id, !registered)}
                       className={`px-3 py-2.5 rounded-xl font-[DM_Sans] text-xs font-bold active:scale-95 transition-transform ${
-                        registered
-                          ? 'bg-yellow-200 text-yellow-800 border border-yellow-300'
-                          : 'bg-capp-dark/5 text-capp-dark/50'
+                        registered ? 'bg-yellow-200 text-yellow-800 border border-yellow-300' : 'bg-capp-dark/5 text-capp-dark/50'
                       }`}
                     >
                       {registered ? '✓ Registered' : 'Mark registered'}
@@ -568,15 +659,8 @@ export default function MySummerPage() {
 
           {filteredCamps.length === 0 && selectedKid && (
             <div className="bg-white rounded-2xl p-6 text-center shadow-sm">
-              <p className="font-[DM_Sans] text-sm text-capp-dark/45 mb-2">
-                No camps assigned to {selectedKid.name} yet
-              </p>
-              <button
-                onClick={() => setSelectedKidId(null)}
-                className="font-[DM_Sans] text-sm font-semibold text-capp-coral"
-              >
-                Show all camps →
-              </button>
+              <p className="font-[DM_Sans] text-sm text-capp-dark/45 mb-2">No camps assigned to {selectedKid.name} yet</p>
+              <button onClick={() => setSelectedKidId(null)} className="font-[DM_Sans] text-sm font-semibold text-capp-coral">Show all camps →</button>
             </div>
           )}
 
@@ -587,6 +671,10 @@ export default function MySummerPage() {
             + Add more camps
           </button>
         </div>
+      )}
+
+      {showAddEvent && (
+        <AddEventSheet onClose={() => setShowAddEvent(false)} onAdd={addEvent} />
       )}
     </div>
   )
