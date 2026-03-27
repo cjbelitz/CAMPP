@@ -6,6 +6,86 @@ import { camps, SUMMER_WEEKS } from '../data/camps'
 import { daysUntil, deadlineColor, deadlineLabel } from '../utils/formatRelativeTime'
 import KidAvatar from '../components/KidAvatar'
 
+// ── Calendar export helpers ──────────────────────────────────────────────────
+const MONTHS = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }
+
+function weekToDateRange(week) {
+  const [startPart, endPart] = week.split('–')
+  const startTokens = startPart.trim().split(' ')
+  const startMonth = MONTHS[startTokens[0]]
+  const startDay = parseInt(startTokens[1])
+  const endTokens = endPart.trim().split(' ')
+  const endMonth = endTokens.length === 2 ? MONTHS[endTokens[0]] : startMonth
+  const endDay = parseInt(endTokens[endTokens.length - 1])
+  return {
+    start: new Date(2026, startMonth, startDay),
+    end: new Date(2026, endMonth, endDay + 1), // DTEND is exclusive in iCal
+  }
+}
+
+function toICSDate(date) {
+  return `${date.getFullYear()}${String(date.getMonth()+1).padStart(2,'0')}${String(date.getDate()).padStart(2,'0')}`
+}
+
+function escapeICS(str) {
+  return (str ?? '').replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, '\\n')
+}
+
+function generateICS(savedEntries, allCamps, customEvents) {
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//CAPP//Summer 2026//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+  ]
+
+  savedEntries.forEach((entry) => {
+    if (!entry.session) return
+    const camp = allCamps.find((c) => c.id === entry.id)
+    if (!camp) return
+    const { start, end } = weekToDateRange(entry.session)
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:camp-${camp.id}-${entry.session.replace(/\s/g,'')}@capp`,
+      `DTSTART;VALUE=DATE:${toICSDate(start)}`,
+      `DTEND;VALUE=DATE:${toICSDate(end)}`,
+      `SUMMARY:${escapeICS(camp.name)}`,
+      `DESCRIPTION:${escapeICS(camp.description ?? '')}\\nLocation: ${escapeICS(camp.location)}\\nPrice: $${camp.price}/wk`,
+      `LOCATION:${escapeICS(camp.location + ', North County San Diego')}`,
+      'END:VEVENT',
+    )
+  })
+
+  customEvents.forEach((ev) => {
+    const { start, end } = weekToDateRange(ev.week)
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:event-${ev.id}@capp`,
+      `DTSTART;VALUE=DATE:${toICSDate(start)}`,
+      `DTEND;VALUE=DATE:${toICSDate(end)}`,
+      `SUMMARY:${escapeICS(ev.emoji + ' ' + ev.label)}`,
+      'END:VEVENT',
+    )
+  })
+
+  lines.push('END:VCALENDAR')
+  return lines.join('\r\n')
+}
+
+function downloadICS(savedEntries, allCamps, customEvents) {
+  const content = generateICS(savedEntries, allCamps, customEvents)
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'my-summer-2026.ics'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
 const EVENT_TYPES = [
   { type: 'vacation',    label: 'Family Vacation', emoji: '🏖️', color: '#818CF8' },
   { type: 'family',      label: 'Family in Town',  emoji: '🏡', color: '#34D399' },
@@ -405,6 +485,13 @@ export default function MySummerPage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => downloadICS(savedEntries, camps, customEvents)}
+              className="px-3 py-2 rounded-xl bg-white border border-capp-dark/10 text-capp-dark font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform shadow-sm"
+              title="Export to Apple Calendar, Google Calendar or Outlook"
+            >
+              📅 Sync
+            </button>
             <button
               onClick={() => setShowAddEvent(true)}
               className="px-3 py-2 rounded-xl bg-capp-dark text-white font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform"
