@@ -490,13 +490,13 @@ export default function MySummerPage() {
               className="px-3 py-2 rounded-xl bg-white border border-capp-dark/10 text-capp-dark font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform shadow-sm"
               title="Export to Apple Calendar, Google Calendar or Outlook"
             >
-              Sync
+              📅 Sync
             </button>
             <button
               onClick={() => setShowAddEvent(true)}
               className="px-3 py-2 rounded-xl bg-capp-dark text-white font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform"
             >
-              + Event
+              +
             </button>
             {savedCamps.length > 0 && (
               <div className="flex gap-1 bg-capp-dark/6 rounded-xl p-1">
