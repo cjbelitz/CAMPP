@@ -174,95 +174,37 @@ function CarpoolPostCard({ post, onPress }) {
   const isDriving = post.role === 'driving'
   const isMe = post.momId === 'me'
 
-  function dirPill(label, emoji, dir) {
-    if (!dir) return null
-    const seatsLeft = isDriving ? dir.seats - dir.claimedBy.length : null
-    const full = isDriving && seatsLeft <= 0
-    const claimed = dir.claimedBy.includes('me')
-    return (
-      <div className="flex items-center justify-between py-1.5">
-        <div className="flex items-center gap-1.5">
-          <span className="text-sm">{emoji}</span>
-          <span className="font-[DM_Sans] text-xs font-semibold text-capp-dark/70">{label}</span>
-        </div>
-        <span className={`font-[DM_Sans] text-[10px] font-bold px-2 py-0.5 rounded-full ${
-          claimed ? 'bg-emerald-50 text-emerald-600' :
-          full && isDriving ? 'bg-capp-dark/8 text-capp-dark/35' :
-          isDriving ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
-        }`}>
-          {claimed ? '✓ Claimed' : full && isDriving ? 'Full' : isDriving ? `${seatsLeft} seat${seatsLeft !== 1 ? 's' : ''} left` : 'Open'}
-        </span>
-      </div>
-    )
-  }
+  const hasClaimed = [post.tocamp, post.fromcamp].some((d) => d?.claimedBy?.includes('me'))
+  const totalSeats = isDriving
+    ? [post.tocamp, post.fromcamp].filter(Boolean).reduce((s, d) => s + (d.seats - d.claimedBy.length), 0)
+    : null
 
   return (
     <button
       onClick={onPress}
-      className="w-full text-left rounded-2xl overflow-hidden shadow-sm active:scale-[0.98] transition-transform border"
-      style={{ borderColor: isDriving ? '#FED7AA' : '#BFDBFE', backgroundColor: isDriving ? '#FFFBF5' : '#F5F9FF' }}
+      className="w-full text-left bg-white rounded-2xl px-4 py-3.5 shadow-sm active:scale-[0.98] transition-transform border border-capp-dark/[0.06] flex items-center gap-3"
     >
-      {/* Header strip */}
-      <div className="flex items-center justify-between px-4 py-2.5"
-        style={{ backgroundColor: isDriving ? '#FEF3E2' : '#EFF6FF' }}>
-        <div className="flex items-center gap-2">
-          <span className="text-base">🚗</span>
-          <span className="font-[DM_Sans] text-xs font-bold uppercase tracking-wide"
-            style={{ color: isDriving ? '#C2410C' : '#1D4ED8' }}>
-            {isDriving ? 'Offering rides' : 'Need rides'}
-          </span>
-        </div>
-        <span className="font-[DM_Sans] text-[10px] text-capp-dark/35">{formatRelativeTime(post.ts)}</span>
-      </div>
+      <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
+        style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
 
-      {/* Body */}
-      <div className="px-4 pt-3 pb-3.5">
-        {/* Poster row */}
-        <div className="flex items-center gap-2.5 mb-3">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white font-[Fraunces] shrink-0"
-            style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
-          <div className="min-w-0">
-            <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark leading-tight">
-              {isMe ? 'You' : mom.name}
-            </p>
-            <p className="font-[DM_Sans] text-xs text-capp-dark/40">{mom.location}</p>
-          </div>
-          <span className="ml-auto font-[DM_Sans] text-[10px] font-semibold text-capp-dark/40 bg-capp-dark/5 px-2 py-0.5 rounded-full truncate max-w-[110px]">
-            {post.circleName}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-0.5">
+          <span className="font-[DM_Sans] text-sm font-semibold text-capp-dark">
+            {isMe ? 'You' : mom.name}
           </span>
-        </div>
-
-        {/* Info pills */}
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          <span className="font-[DM_Sans] text-xs text-capp-dark/65 bg-white border border-capp-dark/8 rounded-full px-2.5 py-1">
-            📅 {post.session}
-          </span>
-          <span className="font-[DM_Sans] text-xs text-capp-dark/65 bg-white border border-capp-dark/8 rounded-full px-2.5 py-1">
-            📍 {post.neighborhood}
-          </span>
-        </div>
-
-        {/* Direction rows */}
-        <div className="bg-white/70 rounded-xl px-3 py-0.5 divide-y divide-capp-dark/[0.05]">
-          {dirPill('Ride to camp', '🌅', post.tocamp)}
-          {dirPill('Ride home', '🌇', post.fromcamp)}
-        </div>
-      </div>
-
-      {isMe && (
-        <div className="px-4 pb-3">
-          <p className="font-[DM_Sans] text-[10px] text-capp-dark/35 text-center">Your post · tap to view</p>
-        </div>
-      )}
-      {!isMe && (
-        <div className="px-4 pb-3.5">
-          <div className={`w-full py-2.5 rounded-xl font-[DM_Sans] text-xs font-bold text-center ${
-            isDriving ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'
+          <span className={`font-[DM_Sans] text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+            hasClaimed ? 'bg-emerald-50 text-emerald-600' :
+            isDriving ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
           }`}>
-            {isDriving ? 'Claim a seat →' : 'Offer to drive →'}
-          </div>
+            {hasClaimed ? '✓ Claimed' : isDriving ? `🚗 ${totalSeats} seat${totalSeats !== 1 ? 's' : ''} left` : '🙋 Need a ride'}
+          </span>
         </div>
-      )}
+        <p className="font-[DM_Sans] text-xs text-capp-dark/45 truncate">
+          {post.session} · {post.neighborhood}
+        </p>
+      </div>
+
+      <span className="font-[DM_Sans] text-[11px] text-capp-dark/30 shrink-0">{formatRelativeTime(post.ts)}</span>
     </button>
   )
 }
@@ -1126,7 +1068,7 @@ export default function CirclePage() {
             <div className="w-8 h-8 rounded-xl bg-capp-coral flex items-center justify-center shadow-sm">
               <span className="font-[Fraunces] text-capp-dark font-bold leading-none">C</span>
             </div>
-            <span className="font-[Fraunces] font-bold text-capp-dark text-xl">CAMPP</span>
+            <span className="font-[Fraunces] font-bold text-capp-dark text-xl">CAPP</span>
           </button>
           <div className="flex items-center gap-2">
             <button onClick={() => setShowInvite(true)}
@@ -1146,44 +1088,7 @@ export default function CirclePage() {
         <p className="font-[DM_Sans] text-sm text-capp-dark/50">Your camp community</p>
       </div>
 
-      {/* ── Carpool banner ── */}
-      <div className="px-4 pt-4">
-        <button
-          onClick={() => setShowCarpool(true)}
-          className="w-full flex items-center gap-3.5 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-3.5 active:scale-[0.98] transition-transform text-left shadow-sm"
-        >
-          <div className="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center text-2xl shrink-0">🚗</div>
-          <div className="flex-1 min-w-0">
-            <p className="font-[DM_Sans] font-bold text-capp-dark text-sm">Carpool with your circle</p>
-            <p className="font-[DM_Sans] text-xs text-orange-600/80 mt-0.5">Find or offer rides to camp</p>
-          </div>
-          <span className="font-[DM_Sans] text-xs font-semibold text-orange-500 shrink-0">Post →</span>
-        </button>
-      </div>
-
-      {/* ── Carpool posts feed ── */}
-      {carpoolPosts.length > 0 && (
-        <div className="px-4 pt-4">
-          <div className="flex items-center justify-between mb-3">
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider">Carpool posts</p>
-            <button onClick={() => setShowCarpool(true)}
-              className="font-[DM_Sans] text-xs font-semibold text-orange-500">
-              + Post yours
-            </button>
-          </div>
-          <div className="flex flex-col gap-3">
-            {carpoolPosts.map((post) => (
-              <CarpoolPostCard
-                key={post.id}
-                post={post}
-                onPress={() => setCarpoolDetail(post)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="px-4 pt-4 flex flex-col gap-5">
+      <div className="px-4 pt-5 flex flex-col gap-6">
 
         {/* ── No kids ── */}
         {kids.length === 0 && (
@@ -1200,21 +1105,36 @@ export default function CirclePage() {
           </div>
         )}
 
+        {/* ── Messages ── */}
+        {dmMoms.length > 0 && (
+          <section>
+            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Messages</p>
+            <div className="flex flex-col gap-2">
+              {dmMoms.map((mom) => (
+                <DMRow key={mom.id} mom={mom} onPress={() => navigate(`/circle/dm/${mom.id}`)} />
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ── Kid sections ── */}
         {kids.length > 0 && (
-          <div className="flex flex-col gap-3">
-            {kids.map((kid) => (
-              <KidSection
-                key={kid.id}
-                kid={kid}
-                kidCircles={circles.filter((c) => c.kidId === kid.id)}
-                allContacts={contactMoms}
-                onNewCircle={setNewCircleKid}
-                onCirclePress={circlePressFn}
-                onRenameCircle={handleRenameCircle}
-              />
-            ))}
-          </div>
+          <section>
+            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Circles</p>
+            <div className="flex flex-col gap-3">
+              {kids.map((kid) => (
+                <KidSection
+                  key={kid.id}
+                  kid={kid}
+                  kidCircles={circles.filter((c) => c.kidId === kid.id)}
+                  allContacts={contactMoms}
+                  onNewCircle={setNewCircleKid}
+                  onCirclePress={circlePressFn}
+                  onRenameCircle={handleRenameCircle}
+                />
+              ))}
+            </div>
+          </section>
         )}
 
         {/* ── Community / Contacts ── */}
@@ -1229,12 +1149,11 @@ export default function CirclePage() {
 
           {contactMoms.length === 0 ? (
             <div className="bg-white rounded-2xl px-5 py-6 text-center shadow-sm">
-              <span className="text-3xl block mb-2">👥</span>
-              <p className="font-[DM_Sans] text-sm text-capp-dark/50 leading-relaxed">
-                Add parents from your kids' camps to your community so you can message them or add them to circles.
+              <p className="font-[DM_Sans] text-sm text-capp-dark/50 leading-relaxed mb-4">
+                Add parents from your kids' camps to message them or add them to circles.
               </p>
               <button onClick={() => setShowAddPeople(true)}
-                className="mt-4 bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold text-sm px-5 py-2.5 rounded-xl active:scale-95 transition-transform">
+                className="bg-capp-coral text-capp-dark font-[DM_Sans] font-semibold text-sm px-5 py-2.5 rounded-xl active:scale-95 transition-transform">
                 Add people
               </button>
             </div>
@@ -1244,13 +1163,13 @@ export default function CirclePage() {
                 {contactMoms.map((mom) => (
                   <button key={mom.id} onClick={() => setContactSheet(mom)}
                     className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-capp-dark/[0.03] transition-colors text-left">
-                    <div className="w-11 h-11 rounded-full flex items-center justify-center text-base font-bold text-white font-[Fraunces] shrink-0"
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[Fraunces] shrink-0"
                       style={{ backgroundColor: mom.avatarColor }}>{mom.name[0]}</div>
                     <div className="flex-1 min-w-0">
                       <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                      <p className="font-[DM_Sans] text-xs text-capp-dark/40 truncate">{mom.location} · {mom.kidName}'s mom</p>
+                      <p className="font-[DM_Sans] text-xs text-capp-dark/40 truncate">{mom.kidName}'s mom · {mom.location}</p>
                     </div>
-                    <span className="font-[DM_Sans] text-xs font-semibold text-capp-coral shrink-0">Message →</span>
+                    <span className="text-capp-dark/20 text-sm shrink-0">›</span>
                   </button>
                 ))}
               </div>
@@ -1258,17 +1177,32 @@ export default function CirclePage() {
           )}
         </section>
 
-        {/* ── Messages ── */}
-        {dmMoms.length > 0 && (
-          <section>
-            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider mb-3">Messages</p>
-            <div className="flex flex-col gap-2.5">
-              {dmMoms.map((mom) => (
-                <DMRow key={mom.id} mom={mom} onPress={() => navigate(`/circle/dm/${mom.id}`)} />
+        {/* ── Carpool ── */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-[DM_Sans] text-xs font-semibold text-capp-dark/40 uppercase tracking-wider">Carpool</p>
+            <button onClick={() => setShowCarpool(true)}
+              className="font-[DM_Sans] text-xs font-semibold text-capp-coral">
+              + Post
+            </button>
+          </div>
+          {carpoolPosts.length === 0 ? (
+            <button onClick={() => setShowCarpool(true)}
+              className="w-full bg-white rounded-2xl px-4 py-4 shadow-sm border border-capp-dark/[0.06] text-left active:scale-[0.98] transition-transform flex items-center gap-3">
+              <span className="text-2xl">🚗</span>
+              <div>
+                <p className="font-[DM_Sans] text-sm font-semibold text-capp-dark">Carpool with your circle</p>
+                <p className="font-[DM_Sans] text-xs text-capp-dark/45 mt-0.5">Find or offer rides to camp</p>
+              </div>
+            </button>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {carpoolPosts.map((post) => (
+                <CarpoolPostCard key={post.id} post={post} onPress={() => setCarpoolDetail(post)} />
               ))}
             </div>
-          </section>
-        )}
+          )}
+        </section>
 
       </div>
 
