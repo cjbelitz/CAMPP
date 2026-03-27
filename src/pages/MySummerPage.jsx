@@ -490,7 +490,7 @@ export default function MySummerPage() {
               className="px-3 py-2 rounded-xl bg-white border border-capp-dark/10 text-capp-dark font-[DM_Sans] text-xs font-semibold active:scale-95 transition-transform shadow-sm"
               title="Export to Apple Calendar, Google Calendar or Outlook"
             >
-              📅 Sync
+              Sync
             </button>
             <button
               onClick={() => setShowAddEvent(true)}
