@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useKids } from '../context/KidsContext'
 import { useSaved } from '../context/SavedCampsContext'
@@ -8,6 +9,7 @@ import CampCard from '../components/CampCard'
 import NotificationBell from '../components/NotificationBell'
 import KidAvatar from '../components/KidAvatar'
 import { useAuth } from '../context/AuthContext'
+import SuggestCampModal from '../components/SuggestCampModal'
 
 function getGreeting(name) {
   const h = new Date().getHours()
@@ -203,6 +205,7 @@ export default function DashboardPage() {
   const { kids } = useKids()
   const { savedEntries, savedIds } = useSaved()
   const hasExamples = kids.some(k => k.isExample)
+  const [suggestOpen, setSuggestOpen] = useState(false)
 
   const savedCamps = camps.filter(c => savedIds.includes(c.id))
 
@@ -321,7 +324,22 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* ── Suggest a Camp card ── */}
+        <button
+          onClick={() => setSuggestOpen(true)}
+          className="w-full bg-white rounded-2xl p-4 shadow-sm flex items-center gap-3 text-left active:scale-[0.98] transition-transform"
+        >
+          <div className="w-10 h-10 rounded-xl bg-capp-coral/15 flex items-center justify-center text-xl shrink-0">💡</div>
+          <div className="flex-1 min-w-0">
+            <p className="font-[Montserrat] text-sm font-semibold text-capp-dark leading-tight">Know a great North County camp?</p>
+            <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">Add it to CAMPP and help other families!</p>
+          </div>
+          <span className="font-[Montserrat] text-xs font-bold text-capp-coral shrink-0">Suggest →</span>
+        </button>
+
       </div>
+
+      <SuggestCampModal isOpen={suggestOpen} onClose={() => setSuggestOpen(false)} />
     </div>
   )
 }

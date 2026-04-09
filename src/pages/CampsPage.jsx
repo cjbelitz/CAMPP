@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { camps, categories, ageGroups, regions } from '../data/camps'
 import CampCard from '../components/CampCard'
+import SuggestCampModal from '../components/SuggestCampModal'
 
 export default function CampsPage() {
   const navigate = useNavigate()
@@ -11,6 +12,7 @@ export default function CampsPage() {
   const [activeAge, setActiveAge] = useState(0) // index into ageGroups
   const [sortBy, setSortBy] = useState('rating') // 'rating' | 'price-asc' | 'price-desc'
   const [activeRegion, setActiveRegion] = useState(regions[0])
+  const [suggestOpen, setSuggestOpen] = useState(false)
 
   const filtered = useMemo(() => {
     const ageGroup = ageGroups[activeAge]
@@ -147,6 +149,18 @@ export default function CampsPage() {
           </div>
         )}
       </div>
+
+      {/* ── Floating "Suggest a Camp" button ── */}
+      <button
+        onClick={() => setSuggestOpen(true)}
+        className="fixed bottom-24 right-4 z-50 flex items-center gap-2 bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm px-4 py-3 rounded-full shadow-lg active:scale-95 transition-transform animate-[page-enter_0.4s_ease-out]"
+        style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)' }}
+      >
+        <span className="text-base leading-none">＋</span>
+        Suggest a Camp
+      </button>
+
+      <SuggestCampModal isOpen={suggestOpen} onClose={() => setSuggestOpen(false)} />
     </div>
   )
 }

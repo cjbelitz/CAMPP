@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import SuggestCampModal from '../components/SuggestCampModal'
 import { camps, reviews, defaultReviews } from '../data/camps'
 import { useSaved } from '../context/SavedCampsContext'
 import { useKids } from '../context/KidsContext'
@@ -55,6 +56,8 @@ export default function CampDetailPage() {
   const [reviewRating, setReviewRating] = useState(0)
   const [reviewBody, setReviewBody] = useState('')
   const [reviewName, setReviewName] = useState(user?.name ?? '')
+  const [suggestOpen, setSuggestOpen] = useState(false)
+  const [counselorApplied, setCounselorApplied] = useState(false)
 
   const canReview = camp ? kids.some(k => k.pastCampIds?.includes(camp.id)) : false
   const existingReview = (camp && user) ? getUserReview(camp.id, user.email) : null
@@ -471,7 +474,49 @@ export default function CampDetailPage() {
           )}
         </section>
 
+        {/* ── Counselor CTA ── */}
+        <section className="rounded-2xl overflow-hidden border-2 border-dashed border-capp-dark/15">
+          <div className="px-5 py-4 flex items-start gap-4">
+            <span className="text-3xl shrink-0">🏕️</span>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase leading-tight">
+                Want to work at {camp.name}?
+              </h3>
+              <p className="font-[Montserrat] text-xs text-capp-dark/55 mt-1 leading-relaxed">
+                High schoolers ages 14–18 can apply to be a camp counselor. Build your resume, earn money, and do what you love.
+              </p>
+              {counselorApplied ? (
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-xs text-green-600 shrink-0">✓</span>
+                  <span className="font-[Montserrat] text-xs font-semibold text-green-700">Application sent! We'll be in touch.</span>
+                </div>
+              ) : (
+                <button
+                  onClick={() => navigate(`/counselors/apply?camp_id=${camp.id}&camp_name=${encodeURIComponent(camp.name)}`)}
+                  className="mt-3 inline-flex items-center gap-1.5 font-[Montserrat] text-xs font-bold text-capp-dark bg-capp-coral px-3.5 py-2 rounded-xl active:scale-95 transition-transform"
+                >
+                  Apply to Counsel This Camp →
+                </button>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Suggest a Camp CTA ── */}
+        <section className="bg-white rounded-2xl p-5 shadow-sm text-center">
+          <p className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase mb-1">Know a camp we're missing?</p>
+          <p className="font-[Montserrat] text-xs text-capp-dark/50 mb-3">Help other CAMPP families discover it!</p>
+          <button
+            onClick={() => setSuggestOpen(true)}
+            className="inline-flex items-center gap-2 font-[Montserrat] font-semibold text-sm text-capp-coral border-2 border-capp-coral/30 px-4 py-2.5 rounded-xl active:scale-95 transition-transform"
+          >
+            ＋ Suggest a Camp
+          </button>
+        </section>
+
       </div>
+
+      <SuggestCampModal isOpen={suggestOpen} onClose={() => setSuggestOpen(false)} />
 
       {/* ── Sticky bottom CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8 px-4 py-3" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)' }}>

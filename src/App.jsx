@@ -22,6 +22,9 @@ import AIChatPage from './pages/AIChatPage'
 import SettingsPage from './pages/SettingsPage'
 import AuthPage from './pages/AuthPage'
 import OnboardingPage from './pages/OnboardingPage'
+import CounselorsPage from './pages/CounselorsPage'
+import CounselorApplyPage from './pages/CounselorApplyPage'
+import CounselorProfilePage from './pages/CounselorProfilePage'
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -38,8 +41,11 @@ function AnimatedRoutes() {
       <Route path="/circle/group/:campId" element={<GroupChatPage />} />
       <Route path="/circle/dm/:momId"     element={<DMChatPage />} />
       <Route path="/notifications"  element={<PageWrapper><NotificationsPage /></PageWrapper>} />
-      <Route path="/ai-chat"        element={<AIChatPage />} />
-      <Route path="/settings"       element={<PageWrapper><SettingsPage /></PageWrapper>} />
+      <Route path="/ai-chat"              element={<AIChatPage />} />
+      <Route path="/settings"             element={<PageWrapper><SettingsPage /></PageWrapper>} />
+      <Route path="/counselors"           element={<PageWrapper><CounselorsPage /></PageWrapper>} />
+      <Route path="/counselors/apply"     element={<CounselorApplyPage />} />
+      <Route path="/counselors/profile"   element={<PageWrapper><CounselorProfilePage /></PageWrapper>} />
     </Routes>
   )
 }
