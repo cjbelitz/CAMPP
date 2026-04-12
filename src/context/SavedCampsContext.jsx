@@ -2,15 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react'
 
 const SavedCampsContext = createContext(null)
 
-const SAMPLE_SAVED = [
-  { id: 3, session: 'Jun 23–27', kidId: 'sample-olivia', registered: true },
-  { id: 6, session: 'Jul 14–18', kidId: 'sample-olivia', registered: false },
-  { id: 2, session: 'Jun 16–20', kidId: 'sample-noah',   registered: true },
-  { id: 9, session: 'Jul 7–11',  kidId: 'sample-noah',   registered: false },
-  { id: 7, session: 'Jun 16–20', kidId: 'sample-lily',   registered: false },
-  { id: 4, session: 'Jul 14–18', kidId: 'sample-lily',   registered: false },
-]
-
 function migrate(raw) {
   if (!raw) return null
   try {
@@ -29,8 +20,7 @@ function migrate(raw) {
 export function SavedCampsProvider({ children }) {
   const [savedEntries, setSavedEntries] = useState(() => {
     const raw = localStorage.getItem('capp-saved')
-    const migrated = migrate(raw)
-    return migrated ?? SAMPLE_SAVED
+    return migrate(raw) ?? []
   })
 
   useEffect(() => {
