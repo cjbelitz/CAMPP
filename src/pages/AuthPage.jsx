@@ -51,10 +51,10 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-capp-coral overflow-hidden">
+    <div className="min-h-screen flex flex-col md:flex-row bg-capp-coral">
 
-      {/* ── Hero ── */}
-      <div className="flex-1 flex flex-col items-center justify-end px-6 pb-8 pt-16">
+      {/* ── Hero (left on desktop, top on mobile) ── */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-8 pt-16 md:pt-0 md:pb-0 md:px-16 md:min-h-screen">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 rounded-2xl bg-capp-dark/10 flex items-center justify-center shadow-lg">
@@ -64,10 +64,10 @@ export default function AuthPage() {
         </div>
 
         {/* Tagline */}
-        <h1 className="font-[League_Spartan] font-bold text-capp-dark text-3xl text-center leading-tight mb-3 uppercase">
+        <h1 className="font-[League_Spartan] font-bold text-capp-dark text-3xl md:text-5xl text-center leading-tight mb-3 uppercase">
           Summer,<br />sorted. ☀️
         </h1>
-        <p className="font-[Montserrat] text-capp-dark/65 text-base text-center leading-relaxed max-w-xs">
+        <p className="font-[Montserrat] text-capp-dark/65 text-base text-center leading-relaxed max-w-xs md:max-w-sm md:text-lg">
           Find, save, and plan your kids' whole summer — all in one place.
         </p>
 
@@ -76,7 +76,7 @@ export default function AuthPage() {
           {CAMP_TILES.map((t) => (
             <div
               key={t.label}
-              className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl shadow-md"
+              className="w-11 h-11 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-md"
               style={{ backgroundColor: t.bg }}
             >
               {t.icon}
@@ -85,8 +85,8 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* ── Form card ── */}
-      <div className="bg-capp-warm-bg rounded-t-[2.5rem] px-6 pt-7 pb-10" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 2.5rem)' }}>
+      {/* ── Form card (right on desktop, bottom sheet on mobile) ── */}
+      <div className="bg-capp-warm-bg rounded-t-[2.5rem] md:rounded-none md:rounded-l-[2.5rem] px-6 pt-7 pb-10 md:w-[480px] md:min-h-screen md:flex md:flex-col md:justify-center md:px-12 md:py-16 shrink-0" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 2.5rem)' }}>
 
         {/* Mode tabs */}
         <div className="flex bg-white rounded-2xl p-1 mb-7 shadow-sm">

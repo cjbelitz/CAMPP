@@ -45,20 +45,25 @@ input, textarea, select {
 @media (min-width: 768px) {
   body {
     background-color: #FFF8F0;
+  }
+
+  body.app-layout {
     padding-top: 4rem; /* room for fixed top nav (h-16) */
   }
 
   #root {
     width: 100%;
-    min-height: calc(100dvh - 4rem);
+    min-height: 100dvh;
     overflow-x: hidden;
   }
 
   /* Content pages get a max-width container */
   .page-enter {
-    max-width: 1100px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   /* No bottom padding needed — nav is on top */

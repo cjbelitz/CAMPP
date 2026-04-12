@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { SavedCampsProvider } from './context/SavedCampsContext'
 import { KidsProvider } from './context/KidsContext'
 import { CircleProvider } from './context/CircleContext'
@@ -52,6 +53,15 @@ function AnimatedRoutes() {
 
 function AppContent() {
   const { isLoggedIn, user } = useAuth()
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      document.body.classList.add('app-layout')
+    } else {
+      document.body.classList.remove('app-layout')
+    }
+  }, [isLoggedIn])
+
   if (!isLoggedIn) return <AuthPage />
   if (!user?.onboarded) return <OnboardingPage />
   return (
