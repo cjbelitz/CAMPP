@@ -42,22 +42,22 @@ input, textarea, select {
 .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
 /* Desktop: full-width web app layout */
-@media (min-width: 768px) {
+@media screen and (min-width: 640px) {
   body {
-    background-color: #FFF8F0;
+    background-color: #FFF8F0 !important;
   }
 
   body.app-layout {
-    padding-top: 4rem; /* room for fixed top nav (h-16) */
+    padding-top: 4rem !important;
   }
 
   #root {
-    width: 100%;
+    width: 100% !important;
+    max-width: none !important;
     min-height: 100dvh;
     overflow-x: hidden;
   }
 
-  /* Content pages get a max-width container */
   .page-enter {
     max-width: 1200px;
     margin-left: auto;
@@ -66,9 +66,16 @@ input, textarea, select {
     padding-right: 2rem;
   }
 
-  /* No bottom padding needed — nav is on top */
   .pb-nav {
-    padding-bottom: 2rem;
+    padding-bottom: 2rem !important;
+  }
+
+  .mobile-nav-bar {
+    display: none !important;
+  }
+
+  .desktop-nav-bar {
+    display: flex !important;
   }
 }
 

@@ -18,7 +18,7 @@ export default function BottomNav() {
   return (
     <>
       {/* ── Mobile: fixed bottom nav ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <div className="mobile-nav-bar fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <div className="flex justify-around items-center px-2">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path ||
@@ -54,7 +54,7 @@ export default function BottomNav() {
       </div>
 
       {/* ── Desktop: fixed top nav ── */}
-      <div className="hidden md:flex fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-capp-dark/8 px-8 items-center justify-between h-16 shadow-sm">
+      <div className="desktop-nav-bar hidden fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-capp-dark/8 px-8 items-center justify-between h-16 shadow-sm">
         {/* Logo */}
         <button
           onClick={() => navigate('/dashboard')}
