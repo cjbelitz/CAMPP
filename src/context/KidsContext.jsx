@@ -4,14 +4,22 @@ import { useAuth } from './AuthContext'
 
 const KidsContext = createContext(null)
 
+// Calculate age from birthday string (YYYY-MM-DD)
+function ageFromBirthday(birthday) {
+  if (!birthday) return null
+  return Math.floor((Date.now() - new Date(birthday).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+}
+
 // Map Supabase row → app object
 function rowToKid(row) {
+  const computedAge = row.birthday ? ageFromBirthday(row.birthday) : row.age
   return {
     id:          row.id,
     name:        row.name,
-    age:         row.age,
+    age:         computedAge,
+    birthday:    row.birthday ?? null,
     avatarColor: row.color ?? '#FABE37',
-    photo:       row.photo_url ?? `https://api.dicebear.com/8.x/adventurer/svg?seed=${encodeURIComponent(row.name)}${row.age}&backgroundColor=${(row.color ?? '#FABE37').replace('#', '')}&backgroundType=solid`,
+    photo:       row.photo_url ?? `https://api.dicebear.com/8.x/adventurer/svg?seed=${encodeURIComponent(row.name)}${computedAge}&backgroundColor=${(row.color ?? '#FABE37').replace('#', '')}&backgroundType=solid`,
     interests:   row.interests ?? [],
     environment: row.environment ?? null,
     stimulation: row.stimulation ?? null,
@@ -26,6 +34,7 @@ function kidToRow(kid, profileId) {
   return {
     profile_id:  profileId,
     name:        kid.name,
+    birthday:    kid.birthday ?? null,
     age:         kid.age ?? null,
     color:       kid.avatarColor ?? '#FABE37',
     photo_url:   kid.photo ?? null,
@@ -83,6 +92,7 @@ export function KidsProvider({ children }) {
   async function updateKid(id, updates) {
     const row = {}
     if (updates.name        !== undefined) row.name        = updates.name
+    if (updates.birthday    !== undefined) row.birthday    = updates.birthday
     if (updates.age         !== undefined) row.age         = updates.age
     if (updates.avatarColor !== undefined) row.color       = updates.avatarColor
     if (updates.photo       !== undefined) row.photo_url   = updates.photo

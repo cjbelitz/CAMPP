@@ -75,8 +75,13 @@ export default function AddKidPage() {
   const isEditing = !!existing
 
   const [name, setName] = useState(existing?.name ?? '')
-  const [age, setAge] = useState(existing?.age ?? 8)
+  const [birthday, setBirthday] = useState(existing?.birthday ?? '')
   const [avatarColor, setAvatarColor] = useState(existing?.avatarColor ?? '#FF9B28')
+
+  // Auto-calculate age from birthday
+  const age = birthday
+    ? Math.floor((Date.now() - new Date(birthday).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+    : (existing?.age ?? null)
   const [interests, setInterests] = useState(existing?.interests ?? [])
   const [environment, setEnvironment] = useState(existing?.environment ?? 'both')
   const [stimulation, setStimulation] = useState(existing?.stimulation ?? 'moderate')
@@ -104,7 +109,7 @@ export default function AddKidPage() {
   function handleSave() {
     setSubmitted(true)
     if (!name.trim()) return
-    const kidData = { name: name.trim(), age, avatarColor, photo, interests, environment, stimulation, challenge }
+    const kidData = { name: name.trim(), age, birthday: birthday || null, avatarColor, photo, interests, environment, stimulation, challenge }
     if (isEditing) {
       updateKid(id, kidData)
     } else {
@@ -212,29 +217,24 @@ export default function AddKidPage() {
           )}
         </div>
 
-        {/* Age stepper */}
+        {/* Birthday */}
         <div>
           <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/60 uppercase tracking-wider mb-2 block">
-            Age
+            Birthday
           </label>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setAge((a) => Math.max(1, a - 1))}
-              className="w-12 h-12 rounded-2xl bg-white border border-capp-dark/10 text-capp-dark text-xl font-bold flex items-center justify-center active:scale-95 transition-transform shadow-sm"
-            >
-              −
-            </button>
-            <div className="flex-1 text-center">
-              <span className="font-[League_Spartan] font-bold text-capp-dark text-4xl">{age}</span>
-              <span className="font-[Montserrat] text-sm text-capp-dark/40 ml-1">yrs old</span>
-            </div>
-            <button
-              onClick={() => setAge((a) => Math.min(18, a + 1))}
-              className="w-12 h-12 rounded-2xl bg-white border border-capp-dark/10 text-capp-dark text-xl font-bold flex items-center justify-center active:scale-95 transition-transform shadow-sm"
-            >
-              +
-            </button>
-          </div>
+          <input
+            type="date"
+            value={birthday}
+            onChange={(e) => setBirthday(e.target.value)}
+            max={new Date().toISOString().split('T')[0]}
+            min="2000-01-01"
+            className="w-full font-[Montserrat] text-base bg-white border-2 border-capp-dark/10 rounded-2xl px-4 py-3.5 focus:outline-none focus:border-capp-coral/50 transition-colors"
+          />
+          {age !== null && birthday && (
+            <p className="font-[Montserrat] text-xs text-capp-dark/40 mt-1.5">
+              {age} years old
+            </p>
+          )}
         </div>
 
         {/* Avatar color */}
