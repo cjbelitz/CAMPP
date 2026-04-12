@@ -18,8 +18,8 @@ export default function BottomNav() {
   return (
     <>
       {/* ── Mobile: fixed bottom nav ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8 px-1" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-        <div className="flex justify-center gap-2">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        <div className="flex justify-around items-center px-2">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path ||
               (tab.path !== '/dashboard' && pathname.startsWith(tab.path))
