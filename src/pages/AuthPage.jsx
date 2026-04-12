@@ -35,12 +35,18 @@ export default function AuthPage() {
     if (Object.keys(e).length) { setErrors(e); return }
     setErrors({})
     setLoading(true)
-    // Simulate a brief network moment
-    await new Promise((r) => setTimeout(r, 600))
-    if (mode === 'signup') {
-      signUp(name, email)
-    } else {
-      signIn(email)
+    try {
+      if (mode === 'signup') {
+        await signUp(name.trim(), email.trim().toLowerCase(), password)
+      } else {
+        await signIn(email.trim().toLowerCase(), password)
+      }
+    } catch (err) {
+      const msg = err?.message ?? 'Something went wrong. Please try again.'
+      if (msg.toLowerCase().includes('email')) setErrors({ email: msg })
+      else if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('credentials') || msg.toLowerCase().includes('invalid')) setErrors({ password: 'Incorrect email or password.' })
+      else setErrors({ form: msg })
+      setLoading(false)
     }
   }
 
@@ -169,6 +175,11 @@ export default function AuthPage() {
             </div>
             {errors.password && <p className="font-[Montserrat] text-xs text-red-400 mt-1">{errors.password}</p>}
           </div>
+
+          {/* Form-level error */}
+          {errors.form && (
+            <p className="font-[Montserrat] text-xs text-red-500 text-center -mt-1">{errors.form}</p>
+          )}
 
           {/* Submit */}
           <button
