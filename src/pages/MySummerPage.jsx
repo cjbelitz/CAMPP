@@ -402,22 +402,24 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                         <div key={`${camp.id}-${entry.session}`} className="relative">
                           <button
                             onClick={() => navigate(`/camps/${camp.id}`)}
-                            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:scale-[0.98] transition-transform w-full"
-                            style={{ backgroundColor: sc.bg, border: `1.5px solid ${sc.bar}55` }}
+                            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:scale-[0.98] transition-transform w-full bg-white"
+                            style={{ border: '1.5px solid rgba(0,0,0,0.06)', borderLeft: `4px solid ${kid?.avatarColor ?? '#e2e8f0'}` }}
                           >
-                            <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: sc.bar }} />
                             <div className="flex-1 min-w-0">
                               <p className="font-garet text-xs font-semibold text-capp-dark leading-tight truncate">
                                 {camp.name}
                               </p>
                               <p className="font-garet text-[10px] text-capp-dark/40 mt-0.5">${camp.price}/wk · {camp.location}</p>
                             </div>
+                            <span className="font-garet text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ backgroundColor: sc.badgeBg, color: sc.badgeText }}>
+                              {sc.label}
+                            </span>
                             {kid ? (
                               <KidAvatar kid={kid} size={24} rounded="full" className="shrink-0" />
                             ) : (
                               <button
                                 onClick={(e) => { e.stopPropagation(); setAssigningId(assigningId === camp.id ? null : camp.id) }}
-                                className="text-[10px] font-garet text-capp-coral font-semibold shrink-0 active:opacity-60"
+                                className="text-[10px] font-garet text-capp-dark/40 font-semibold shrink-0 active:opacity-60"
                               >
                                 Assign
                               </button>
@@ -467,7 +469,7 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
+function MonthGrid({ month, year, name, dayMap, navigate, isRegistered, kids }) {
   const firstDay = new Date(year, month, 1).getDay()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const cells = []
@@ -506,12 +508,13 @@ function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
                     </div>
                   )
                 }
-                const msc = STATUS_CONFIG[item.entry?.status ?? 'saved']
+                const kidChip = (kids ?? []).find(k => k.id === item.entry?.kidId)
+                const chipColor = kidChip?.avatarColor ?? '#155fcc'
                 return (
                   <button key={idx}
                     onClick={() => navigate(`/camps/${item.camp.id}`)}
                     className="text-[8px] font-garet font-semibold px-1 py-0.5 rounded truncate leading-tight text-left active:opacity-70"
-                    style={{ backgroundColor: msc.badgeBg, color: msc.badgeText }}>
+                    style={{ backgroundColor: `${chipColor}22`, color: chipColor }}>
                     {item.camp.name}
                   </button>
                 )
@@ -527,7 +530,7 @@ function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
   )
 }
 
-function MonthView({ savedEntries, allCamps, customEvents, navigate, isRegistered }) {
+function MonthView({ savedEntries, allCamps, customEvents, navigate, isRegistered, kids }) {
   // Build a day → items map
   const dayMap = {}
   const mark = (date, item) => {
@@ -555,7 +558,7 @@ function MonthView({ savedEntries, allCamps, customEvents, navigate, isRegistere
   return (
     <div className="flex flex-col gap-4">
       {[{ month: 5, name: 'June' }, { month: 6, name: 'July' }, { month: 7, name: 'August' }].map(({ month, name }) => (
-        <MonthGrid key={month} month={month} year={2026} name={name} dayMap={dayMap} navigate={navigate} isRegistered={isRegistered} />
+        <MonthGrid key={month} month={month} year={2026} name={name} dayMap={dayMap} navigate={navigate} isRegistered={isRegistered} kids={kids} />
       ))}
     </div>
   )
@@ -655,6 +658,7 @@ export default function MySummerPage() {
             customEvents={customEvents}
             navigate={navigate}
             isRegistered={isRegistered}
+            kids={kids}
           />
           <button
             onClick={() => navigate('/camps')}
@@ -707,13 +711,9 @@ export default function MySummerPage() {
                     const status = getStatus(camp.id)
                     const sc = STATUS_CONFIG[status]
                     return (
-                      <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: sc.bg }}>
-                        <div className="h-1.5 w-full" style={{ backgroundColor: sc.bar }} />
+                      <div key={camp.id} className="rounded-2xl shadow-sm bg-white overflow-hidden" style={{ borderLeft: `4px solid ${kid.avatarColor}` }}>
                         <div className="p-3">
                           <div className="flex items-start gap-2">
-                            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: camp.accentLight }}>
-                              
-                            </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-garet font-bold text-capp-dark text-sm leading-tight truncate">{camp.name}</p>
                               <p className="font-garet text-[10px] text-capp-dark/40 mt-0.5">{camp.location}</p>
@@ -776,11 +776,9 @@ export default function MySummerPage() {
                   const status = getStatus(camp.id)
                   const sc = STATUS_CONFIG[status]
                   return (
-                    <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: sc.bg }}>
-                      <div className="h-1.5 w-full" style={{ backgroundColor: sc.bar }} />
+                    <div key={camp.id} className="rounded-2xl shadow-sm bg-white overflow-hidden" style={{ borderLeft: '4px solid #e2e8f0' }}>
                       <div className="p-3">
                         <div className="flex items-start gap-2">
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: camp.accentLight }}></div>
                           <div className="flex-1 min-w-0">
                             <p className="font-garet font-bold text-capp-dark text-sm leading-tight truncate">{camp.name}</p>
                             <p className="font-garet text-[10px] text-capp-dark/40 mt-0.5">{camp.location}</p>
