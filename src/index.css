@@ -1,20 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-  --color-capp-coral: #FABE37;
-  --color-capp-yellow: #FABE37;
-  --color-capp-pink: #F055A5;
-  --color-capp-lime: #CCD537;
-  --color-capp-periwinkle: #7A88FE;
-  --color-capp-orange: #FF9B28;
-  --color-capp-sky: #BFDFF3;
-  --color-capp-dark: #0f172a;
-  --color-capp-warm-bg: #FFF8F0;
+  --color-capp-bg:     #fdedd4;
+  --color-capp-red:    #f20815;
+  --color-capp-green:  #11a253;
+  --color-capp-pink:   #fca4e0;
+  --color-capp-blue:   #155fcc;
+  --color-capp-yellow: #ffd21f;
+  --color-capp-purple: #826dee;
+  --color-capp-white:  #ffffff;
+  --color-capp-dark:   #1a1a1a;
 
-  --font-league-spartan: 'League Spartan', sans-serif;
-  --font-montserrat: 'Montserrat', sans-serif;
+  /* Aliases used throughout existing code */
+  --color-capp-warm-bg: #fdedd4;
+  --color-capp-coral:   #155fcc;
+
+  --font-garet: 'Nunito', sans-serif;
 }
 
 *, *::before, *::after {
@@ -25,9 +28,9 @@
 }
 
 body {
-  background-color: #FFF8F0;
-  font-family: 'Montserrat', sans-serif;
-  color: #0f172a;
+  background-color: #fdedd4;
+  font-family: 'Nunito', sans-serif;
+  color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
 }
@@ -35,6 +38,7 @@ body {
 /* Prevent iOS zoom on input focus — font-size must be ≥ 16px */
 input, textarea, select {
   font-size: max(16px, 1em);
+  font-family: 'Nunito', sans-serif;
 }
 
 /* bottom nav clearance — includes iPhone home-indicator safe area */
@@ -44,7 +48,7 @@ input, textarea, select {
 /* Desktop: full-width web app layout */
 @media screen and (min-width: 640px) {
   body {
-    background-color: #FFF8F0 !important;
+    background-color: #fdedd4 !important;
   }
 
   body.app-layout {

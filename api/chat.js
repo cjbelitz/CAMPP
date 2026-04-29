@@ -62,7 +62,7 @@ OTHER TASKS
 
 Keep responses warm, concise, and helpful. Use **bold** for camp names and key details. Bullet points for lists. When recommending camps, always mention the name, category, price, and specifically why it fits this child.
 
-For app support: support@campp.app`
+For app support: usecampp@gmail.com`
 
   if (userContext) {
     const { userName, kids, savedCamps } = userContext

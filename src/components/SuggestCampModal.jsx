@@ -78,8 +78,8 @@ export default function SuggestCampModal({ isOpen, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 pb-3 shrink-0">
           <div>
-            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-xl uppercase">Suggest a Camp</h2>
-            <p className="font-[Montserrat] text-xs text-capp-dark/50 mt-0.5">Help other families discover great camps!</p>
+            <h2 className="font-garet font-bold text-capp-dark text-xl uppercase">Suggest a Camp</h2>
+            <p className="font-garet text-xs text-capp-dark/50 mt-0.5">Help other families discover great camps!</p>
           </div>
           <button
             onClick={onClose}
@@ -93,8 +93,8 @@ export default function SuggestCampModal({ isOpen, onClose }) {
           /* ── Success ── */
           <div className="flex-1 flex flex-col items-center justify-center px-6 pb-12 text-center">
             <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center text-4xl mb-4">🎉</div>
-            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-xl uppercase mb-2">Thanks for the suggestion!</h3>
-            <p className="font-[Montserrat] text-sm text-capp-dark/60 leading-relaxed">
+            <h3 className="font-garet font-bold text-capp-dark text-xl uppercase mb-2">Thanks for the suggestion!</h3>
+            <p className="font-garet text-sm text-capp-dark/60 leading-relaxed">
               We'll review <span className="font-semibold text-capp-dark">{form.campName}</span> and add it to the directory if it's a great fit. Closing in a moment…
             </p>
           </div>
@@ -165,7 +165,7 @@ export default function SuggestCampModal({ isOpen, onClose }) {
                       min={3} max={18}
                       className={`${input()} flex-1 min-w-0`}
                     />
-                    <span className="font-[Montserrat] text-xs text-capp-dark/40 shrink-0">–</span>
+                    <span className="font-garet text-xs text-capp-dark/40 shrink-0">–</span>
                     <input
                       type="number"
                       placeholder="Max"
@@ -211,7 +211,7 @@ export default function SuggestCampModal({ isOpen, onClose }) {
 
               <button
                 onClick={handleSubmit}
-                className="w-full py-4 rounded-2xl bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm active:scale-95 transition-transform mt-1"
+                className="w-full py-4 rounded-2xl bg-capp-coral text-capp-dark font-garet font-bold text-sm active:scale-95 transition-transform mt-1"
               >
                 Submit Suggestion →
               </button>
@@ -226,17 +226,17 @@ export default function SuggestCampModal({ isOpen, onClose }) {
 function Field({ label, required, error, children }) {
   return (
     <div>
-      <label className="block font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5">
+      <label className="block font-garet text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5">
         {label}{required && <span className="text-red-400 ml-0.5">*</span>}
       </label>
       {children}
-      {error && <p className="font-[Montserrat] text-xs text-red-400 mt-1">{error}</p>}
+      {error && <p className="font-garet text-xs text-red-400 mt-1">{error}</p>}
     </div>
   )
 }
 
 function input(error) {
-  return `w-full font-[Montserrat] text-sm bg-white border-2 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors ${
+  return `w-full font-garet text-sm bg-white border-2 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors ${
     error ? 'border-red-300 focus:border-red-400' : 'border-capp-dark/10 focus:border-capp-coral/50'
   }`
 }

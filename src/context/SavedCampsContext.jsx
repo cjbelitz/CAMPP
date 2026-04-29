@@ -7,15 +7,21 @@ function migrate(raw) {
   try {
     const parsed = JSON.parse(raw)
     if (!Array.isArray(parsed)) return []
-    return parsed.map((item) =>
-      typeof item === 'number'
-        ? { id: item, session: null, kidId: null, registered: false }
-        : { id: item.id, session: item.session ?? null, kidId: item.kidId ?? null, registered: item.registered ?? false }
-    )
+    return parsed.map((item) => {
+      if (typeof item === 'number') return { id: item, session: null, kidId: null, status: 'saved' }
+      return {
+        id: item.id,
+        session: item.session ?? null,
+        kidId: item.kidId ?? null,
+        status: item.status ?? (item.registered ? 'registered' : 'saved'),
+      }
+    })
   } catch {
     return []
   }
 }
+
+const STATUS_NEXT = { saved: 'registered', registered: 'waitlisted', waitlisted: 'saved' }
 
 export function SavedCampsProvider({ children }) {
   const [savedEntries, setSavedEntries] = useState(() => {
@@ -63,16 +69,23 @@ export function SavedCampsProvider({ children }) {
       prev.map((e) => (e.id === id ? { ...e, kidId } : e))
     )
 
-  const markRegistered = (id, value = true) =>
+  const getStatus = (id) => savedEntries.find((e) => e.id === id)?.status ?? 'saved'
+
+  const cycleStatus = (id) =>
     setSavedEntries((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, registered: value } : e))
+      prev.map((e) => (e.id === id ? { ...e, status: STATUS_NEXT[e.status ?? 'saved'] } : e))
     )
 
-  const isRegistered = (id) => savedEntries.find((e) => e.id === id)?.registered ?? false
+  const markRegistered = (id, value = true) =>
+    setSavedEntries((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, status: value ? 'registered' : 'saved' } : e))
+    )
+
+  const isRegistered = (id) => getStatus(id) === 'registered'
 
   return (
     <SavedCampsContext.Provider
-      value={{ savedIds, savedEntries, isSaved, getSession, bookedSessions, toggle, saveWithSession, unsave, assignKid, markRegistered, isRegistered }}
+      value={{ savedIds, savedEntries, isSaved, getSession, bookedSessions, toggle, saveWithSession, unsave, assignKid, markRegistered, isRegistered, getStatus, cycleStatus }}
     >
       {children}
     </SavedCampsContext.Provider>

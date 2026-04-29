@@ -26,17 +26,17 @@ const EMPTY = {
 function Field({ label, required, error, children }) {
   return (
     <div>
-      <label className="block font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5">
+      <label className="block font-garet text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5">
         {label}{required && <span className="text-red-400 ml-0.5">*</span>}
       </label>
       {children}
-      {error && <p className="font-[Montserrat] text-xs text-red-400 mt-1">{error}</p>}
+      {error && <p className="font-garet text-xs text-red-400 mt-1">{error}</p>}
     </div>
   )
 }
 
 function inp(error) {
-  return `w-full font-[Montserrat] text-sm bg-white border-2 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors ${
+  return `w-full font-garet text-sm bg-white border-2 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors ${
     error ? 'border-red-300 focus:border-red-400' : 'border-capp-dark/10 focus:border-capp-coral/50'
   }`
 }
@@ -51,7 +51,7 @@ function ChipGroup({ options, selected, onToggle }) {
             key={opt}
             type="button"
             onClick={() => onToggle(opt)}
-            className={`font-[Montserrat] text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+            className={`font-garet text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
               on ? 'bg-capp-coral text-capp-dark border-capp-coral' : 'bg-white text-capp-dark/55 border-capp-dark/15'
             }`}
           >
@@ -156,23 +156,23 @@ export default function CounselorApplyPage() {
     return (
       <div className="min-h-screen bg-capp-warm-bg flex flex-col items-center justify-center px-6 text-center">
         <div className="w-24 h-24 rounded-full bg-capp-coral/15 flex items-center justify-center text-5xl mb-5">🎉</div>
-        <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl uppercase mb-3">
+        <h2 className="font-garet font-bold text-capp-dark text-2xl uppercase mb-3">
           {campId ? `Application Sent!` : `You're in the Pool!`}
         </h2>
-        <p className="font-[Montserrat] text-sm text-capp-dark/60 leading-relaxed mb-6 max-w-xs">
+        <p className="font-garet text-sm text-capp-dark/60 leading-relaxed mb-6 max-w-xs">
           {campId
             ? `Your application for ${campName} is in. Camp directors will reach out when they're hiring.`
             : `We'll reach out when a camp match looks good. Keep an eye on your messages!`}
         </p>
         <button
           onClick={() => navigate('/counselors/profile')}
-          className="w-full max-w-xs py-4 rounded-2xl bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm active:scale-95 transition-transform mb-3"
+          className="w-full max-w-xs py-4 rounded-2xl bg-capp-coral text-capp-dark font-garet font-bold text-sm active:scale-95 transition-transform mb-3"
         >
           View My Profile
         </button>
         <button
           onClick={() => navigate('/dashboard')}
-          className="font-[Montserrat] text-sm font-semibold text-capp-dark/50"
+          className="font-garet text-sm font-semibold text-capp-dark/50"
         >
           Back to Home
         </button>
@@ -195,10 +195,10 @@ export default function CounselorApplyPage() {
             ←
           </button>
           <div className="flex-1">
-            <p className="font-[Montserrat] text-xs text-capp-dark/40 mb-0.5">
+            <p className="font-garet text-xs text-capp-dark/40 mb-0.5">
               Step {step + 1} of {STEPS.length}
             </p>
-            <h1 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase leading-tight">
+            <h1 className="font-garet font-bold text-capp-dark text-lg uppercase leading-tight">
               {STEPS[step]}
             </h1>
           </div>
@@ -215,7 +215,7 @@ export default function CounselorApplyPage() {
         {campId && (
           <div className="mt-3 flex items-center gap-2 bg-capp-coral/10 border border-capp-coral/20 rounded-xl px-3 py-2">
             <span className="text-sm">🏕️</span>
-            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/70">
+            <p className="font-garet text-xs font-semibold text-capp-dark/70">
               Applying for: <span className="text-capp-dark">{campName}</span>
             </p>
           </div>
@@ -291,7 +291,7 @@ export default function CounselorApplyPage() {
                 placeholder="Share what excites you about working with kids at camp…"
                 className={`${inp(errors.whyCounsel)} resize-none`}
               />
-              <p className="font-[Montserrat] text-xs text-capp-dark/30 mt-1 text-right">
+              <p className="font-garet text-xs text-capp-dark/30 mt-1 text-right">
                 {form.whyCounsel.length}/500 chars · min 50
               </p>
             </Field>
@@ -314,7 +314,7 @@ export default function CounselorApplyPage() {
                     key={h}
                     type="button"
                     onClick={() => { set('hours', h) }}
-                    className={`w-full text-left px-4 py-3 rounded-xl border-2 font-[Montserrat] text-sm transition-colors ${
+                    className={`w-full text-left px-4 py-3 rounded-xl border-2 font-garet text-sm transition-colors ${
                       form.hours === h
                         ? 'bg-capp-coral/10 border-capp-coral text-capp-dark font-semibold'
                         : 'bg-white border-capp-dark/10 text-capp-dark/70'
@@ -324,14 +324,14 @@ export default function CounselorApplyPage() {
                   </button>
                 ))}
               </div>
-              {errors.hours && <p className="font-[Montserrat] text-xs text-red-400 mt-1">{errors.hours}</p>}
+              {errors.hours && <p className="font-garet text-xs text-red-400 mt-1">{errors.hours}</p>}
             </Field>
 
             {/* Transport toggle */}
             <div className="bg-white rounded-xl border-2 border-capp-dark/10 px-4 py-3.5 flex items-center justify-between">
               <div>
-                <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">Own transportation?</p>
-                <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">Can you drive yourself to camp?</p>
+                <p className="font-garet text-sm font-semibold text-capp-dark">Own transportation?</p>
+                <p className="font-garet text-xs text-capp-dark/45 mt-0.5">Can you drive yourself to camp?</p>
               </div>
               <button
                 type="button"
@@ -363,7 +363,7 @@ export default function CounselorApplyPage() {
       >
         <button
           onClick={next}
-          className="w-full py-4 rounded-2xl bg-capp-coral text-capp-dark font-[Montserrat] font-bold text-sm active:scale-95 transition-transform"
+          className="w-full py-4 rounded-2xl bg-capp-coral text-capp-dark font-garet font-bold text-sm active:scale-95 transition-transform"
         >
           {step < STEPS.length - 1 ? `Next: ${STEPS[step + 1]} →` : '🎉 Submit Application'}
         </button>

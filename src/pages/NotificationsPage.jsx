@@ -29,15 +29,15 @@ export default function NotificationsPage() {
           ←
         </button>
         <div className="flex-1">
-          <h1 className="font-[League_Spartan] font-bold text-capp-dark text-xl leading-tight uppercase">Notifications</h1>
+          <h1 className="font-garet font-bold text-capp-dark text-xl leading-tight uppercase">Notifications</h1>
           {unreadCount > 0 && (
-            <p className="font-[Montserrat] text-xs text-capp-dark/50">{unreadCount} unread</p>
+            <p className="font-garet text-xs text-capp-dark/50">{unreadCount} unread</p>
           )}
         </div>
         {unreadCount > 0 && (
           <button
             onClick={markAllRead}
-            className="font-[Montserrat] text-xs font-semibold text-capp-coral active:scale-95 transition-transform"
+            className="font-garet text-xs font-semibold text-capp-coral active:scale-95 transition-transform"
           >
             Mark all read
           </button>
@@ -50,7 +50,7 @@ export default function NotificationsPage() {
           return (
             <section key={urgency}>
               <p
-                className="font-[Montserrat] text-xs font-semibold uppercase tracking-wider mb-3"
+                className="font-garet text-xs font-semibold uppercase tracking-wider mb-3"
                 style={{ color: meta.color }}
               >
                 {meta.label}
@@ -69,14 +69,14 @@ export default function NotificationsPage() {
                       <span className="text-2xl shrink-0 mt-0.5">{notif.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-0.5">
-                          <p className={`font-[Montserrat] text-sm leading-snug ${read ? 'font-medium text-capp-dark/50' : 'font-bold text-capp-dark'}`}>
+                          <p className={`font-garet text-sm leading-snug ${read ? 'font-medium text-capp-dark/50' : 'font-bold text-capp-dark'}`}>
                             {notif.title}
                           </p>
-                          <span className="font-[Montserrat] text-[10px] text-capp-dark/35 shrink-0 mt-0.5">
+                          <span className="font-garet text-[10px] text-capp-dark/35 shrink-0 mt-0.5">
                             {formatRelativeTime(notif.ts)}
                           </span>
                         </div>
-                        <p className={`font-[Montserrat] text-xs leading-relaxed ${read ? 'text-capp-dark/35' : 'text-capp-dark/55'}`}>
+                        <p className={`font-garet text-xs leading-relaxed ${read ? 'text-capp-dark/35' : 'text-capp-dark/55'}`}>
                           {notif.body}
                         </p>
                       </div>
@@ -94,8 +94,8 @@ export default function NotificationsPage() {
         {notifications.length === 0 && (
           <div className="flex flex-col items-center py-16 text-center">
             <span className="text-5xl mb-4">🔔</span>
-            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-2 uppercase">All caught up!</h2>
-            <p className="font-[Montserrat] text-sm text-capp-dark/50">
+            <h2 className="font-garet font-bold text-capp-dark text-xl mb-2 uppercase">All caught up!</h2>
+            <p className="font-garet text-sm text-capp-dark/50">
               We'll notify you about camps, reminders, and your circle.
             </p>
           </div>

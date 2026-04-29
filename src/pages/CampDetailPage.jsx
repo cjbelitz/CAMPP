@@ -1,92 +1,59 @@
-import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import SuggestCampModal from '../components/SuggestCampModal'
-import { camps, reviews, defaultReviews } from '../data/camps'
+import { useCamp } from '../lib/useCamps'
 import { useSaved } from '../context/SavedCampsContext'
 import { useKids } from '../context/KidsContext'
-import { useAuth } from '../context/AuthContext'
-import { useReviews } from '../context/ReviewsContext'
 import KidAvatar from '../components/KidAvatar'
-import { MOCK_MOMS, MOCK_CIRCLE_SIGNUPS } from '../data/mockCircle'
-import { daysUntil, deadlineColor, parseSessionStart } from '../utils/formatRelativeTime'
-import StatusBadge, { SpotsLeft } from '../components/StatusBadge'
 
-function StarPicker({ value, onChange }) {
-  const [hover, setHover] = useState(0)
-  return (
-    <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <button
-          key={star}
-          type="button"
-          onClick={() => onChange(star)}
-          onMouseEnter={() => setHover(star)}
-          onMouseLeave={() => setHover(0)}
-          className="text-3xl leading-none transition-transform active:scale-90"
-        >
-          <span className={star <= (hover || value) ? 'text-capp-yellow' : 'text-capp-dark/15'}>★</span>
-        </button>
-      ))}
-    </div>
-  )
+const CATEGORY_PHOTOS = {
+  Sports:           'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+  Art:              'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80',
+  STEM:             'https://images.unsplash.com/photo-1567168544813-cc03465b4fa8?w=800&q=80',
+  'Multi-activity': 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&q=80',
+  Nature:           'https://images.unsplash.com/photo-1534880606858-c3b6b265a36b?w=800&q=80',
+  Music:            'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&q=80',
+  Dance:            'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80',
+  Academic:         'https://images.unsplash.com/photo-1567168544813-cc03465b4fa8?w=800&q=80',
+  Surf:             'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
+  Swimming:         'https://images.unsplash.com/photo-1560090995-01632a28895b?w=800&q=80',
 }
 
-const whatToBring = [
-  'Sunscreen (reapply-friendly)',
-  'Reusable water bottle',
-  'Snack for morning break',
-  'Comfortable closed-toe shoes',
-  'Change of clothes',
-]
+function fmt(dateStr) {
+  if (!dateStr) return ''
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function daysUntil(dateStr) {
+  if (!dateStr) return null
+  return Math.ceil((new Date(dateStr).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+}
 
 export default function CampDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const camp = camps.find((c) => c.id === Number(id))
-  const { isSaved, getSession, saveWithSession, unsave, savedEntries, markRegistered, isRegistered } = useSaved()
+  const { camp, loading } = useCamp(id)
+  const { isSaved, toggle, savedEntries, getStatus, cycleStatus } = useSaved()
   const { kids } = useKids()
-  const saved = camp ? isSaved(camp.id) : false
-  const persistedSession = camp ? getSession(camp.id) : null
-  const persistedKidId = camp ? (savedEntries.find(e => e.id === camp.id)?.kidId ?? null) : null
-  const [selectedSession, setSelectedSession] = useState(persistedSession)
-  const [selectedKidId, setSelectedKidId] = useState(persistedKidId)
-  const { user } = useAuth()
-  const { addReview, getUserReview, getUserReviews } = useReviews()
-  const [showReviewForm, setShowReviewForm] = useState(false)
-  const [reviewRating, setReviewRating] = useState(0)
-  const [reviewBody, setReviewBody] = useState('')
-  const [reviewName, setReviewName] = useState(user?.name ?? '')
-  const [suggestOpen, setSuggestOpen] = useState(false)
-  const [counselorApplied, setCounselorApplied] = useState(false)
 
-  const canReview = camp ? kids.some(k => k.pastCampIds?.includes(camp.id)) : false
-  const existingReview = (camp && user) ? getUserReview(camp.id, user.email) : null
-  const userReviews = camp ? getUserReviews(camp.id) : []
-
-  function handleSubmitReview() {
-    if (!reviewRating || !reviewBody.trim()) return
-    addReview(camp.id, {
-      userEmail: user.email,
-      name: reviewName.trim() || user.name || 'Anonymous',
-      location: 'North County SD',
-      date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-      rating: reviewRating,
-      body: reviewBody.trim(),
-      isUserReview: true,
-    })
-    setShowReviewForm(false)
-    setReviewBody('')
-    setReviewRating(0)
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-capp-bg flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl bg-capp-blue/10 animate-pulse" />
+      </div>
+    )
   }
 
   if (!camp) {
     return (
-      <div className="min-h-screen bg-capp-warm-bg flex flex-col items-center justify-center gap-4 px-6 text-center">
-        <span className="text-5xl">🏕️</span>
-        <h2 className="font-[League_Spartan] font-bold text-capp-dark text-2xl uppercase">Camp not found</h2>
+      <div className="min-h-screen bg-capp-bg flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <div className="w-16 h-16 rounded-3xl bg-capp-dark/5 flex items-center justify-center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.3">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          </svg>
+        </div>
+        <h2 className="font-garet font-black text-capp-dark text-2xl uppercase">Camp not found</h2>
         <button
           onClick={() => navigate('/camps')}
-          className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold px-6 py-3 rounded-2xl"
+          className="bg-capp-blue text-white font-garet font-bold px-6 py-3 rounded-2xl"
         >
           Back to Browse
         </button>
@@ -94,514 +61,237 @@ export default function CampDetailPage() {
     )
   }
 
-  const campReviews = reviews[camp.id] || defaultReviews
+  const saved = isSaved(camp.id)
+  const savedEntry = savedEntries.find(e => e.id === camp.id)
+  const regDeadlineDays = daysUntil(camp.registrationDeadline)
+  const deadlineUrgent = regDeadlineDays !== null && regDeadlineDays >= 0 && regDeadlineDays <= 14
+  const photo = CATEGORY_PHOTOS[camp.category]
 
   return (
-    <div className="min-h-screen bg-capp-warm-bg pb-32">
+    <div className="min-h-screen bg-capp-bg pb-32">
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <div className="relative" style={{ backgroundColor: camp.accent }}>
-        {/* Back + share row */}
-        <div className="flex items-center justify-between px-4 pt-12 pb-4">
+        {/* Hero photo */}
+        {photo && (
+          <div className="absolute inset-0 overflow-hidden">
+            <img src={photo} alt={camp.category} className="w-full h-full object-cover opacity-30" />
+          </div>
+        )}
+
+        <div className="relative flex items-center justify-between px-4 pt-12 pb-4">
           <button
             onClick={() => navigate(-1)}
-            className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white active:scale-95 transition-transform"
+            className="w-9 h-9 rounded-xl bg-white/25 flex items-center justify-center active:scale-95 transition-transform"
           >
-            ←
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
           </button>
           <button
-            onClick={() => { navigator.share?.({ title: camp.name, url: window.location.href }) }}
-            className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white text-sm active:scale-95 transition-transform"
+            onClick={() => navigator.share?.({ title: camp.name, url: window.location.href })}
+            className="w-9 h-9 rounded-xl bg-white/25 flex items-center justify-center active:scale-95 transition-transform"
           >
-            ↑
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
           </button>
         </div>
 
-        {/* Camp identity */}
-        <div className="px-5 pb-8 flex flex-col items-center text-center">
-          <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center text-5xl mb-4 shadow-lg">
-            {camp.icon}
-          </div>
-          <span className="font-[Montserrat] text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
+        <div className="relative px-5 pb-8 flex flex-col items-center text-center">
+          <span className="font-garet text-xs font-bold text-white/80 uppercase tracking-wider mb-2 bg-white/15 px-3 py-1 rounded-full">
             {camp.category}
           </span>
-          <h1 className="font-[League_Spartan] font-bold text-white text-2xl leading-tight mb-1 uppercase">
+          <h1 className="font-garet font-black text-white text-2xl leading-tight mb-1 uppercase">
             {camp.name}
           </h1>
-          <div className="flex items-center gap-1.5 text-white/80 mb-3">
-            <span className="text-xs">📍</span>
-            <span className="font-[Montserrat] text-sm">{camp.location}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <StatusBadge status={camp.status} size="lg" />
-            <span className="font-[Montserrat] text-xs font-semibold text-white/80 bg-white/20 px-2.5 py-1 rounded-full">
-              {camp.spotsLeft === 1 ? '1 spot left' : `${camp.spotsLeft} spots left`}
-            </span>
-          </div>
+          {camp.organization && (
+            <p className="font-garet text-sm text-white/75 mb-2">{camp.organization}</p>
+          )}
+          {camp.city && (
+            <div className="flex items-center gap-1.5 text-white/80">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span className="font-garet text-sm">{camp.locationName || camp.city}</span>
+            </div>
+          )}
         </div>
-
-        {/* Curved bottom edge */}
-        <div className="h-6 bg-capp-warm-bg rounded-t-[2rem]" />
+        <div className="h-6 bg-capp-bg rounded-t-[2rem]" />
       </div>
 
-      {/* ── Quick stats card ── */}
+      {/* Quick stats */}
       <div className="mx-4 -mt-1 bg-white rounded-2xl shadow-sm px-4 py-4 flex justify-around divide-x divide-capp-dark/10">
         <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
-          <span className="text-xl">👦</span>
-          <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">Ages {camp.ageMin}–{camp.ageMax}</span>
-          <span className="font-[Montserrat] text-xs text-capp-dark/40">Age range</span>
+          <div className="w-7 h-7 rounded-full bg-capp-purple/10 flex items-center justify-center mb-0.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#826dee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span className="font-garet text-xs font-bold text-capp-dark">Ages {camp.ageMin}–{camp.ageMax}</span>
+          <span className="font-garet text-[10px] text-capp-dark/40">Age range</span>
         </div>
         <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
-          <span className="text-xl">📅</span>
-          <span className="font-[Montserrat] text-xs font-semibold text-capp-dark text-center leading-tight">{camp.dates}</span>
-          <span className="font-[Montserrat] text-xs text-capp-dark/40">Available</span>
+          <div className="w-7 h-7 rounded-full bg-capp-green/10 flex items-center justify-center mb-0.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#11a253" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <span className="font-garet text-xs font-bold text-capp-dark text-center leading-tight">{camp.costDisplay}</span>
+          <span className="font-garet text-[10px] text-capp-dark/40">Cost</span>
         </div>
-        <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
-          <span className="text-xl">⭐</span>
-          <span className="font-[Montserrat] text-xs font-semibold text-capp-dark">{camp.rating} / 5</span>
-          <span className="font-[Montserrat] text-xs text-capp-dark/40">{camp.reviews} reviews</span>
-        </div>
+        {(camp.startDate || camp.endDate) && (
+          <div className="flex-1 flex flex-col items-center gap-0.5 px-2">
+            <div className="w-7 h-7 rounded-full bg-capp-blue/10 flex items-center justify-center mb-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#155fcc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <span className="font-garet text-xs font-bold text-capp-dark text-center leading-tight">
+              {camp.startDate ? fmt(camp.startDate) : ''}
+            </span>
+            <span className="font-garet text-[10px] text-capp-dark/40">Starts</span>
+          </div>
+        )}
       </div>
 
-      <div className="px-4 mt-6 flex flex-col gap-6">
+      <div className="px-4 mt-5 flex flex-col gap-5">
 
-        {/* ── About ── */}
-        <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-2 uppercase">About this camp</h2>
-          <p className="font-[Montserrat] text-sm text-capp-dark/70 leading-relaxed mb-3">
-            {camp.description}
-          </p>
-          {camp.registrationUrl && (
-            <div className="flex items-center justify-between">
-              <a
-                href={camp.registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-[Montserrat] text-sm font-semibold text-capp-coral active:opacity-70 transition-opacity"
-              >
-                🔗 Visit website
-                <span className="text-capp-coral/60 text-xs">↗</span>
-              </a>
-              {saved && (
-                <button
-                  onClick={() => markRegistered(camp.id, !isRegistered(camp.id))}
-                  className={`inline-flex items-center gap-1.5 font-[Montserrat] text-xs font-bold px-3 py-1.5 rounded-xl active:scale-95 transition-transform ${
-                    isRegistered(camp.id)
-                      ? 'bg-yellow-200 text-yellow-800 border border-yellow-300'
-                      : 'bg-capp-dark/6 text-capp-dark/50'
-                  }`}
-                >
-                  {isRegistered(camp.id) ? '✓ Registered' : 'Mark as registered'}
-                </button>
-              )}
-            </div>
-          )}
-        </section>
-
-        {/* ── In your circle ── */}
-        {(() => {
-          const signups = MOCK_CIRCLE_SIGNUPS[camp.id]
-          if (!signups?.length) return null
-          return (
-            <section className="bg-white rounded-2xl p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">In your circle</h2>
-                <span className="font-[Montserrat] text-xs font-bold text-violet-700 bg-violet-100 px-2 py-0.5 rounded-full">
-                  {signups.length} kid{signups.length !== 1 ? 's' : ''}
-                </span>
-              </div>
-              <div className="flex flex-col gap-3">
-                {signups.map((signup) => {
-                  const mom = MOCK_MOMS.find(m => m.kidName === signup.kidName)
-                  return (
-                    <div key={`${signup.kidName}-${signup.session}`} className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white font-[League_Spartan] shrink-0"
-                        style={{ backgroundColor: mom?.avatarColor ?? '#FABE37' }}
-                      >
-                        {signup.kidName[0]}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-[Montserrat] text-sm font-semibold text-capp-dark leading-tight">
-                          {signup.kidName}
-                        </p>
-                        <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">
-                          {signup.momName}'s kid
-                        </p>
-                      </div>
-                      <span className="font-[Montserrat] text-xs font-semibold text-violet-700 bg-violet-50 border border-violet-200 px-2.5 py-1 rounded-full shrink-0">
-                        {signup.session}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-              <p className="font-[Montserrat] text-xs text-capp-dark/35 mt-4">
-                Based on your camp circles — reach out to coordinate!
-              </p>
-            </section>
-          )
-        })()}
-
-        {/* ── What's included ── */}
-        <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-3 uppercase">What's included</h2>
-          <ul className="flex flex-col gap-2.5">
-            {camp.tags.map((tag) => (
-              <li key={tag} className="flex items-center gap-3">
-                <span
-                  className="w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0"
-                  style={{ backgroundColor: camp.accentLight, color: camp.accent }}
-                >
-                  ✓
-                </span>
-                <span className="font-[Montserrat] text-sm text-capp-dark/80">{tag}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* ── Pick a session ── */}
-        <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">Pick a session</h2>
-            <SpotsLeft spotsLeft={camp.spotsLeft} status={camp.status} />
-          </div>
-          <p className="font-[Montserrat] text-xs text-capp-dark/40 mb-3">Mon–Fri, 9am–3pm</p>
-
-          {/* Deadline urgency banner */}
-          {camp.regDeadline && (() => {
-            const days = daysUntil(camp.regDeadline)
-            const color = deadlineColor(days)
-            if (days > 14) return null
-            return (
-              <div
-                className="flex items-center gap-2 rounded-xl px-3 py-2.5 mb-4"
-                style={{ backgroundColor: `${color}12`, border: `1px solid ${color}30` }}
-              >
-                <span className="text-base shrink-0">{days <= 7 ? '🚨' : '⏰'}</span>
-                <div>
-                  <p
-                    className="font-[Montserrat] text-sm font-bold"
-                    style={{ color }}
-                  >
-                    {days <= 0 ? 'Registration deadline passed' : days === 1 ? 'Register today — last day!' : `${days} days left to register`}
-                  </p>
-                  <p className="font-[Montserrat] text-xs text-capp-dark/50 mt-0.5">
-                    {days <= 7 ? 'Spots are going fast — pick a session below.' : 'Secure your spot before it fills up.'}
-                  </p>
-                </div>
-              </div>
-            )
-          })()}
-          <div className="grid grid-cols-2 gap-2.5">
-            {camp.sessions.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSelectedSession(s)}
-                className={`py-3 px-4 rounded-xl border text-sm font-[Montserrat] font-medium transition-colors text-left ${
-                  selectedSession === s
-                    ? 'text-white border-transparent'
-                    : 'bg-capp-warm-bg text-capp-dark/70 border-capp-dark/10'
-                }`}
-                style={selectedSession === s ? { backgroundColor: camp.accent, borderColor: camp.accent } : {}}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* ── What to bring ── */}
-        <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-3 uppercase">What to bring</h2>
-          <ul className="flex flex-col gap-2.5">
-            {whatToBring.map((item) => (
-              <li key={item} className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-capp-yellow/30 flex items-center justify-center text-xs shrink-0">
-                  🎒
-                </span>
-                <span className="font-[Montserrat] text-sm text-capp-dark/70">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* ── Reviews ── */}
-        <section>
-          <div className="flex items-baseline justify-between mb-3">
-            <h2 className="font-[League_Spartan] font-bold text-capp-dark text-lg uppercase">Reviews</h2>
-            <div className="flex items-center gap-1">
-              <span className="text-capp-yellow text-sm">★</span>
-              <span className="font-[Montserrat] text-sm font-semibold text-capp-dark">{camp.rating}</span>
-              <span className="font-[Montserrat] text-xs text-capp-dark/40">({camp.reviews})</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {/* User-submitted reviews first */}
-            {userReviews.map((r) => (
-              <div key={r.userEmail} className="bg-white rounded-2xl p-4 shadow-sm border-2" style={{ borderColor: `${camp.accent}40` }}>
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-[Montserrat]"
-                      style={{ backgroundColor: camp.accentLight, color: camp.accent }}
-                    >
-                      {r.name[0]}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <p className="font-[Montserrat] text-xs font-semibold text-capp-dark">{r.name}</p>
-                        <span className="font-[Montserrat] text-[10px] font-semibold text-white px-1.5 py-0.5 rounded-full" style={{ backgroundColor: camp.accent }}>
-                          Your review
-                        </span>
-                      </div>
-                      <p className="font-[Montserrat] text-xs text-capp-dark/40">{r.location} · {r.date}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-0.5">
-                      {[...Array(r.rating)].map((_, i) => (
-                        <span key={i} className="text-capp-yellow text-xs">★</span>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => { setReviewRating(r.rating); setReviewBody(r.body); setReviewName(r.name); setShowReviewForm(true) }}
-                      className="font-[Montserrat] text-xs font-semibold text-capp-coral"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                </div>
-                <p className="font-[Montserrat] text-sm text-capp-dark/70 leading-relaxed">"{r.body}"</p>
-              </div>
-            ))}
-
-            {/* Mock / seeded reviews */}
-            {campReviews.map((r) => (
-              <div key={r.name} className="bg-white rounded-2xl p-4 shadow-sm">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-[Montserrat]"
-                      style={{ backgroundColor: camp.accentLight, color: camp.accent }}
-                    >
-                      {r.name[0]}
-                    </div>
-                    <div>
-                      <p className="font-[Montserrat] text-xs font-semibold text-capp-dark">{r.name}</p>
-                      <p className="font-[Montserrat] text-xs text-capp-dark/40">{r.location} · {r.date}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-0.5">
-                    {[...Array(r.rating)].map((_, i) => (
-                      <span key={i} className="text-capp-yellow text-xs">★</span>
-                    ))}
-                  </div>
-                </div>
-                <p className="font-[Montserrat] text-sm text-capp-dark/70 leading-relaxed">"{r.body}"</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Write a review CTA — only if eligible and not yet reviewed */}
-          {canReview && !existingReview && !showReviewForm && (
-            <button
-              onClick={() => { setShowReviewForm(true); setReviewName(user?.name ?? '') }}
-              className="mt-3 w-full py-3.5 rounded-2xl border-2 border-dashed font-[Montserrat] font-semibold text-sm transition-colors active:bg-capp-warm-bg"
-              style={{ borderColor: `${camp.accent}50`, color: camp.accent }}
-            >
-              ✍️ Write a review
-            </button>
-          )}
-
-          {/* Review form */}
-          {showReviewForm && (
-            <div className="mt-3 bg-white rounded-2xl p-4 shadow-sm flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase">
-                  {existingReview ? 'Edit your review' : 'Write a review'}
-                </h3>
-                <button
-                  onClick={() => setShowReviewForm(false)}
-                  className="w-7 h-7 rounded-full bg-capp-dark/5 flex items-center justify-center text-capp-dark/40 text-sm"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div>
-                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-2">Your rating</p>
-                <StarPicker value={reviewRating} onChange={setReviewRating} />
-              </div>
-
-              <div>
-                <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
-                  Your name
-                </label>
-                <input
-                  type="text"
-                  value={reviewName}
-                  onChange={(e) => setReviewName(e.target.value)}
-                  placeholder="Display name"
-                  className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
-                  Your experience
-                </label>
-                <textarea
-                  value={reviewBody}
-                  onChange={(e) => setReviewBody(e.target.value)}
-                  placeholder="What did your kid love about this camp?"
-                  rows={4}
-                  className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-xl px-3.5 py-2.5 focus:outline-none transition-colors resize-none"
-                />
-              </div>
-
-              <button
-                onClick={handleSubmitReview}
-                disabled={!reviewRating || !reviewBody.trim()}
-                className="w-full py-3.5 rounded-2xl font-[Montserrat] font-semibold text-sm text-white active:scale-95 transition-all disabled:opacity-40"
-                style={{ backgroundColor: camp.accent }}
-              >
-                {existingReview ? 'Update review' : 'Submit review'}
-              </button>
-            </div>
-          )}
-        </section>
-
-        {/* ── Counselor CTA ── */}
-        <section className="rounded-2xl overflow-hidden border-2 border-dashed border-capp-dark/15">
-          <div className="px-5 py-4 flex items-start gap-4">
-            <span className="text-3xl shrink-0">🏕️</span>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase leading-tight">
-                Want to work at {camp.name}?
-              </h3>
-              <p className="font-[Montserrat] text-xs text-capp-dark/55 mt-1 leading-relaxed">
-                High schoolers ages 14–18 can apply to be a camp counselor. Build your resume, earn money, and do what you love.
-              </p>
-              {counselorApplied ? (
-                <div className="mt-3 flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-xs text-green-600 shrink-0">✓</span>
-                  <span className="font-[Montserrat] text-xs font-semibold text-green-700">Application sent! We'll be in touch.</span>
-                </div>
-              ) : (
-                <button
-                  onClick={() => navigate(`/counselors/apply?camp_id=${camp.id}&camp_name=${encodeURIComponent(camp.name)}`)}
-                  className="mt-3 inline-flex items-center gap-1.5 font-[Montserrat] text-xs font-bold text-capp-dark bg-capp-coral px-3.5 py-2 rounded-xl active:scale-95 transition-transform"
-                >
-                  Apply to Counsel This Camp →
-                </button>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Suggest a Camp CTA ── */}
-        <section className="bg-white rounded-2xl p-5 shadow-sm text-center">
-          <p className="font-[League_Spartan] font-bold text-capp-dark text-base uppercase mb-1">Know a camp we're missing?</p>
-          <p className="font-[Montserrat] text-xs text-capp-dark/50 mb-3">Help other CAMPP families discover it!</p>
-          <button
-            onClick={() => setSuggestOpen(true)}
-            className="inline-flex items-center gap-2 font-[Montserrat] font-semibold text-sm text-capp-coral border-2 border-capp-coral/30 px-4 py-2.5 rounded-xl active:scale-95 transition-transform"
+        {/* Registration deadline warning */}
+        {deadlineUrgent && (
+          <div
+            className="flex items-center gap-3 rounded-2xl px-4 py-3.5"
+            style={{ backgroundColor: regDeadlineDays <= 7 ? '#fff0f0' : '#fffbeb', borderLeft: `4px solid ${regDeadlineDays <= 7 ? '#f20815' : '#ffd21f'}` }}
           >
-            ＋ Suggest a Camp
-          </button>
-        </section>
-
-      </div>
-
-      <SuggestCampModal isOpen={suggestOpen} onClose={() => setSuggestOpen(false)} />
-
-      {/* ── Sticky bottom CTA ── */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-capp-dark/8 px-4 py-3" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)' }}>
-        {/* Who's going? */}
-        {kids.length > 0 && (
-          <div className="max-w-[430px] mx-auto flex items-center gap-2.5 mb-2.5">
-            <span className="font-[Montserrat] text-xs text-capp-dark/40 shrink-0">Who's going?</span>
-            <div className="flex gap-1.5">
-              {kids.map((kid) => (
-                <button
-                  key={kid.id}
-                  onClick={() => setSelectedKidId(selectedKidId === kid.id ? null : kid.id)}
-                  className="flex flex-col items-center gap-1 transition-all active:scale-95"
-                  style={{ opacity: selectedKidId && selectedKidId !== kid.id ? 0.35 : 1 }}
-                  aria-label={kid.name}
-                >
-                  <KidAvatar
-                    kid={kid}
-                    size={38}
-                    rounded="full"
-                    className="transition-all"
-                    style={selectedKidId === kid.id
-                      ? { boxShadow: `0 0 0 2.5px white, 0 0 0 4.5px ${kid.avatarColor}` }
-                      : {}}
-                  />
-                  <span className="font-[Montserrat] text-[9px] text-capp-dark/50">{kid.name}</span>
-                </button>
-              ))}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={regDeadlineDays <= 7 ? '#f20815' : '#b45309'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div>
+              <p className="font-garet text-sm font-black" style={{ color: regDeadlineDays <= 7 ? '#f20815' : '#b45309' }}>
+                {regDeadlineDays === 0 ? 'Registration deadline today!' : `${regDeadlineDays} day${regDeadlineDays !== 1 ? 's' : ''} left to register`}
+              </p>
+              <p className="font-garet text-xs text-capp-dark/50">Deadline: {fmt(camp.registrationDeadline)}</p>
             </div>
           </div>
         )}
 
-        <div className="flex items-center gap-3 max-w-[430px] mx-auto mb-2">
-          <div>
-            <p className="font-[Montserrat] text-xs text-capp-dark/40">Starting at</p>
-            <p className="font-[League_Spartan] font-bold text-capp-dark text-xl">
-              ${camp.price}<span className="font-[Montserrat] text-sm font-normal text-capp-dark/40">/{camp.priceType}</span>
-            </p>
-          </div>
-          <div className="flex-1 flex gap-2">
+        {/* About */}
+        {camp.description && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm">
+            <h2 className="font-garet font-black text-capp-dark text-lg mb-2 uppercase">About this camp</h2>
+            <p className="font-garet text-sm text-capp-dark/70 leading-relaxed">{camp.description}</p>
+          </section>
+        )}
+
+        {/* Dates */}
+        {(camp.startDate || camp.endDate) && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm">
+            <h2 className="font-garet font-black text-capp-dark text-lg mb-3 uppercase">Dates</h2>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 bg-capp-bg rounded-xl px-4 py-3 text-center">
+                <p className="font-garet text-[10px] text-capp-dark/40 uppercase tracking-wide mb-0.5">Starts</p>
+                <p className="font-garet text-sm font-bold text-capp-dark">{camp.startDate ? fmt(camp.startDate) : '—'}</p>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.2">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+              <div className="flex-1 bg-capp-bg rounded-xl px-4 py-3 text-center">
+                <p className="font-garet text-[10px] text-capp-dark/40 uppercase tracking-wide mb-0.5">Ends</p>
+                <p className="font-garet text-sm font-bold text-capp-dark">{camp.endDate ? fmt(camp.endDate) : '—'}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* What's included */}
+        {camp.tags.length > 0 && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm">
+            <h2 className="font-garet font-black text-capp-dark text-lg mb-3 uppercase">What's included</h2>
+            <ul className="flex flex-col gap-2.5">
+              {camp.tags.map(tag => (
+                <li key={tag} className="flex items-center gap-3">
+                  <span
+                    className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: '#11a25315' }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#11a253" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  <span className="font-garet text-sm text-capp-dark/80">{tag}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Notes */}
+        {camp.notes && (
+          <section className="bg-white rounded-2xl p-5 shadow-sm">
+            <h2 className="font-garet font-black text-capp-dark text-lg mb-2 uppercase">Notes</h2>
+            <p className="font-garet text-sm text-capp-dark/65 leading-relaxed">{camp.notes}</p>
+          </section>
+        )}
+
+        {/* My Circle */}
+        <section className="bg-white rounded-2xl p-5 shadow-sm">
+          <h2 className="font-garet font-black text-capp-dark text-lg mb-2 uppercase">From My Circle</h2>
+          <p className="font-garet text-sm text-capp-dark/40">
+            No one from your circle has saved this camp yet.
+          </p>
+        </section>
+
+      </div>
+
+      {/* Sticky bottom */}
+      <div
+        className="fixed bottom-0 left-0 right-0 bg-white/97 backdrop-blur-sm border-t border-capp-dark/8 px-4 py-3"
+        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)' }}
+      >
+        <div className="max-w-[430px] mx-auto flex flex-col gap-2.5">
+
+          {/* Who's going */}
+          {kids.length > 0 && (
+            <div className="flex items-center gap-3">
+              <span className="font-garet text-xs text-capp-dark/40 shrink-0">Who's going?</span>
+              <div className="flex gap-2">
+                {kids.map(kid => (
+                  <button key={kid.id} className="flex flex-col items-center gap-0.5 active:scale-95 transition-transform">
+                    <KidAvatar kid={kid} size={36} rounded="full" />
+                    <span className="font-garet text-[9px] text-capp-dark/50">{kid.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-2">
             <button
-              onClick={() => {
-                if (saved && !selectedSession) {
-                  unsave(camp.id)
-                } else {
-                  saveWithSession(camp.id, selectedSession, selectedKidId)
-                }
-              }}
-              className="flex-1 py-3.5 rounded-2xl font-[Montserrat] font-semibold text-base transition-all active:scale-95 text-capp-dark bg-capp-coral"
+              onClick={() => toggle(camp.id)}
+              className={`flex-1 py-3.5 rounded-2xl font-garet font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                saved ? 'bg-capp-dark/8 text-capp-dark' : 'bg-capp-blue text-white'
+              }`}
             >
-              {saved
-                ? `❤️ Saved${persistedSession ? ` — ${persistedSession}` : ''}`
-                : selectedSession
-                  ? `Save — ${selectedSession}`
-                  : 'Save to My Summer'}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? '#1a1a1a' : 'white'} stroke={saved ? '#1a1a1a' : 'white'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity={saved ? 0.6 : 1}>
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              {saved ? 'Saved to My Summer' : 'Save to My Summer'}
             </button>
+
             {camp.registrationUrl && (
               <a
                 href={camp.registrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-4 py-3.5 rounded-2xl font-[Montserrat] font-semibold text-sm bg-white border-2 border-capp-coral/30 text-capp-coral whitespace-nowrap active:scale-95 transition-all shrink-0"
+                className="flex items-center gap-1 px-4 py-3.5 rounded-2xl font-garet font-bold text-sm bg-white border-2 border-capp-blue/30 text-capp-blue whitespace-nowrap active:scale-95 transition-all shrink-0"
               >
-                Register →
+                Register
               </a>
             )}
           </div>
         </div>
-
-        {!camp.registrationUrl && (
-          <>
-            {saved && selectedSession && selectedSession !== persistedSession && (
-              <p className="font-[Montserrat] text-xs text-capp-dark/40 text-center">
-                Tap again to update your session to {selectedSession}
-              </p>
-            )}
-            {!saved && !selectedSession && (
-              <p className="font-[Montserrat] text-xs text-capp-dark/40 text-center">
-                Pick a session above to lock in your week
-              </p>
-            )}
-          </>
-        )}
       </div>
-
     </div>
   )
 }

@@ -18,8 +18,9 @@ function rowToKid(row) {
     name:        row.name,
     age:         computedAge,
     birthday:    row.birthday ?? null,
+    emoji:       row.avatar_emoji ?? '⭐',
     avatarColor: row.color ?? '#FABE37',
-    photo:       row.photo_url ?? `https://api.dicebear.com/8.x/adventurer/svg?seed=${encodeURIComponent(row.name)}${computedAge}&backgroundColor=${(row.color ?? '#FABE37').replace('#', '')}&backgroundType=solid`,
+    photo:       row.photo_url ?? null,
     interests:   row.interests ?? [],
     environment: row.environment ?? null,
     stimulation: row.stimulation ?? null,
@@ -32,17 +33,18 @@ function rowToKid(row) {
 // Map app object → Supabase row
 function kidToRow(kid, profileId) {
   return {
-    profile_id:  profileId,
-    name:        kid.name,
-    birthday:    kid.birthday ?? null,
-    age:         kid.age ?? null,
-    color:       kid.avatarColor ?? '#FABE37',
-    photo_url:   kid.photo ?? null,
-    interests:   kid.interests ?? [],
-    environment: kid.environment ?? null,
-    stimulation: kid.stimulation ?? null,
-    challenge:   kid.challenge ?? null,
-    is_example:  kid.isExample ?? false,
+    profile_id:   profileId,
+    name:         kid.name,
+    birthday:     kid.birthday ?? null,
+    age:          kid.age ?? null,
+    avatar_emoji: kid.emoji ?? '⭐',
+    color:        kid.avatarColor ?? '#FABE37',
+    photo_url:    kid.photo ?? null,
+    interests:    kid.interests ?? [],
+    environment:  kid.environment ?? null,
+    stimulation:  kid.stimulation ?? null,
+    challenge:    kid.challenge ?? null,
+    is_example:   kid.isExample ?? false,
   }
 }
 
@@ -91,15 +93,16 @@ export function KidsProvider({ children }) {
 
   async function updateKid(id, updates) {
     const row = {}
-    if (updates.name        !== undefined) row.name        = updates.name
-    if (updates.birthday    !== undefined) row.birthday    = updates.birthday
-    if (updates.age         !== undefined) row.age         = updates.age
-    if (updates.avatarColor !== undefined) row.color       = updates.avatarColor
-    if (updates.photo       !== undefined) row.photo_url   = updates.photo
-    if (updates.interests   !== undefined) row.interests   = updates.interests
-    if (updates.environment !== undefined) row.environment = updates.environment
-    if (updates.stimulation !== undefined) row.stimulation = updates.stimulation
-    if (updates.challenge   !== undefined) row.challenge   = updates.challenge
+    if (updates.name        !== undefined) row.name         = updates.name
+    if (updates.birthday    !== undefined) row.birthday     = updates.birthday
+    if (updates.age         !== undefined) row.age          = updates.age
+    if (updates.emoji       !== undefined) row.avatar_emoji = updates.emoji
+    if (updates.avatarColor !== undefined) row.color        = updates.avatarColor
+    if (updates.photo       !== undefined) row.photo_url    = updates.photo
+    if (updates.interests   !== undefined) row.interests    = updates.interests
+    if (updates.environment !== undefined) row.environment  = updates.environment
+    if (updates.stimulation !== undefined) row.stimulation  = updates.stimulation
+    if (updates.challenge   !== undefined) row.challenge    = updates.challenge
 
     const { data, error } = await supabase
       .from('kids')

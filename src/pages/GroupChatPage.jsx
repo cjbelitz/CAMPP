@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useCircle } from '../context/CircleContext'
 import { MOCK_MOMS } from '../data/mockCircle'
-import { camps } from '../data/camps'
 import { formatChatTime, formatDaySeparator } from '../utils/formatRelativeTime'
 import CarpoolCard from '../components/CarpoolCard'
 import CarpoolSheet from '../components/CarpoolSheet'
@@ -10,7 +9,7 @@ import CarpoolSheet from '../components/CarpoolSheet'
 function MomBubble({ color, initial, size = 8 }) {
   return (
     <div
-      className={`w-${size} h-${size} rounded-full flex items-center justify-center text-xs font-bold text-white font-[Montserrat] shrink-0`}
+      className={`w-${size} h-${size} rounded-full flex items-center justify-center text-xs font-bold text-white font-garet shrink-0`}
       style={{ backgroundColor: color }}
     >
       {initial}
@@ -33,7 +32,7 @@ export default function GroupChatPage() {
   const circleState = location.state ?? {}
   const convId = `group-${campId}`
   const conv = getConversation(convId)
-  const camp = camps.find((c) => c.id === Number(campId))
+  const camp = null
 
   // Fall back to circle state when no matching camp (user-created circles)
   const displayName   = camp?.name   ?? circleState.circleName   ?? 'Circle'
@@ -63,7 +62,7 @@ export default function GroupChatPage() {
   if (!conv && !camp && !circleState.circleName) {
     return (
       <div className="min-h-screen bg-capp-warm-bg flex items-center justify-center">
-        <p className="font-[Montserrat] text-capp-dark/50">Circle not found</p>
+        <p className="font-garet text-capp-dark/50">Circle not found</p>
       </div>
     )
   }
@@ -127,16 +126,16 @@ export default function GroupChatPage() {
           {displayIcon}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-base leading-tight truncate uppercase">
+          <h2 className="font-garet font-bold text-capp-dark text-base leading-tight truncate uppercase">
             {displayName}
           </h2>
-          <p className="font-[Montserrat] text-xs text-capp-dark/50">
+          <p className="font-garet text-xs text-capp-dark/50">
             group · {members.length + 1} members
           </p>
         </div>
         <button
           onClick={() => setShowMembers(true)}
-          className="shrink-0 font-[Montserrat] text-xs font-semibold text-capp-dark/50 bg-white/70 px-3 py-1.5 rounded-xl"
+          className="shrink-0 font-garet text-xs font-semibold text-capp-dark/50 bg-white/70 px-3 py-1.5 rounded-xl"
         >
           👥 {members.length + 1}
         </button>
@@ -149,7 +148,7 @@ export default function GroupChatPage() {
             return (
               <div key={`sep-${i}`} className="flex items-center gap-3 my-3">
                 <div className="flex-1 h-px bg-capp-dark/8" />
-                <span className="font-[Montserrat] text-[10px] text-capp-dark/35 font-medium">
+                <span className="font-garet text-[10px] text-capp-dark/35 font-medium">
                   {formatDaySeparator(item.ts)}
                 </span>
                 <div className="flex-1 h-px bg-capp-dark/8" />
@@ -169,12 +168,12 @@ export default function GroupChatPage() {
                 )}
                 <div className={`flex flex-col gap-1 max-w-[80%] ${isMe ? 'items-end' : 'items-start'}`}>
                   {!isMe && (
-                    <span className="font-[Montserrat] text-[10px] font-semibold text-capp-dark/50 ml-1">
+                    <span className="font-garet text-[10px] font-semibold text-capp-dark/50 ml-1">
                       {mom?.name}
                     </span>
                   )}
                   <CarpoolCard msg={item.msg} isMe={isMe} />
-                  <p className={`font-[Montserrat] text-[9px] text-capp-dark/30 mt-0.5 ${isMe ? 'text-right' : 'text-left ml-1'}`}>
+                  <p className={`font-garet text-[9px] text-capp-dark/30 mt-0.5 ${isMe ? 'text-right' : 'text-left ml-1'}`}>
                     {formatChatTime(item.msg.ts)}
                   </p>
                 </div>
@@ -194,7 +193,7 @@ export default function GroupChatPage() {
               )}
               <div className={`flex flex-col gap-1 max-w-[75%] ${isMe ? 'items-end' : 'items-start'}`}>
                 {!isMe && (
-                  <span className="font-[Montserrat] text-[10px] font-semibold text-capp-dark/50 ml-1">
+                  <span className="font-garet text-[10px] font-semibold text-capp-dark/50 ml-1">
                     {mom?.name}
                   </span>
                 )}
@@ -207,9 +206,9 @@ export default function GroupChatPage() {
                           : 'bg-white text-capp-dark shadow-sm rounded-bl-sm'
                       }`}
                     >
-                      <p className="font-[Montserrat] text-sm leading-relaxed">{msg.body}</p>
+                      <p className="font-garet text-sm leading-relaxed">{msg.body}</p>
                     </div>
-                    <p className={`font-[Montserrat] text-[9px] text-capp-dark/30 mt-0.5 ${isMe ? 'text-right' : 'text-left ml-1'}`}>
+                    <p className={`font-garet text-[9px] text-capp-dark/30 mt-0.5 ${isMe ? 'text-right' : 'text-left ml-1'}`}>
                       {formatChatTime(msg.ts)}
                     </p>
                   </div>
@@ -241,7 +240,7 @@ export default function GroupChatPage() {
             }}
             onKeyDown={onKeyDown}
             placeholder={`Message ${displayName}…`}
-            className="flex-1 font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-2xl px-4 py-2.5 resize-none focus:outline-none focus:border-capp-coral/40 transition-colors placeholder:text-capp-dark/30"
+            className="flex-1 font-garet text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-2xl px-4 py-2.5 resize-none focus:outline-none focus:border-capp-coral/40 transition-colors placeholder:text-capp-dark/30"
             style={{ minHeight: '42px', maxHeight: '96px' }}
           />
           <button
@@ -261,29 +260,29 @@ export default function GroupChatPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowMembers(false)} />
           <div className="relative w-full bg-white rounded-t-3xl px-5 pt-5 pb-10">
             <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-5" />
-            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-4 uppercase">
+            <h3 className="font-garet font-bold text-capp-dark text-lg mb-4 uppercase">
               {members.length + 1} members in this circle
             </h3>
             {/* Me */}
             <div className="flex items-center gap-3 py-2.5 border-b border-capp-dark/5">
-              <div className="w-10 h-10 rounded-full bg-capp-coral flex items-center justify-center text-capp-dark text-sm font-bold font-[League_Spartan]">
+              <div className="w-10 h-10 rounded-full bg-capp-coral flex items-center justify-center text-capp-dark text-sm font-bold font-garet">
                 Y
               </div>
               <div>
-                <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">You</p>
-                <p className="font-[Montserrat] text-xs text-capp-dark/40">North County SD</p>
+                <p className="font-garet text-sm font-semibold text-capp-dark">You</p>
+                <p className="font-garet text-xs text-capp-dark/40">North County SD</p>
               </div>
             </div>
             {members.map((mom) => (
               <div key={mom.id} className="flex items-center gap-3 py-2.5 border-b border-capp-dark/5 last:border-0">
                 <MomBubble color={mom.avatarColor} initial={mom.name[0]} size={10} />
                 <div className="flex-1">
-                  <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{mom.name}</p>
-                  <p className="font-[Montserrat] text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
+                  <p className="font-garet text-sm font-semibold text-capp-dark">{mom.name}</p>
+                  <p className="font-garet text-xs text-capp-dark/40">{mom.location} · {mom.kidName}'s mom</p>
                 </div>
                 <button
                   onClick={() => { setShowMembers(false); navigate(`/circle/dm/${mom.id}`) }}
-                  className="font-[Montserrat] text-xs font-semibold text-capp-coral bg-capp-coral/10 px-3 py-1.5 rounded-xl active:scale-95 transition-transform"
+                  className="font-garet text-xs font-semibold text-capp-coral bg-capp-coral/10 px-3 py-1.5 rounded-xl active:scale-95 transition-transform"
                 >
                   DM
                 </button>

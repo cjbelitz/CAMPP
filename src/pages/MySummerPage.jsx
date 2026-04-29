@@ -2,9 +2,17 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSaved } from '../context/SavedCampsContext'
 import { useKids } from '../context/KidsContext'
-import { camps, SUMMER_WEEKS } from '../data/camps'
+import { SUMMER_WEEKS } from '../data/camps'
+import { useCamps } from '../lib/useCamps'
 import { daysUntil, deadlineColor, deadlineLabel } from '../utils/formatRelativeTime'
 import KidAvatar from '../components/KidAvatar'
+
+// ── Status config ────────────────────────────────────────────────────────────
+const STATUS_CONFIG = {
+  saved:      { bar: '#f20815', bg: '#fff5f5', badgeBg: '#fee2e2', badgeText: '#b91c1c', label: 'Not Registered' },
+  registered: { bar: '#11a253', bg: '#f0fff4', badgeBg: '#dcfce7', badgeText: '#15803d', label: 'Registered'     },
+  waitlisted: { bar: '#ffd21f', bg: '#fffbeb', badgeBg: '#fef3c7', badgeText: '#b45309', label: 'Waitlisted'     },
+}
 
 // ── Calendar export helpers ──────────────────────────────────────────────────
 const MONTHS = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }
@@ -66,7 +74,7 @@ function generateICS(savedEntries, allCamps, customEvents) {
       `UID:event-${ev.id}@capp`,
       `DTSTART;VALUE=DATE:${toICSDate(start)}`,
       `DTEND;VALUE=DATE:${toICSDate(end)}`,
-      `SUMMARY:${escapeICS(ev.emoji + ' ' + ev.label)}`,
+      `SUMMARY:${escapeICS(ev.label)}`,
       'END:VEVENT',
     )
   })
@@ -89,10 +97,10 @@ function downloadICS(savedEntries, allCamps, customEvents) {
 }
 
 const EVENT_TYPES = [
-  { type: 'vacation',    label: 'Family Vacation', emoji: '🏖️', color: '#818CF8' },
-  { type: 'family',      label: 'Family in Town',  emoji: '🏡', color: '#7A88FE' },
-  { type: 'appointment', label: 'Appointment',     emoji: '📅', color: '#F87171' },
-  { type: 'custom',      label: 'Custom',          emoji: '✏️', color: '#FABE37' },
+  { type: 'vacation',    label: 'Family Vacation', emoji: '', color: '#826dee' },
+  { type: 'family',      label: 'Family in Town',  emoji: '', color: '#155fcc' },
+  { type: 'appointment', label: 'Appointment',     emoji: '', color: '#f20815' },
+  { type: 'custom',      label: 'Custom',          emoji: '', color: '#ffd21f' },
 ]
 
 function useCustomEvents() {
@@ -144,10 +152,10 @@ function AddEventSheet({ onClose, onAdd }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-10 h-1 bg-capp-dark/15 rounded-full mx-auto mb-5" />
-        <h2 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-4 uppercase">Add to Calendar</h2>
+        <h2 className="font-garet font-bold text-capp-dark text-xl mb-4 uppercase">Add to Calendar</h2>
 
         {/* Event type */}
-        <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event type</p>
+        <p className="font-garet text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event type</p>
         <div className="grid grid-cols-2 gap-2 mb-4">
           {EVENT_TYPES.map((et) => (
             <button
@@ -158,8 +166,8 @@ function AddEventSheet({ onClose, onAdd }) {
                 ? { backgroundColor: `${et.color}18`, borderColor: et.color }
                 : { backgroundColor: 'white', borderColor: '#e2e8f0' }}
             >
-              <span className="text-xl">{et.emoji}</span>
-              <span className="font-[Montserrat] text-sm font-semibold text-capp-dark">{et.label}</span>
+              <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: et.color }} />
+              <span className="font-garet text-sm font-semibold text-capp-dark">{et.label}</span>
             </button>
           ))}
         </div>
@@ -167,23 +175,23 @@ function AddEventSheet({ onClose, onAdd }) {
         {/* Custom label */}
         {selectedType.type === 'custom' && (
           <div className="mb-4">
-            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event name</p>
+            <p className="font-garet text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Event name</p>
             <input
               type="text"
               placeholder="e.g. Beach trip, Grandma visiting…"
               value={customLabel}
               onChange={(e) => setCustomLabel(e.target.value)}
-              className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-3 focus:outline-none focus:border-capp-coral/40"
+              className="w-full font-garet text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-4 py-3 focus:outline-none focus:border-capp-coral/40"
               autoFocus
             />
           </div>
         )}
 
         {/* Date range */}
-        <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Dates</p>
+        <p className="font-garet text-xs font-semibold text-capp-dark/40 uppercase tracking-wide mb-2">Dates</p>
         <div className="flex gap-3 mb-5">
           <div className="flex-1">
-            <p className="font-[Montserrat] text-[10px] text-capp-dark/40 mb-1">Start</p>
+            <p className="font-garet text-[10px] text-capp-dark/40 mb-1">Start</p>
             <input
               type="date"
               value={startDate}
@@ -191,17 +199,17 @@ function AddEventSheet({ onClose, onAdd }) {
                 setStartDate(e.target.value)
                 if (e.target.value > endDate) setEndDate(e.target.value)
               }}
-              className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-3 py-2.5 focus:outline-none focus:border-capp-coral/40"
+              className="w-full font-garet text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-3 py-2.5 focus:outline-none focus:border-capp-coral/40"
             />
           </div>
           <div className="flex-1">
-            <p className="font-[Montserrat] text-[10px] text-capp-dark/40 mb-1">End</p>
+            <p className="font-garet text-[10px] text-capp-dark/40 mb-1">End</p>
             <input
               type="date"
               value={endDate}
               min={startDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full font-[Montserrat] text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-3 py-2.5 focus:outline-none focus:border-capp-coral/40"
+              className="w-full font-garet text-sm bg-capp-warm-bg border border-capp-dark/10 rounded-xl px-3 py-2.5 focus:outline-none focus:border-capp-coral/40"
             />
           </div>
         </div>
@@ -209,7 +217,7 @@ function AddEventSheet({ onClose, onAdd }) {
         <button
           onClick={handleAdd}
           disabled={!canAdd}
-          className="w-full py-4 rounded-2xl font-[Montserrat] font-bold text-sm transition-all active:scale-95"
+          className="w-full py-4 rounded-2xl font-garet font-bold text-sm transition-all active:scale-95"
           style={{ backgroundColor: canAdd ? selectedType.color : '#e2e8f0', color: canAdd ? 'white' : '#94a3b8' }}
         >
           Add to My Summer
@@ -223,14 +231,14 @@ function DeadlineBadge({ regDeadline }) {
   if (!regDeadline) return null
   const days = daysUntil(regDeadline)
   if (days <= 0) return (
-    <span className="font-[Montserrat] text-xs font-bold text-gray-500 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">
+    <span className="font-garet text-xs font-bold text-gray-500 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">
       Deadline passed
     </span>
   )
   const color = deadlineColor(days)
   const label = deadlineLabel(days)
   return (
-    <span className="font-[Montserrat] text-xs font-bold text-white px-2.5 py-0.5 rounded-full" style={{ backgroundColor: color }}>
+    <span className="font-garet text-xs font-bold text-white px-2.5 py-0.5 rounded-full" style={{ backgroundColor: color }}>
       ⏰ {label} left
     </span>
   )
@@ -301,7 +309,7 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                   />
                   {count > 0 && (
                     <div
-                      className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white font-[Montserrat] border-2 border-white"
+                      className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white font-garet border-2 border-white"
                       style={{ backgroundColor: kid.avatarColor }}
                     >
                       {count}
@@ -309,8 +317,8 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                   )}
                 </div>
                 <div className="text-center">
-                  <p className="font-[League_Spartan] font-bold text-sm leading-tight text-capp-dark">{kid.name}</p>
-                  <p className="font-[Montserrat] text-[10px] text-capp-dark/40">{kid.age}y · {count} camp{count !== 1 ? 's' : ''}</p>
+                  <p className="font-garet font-bold text-sm leading-tight text-capp-dark">{kid.name}</p>
+                  <p className="font-garet text-[10px] text-capp-dark/40">{kid.age !== null ? `Age ${kid.age}` : ''} · {count} camp{count !== 1 ? 's' : ''}</p>
                 </div>
               </button>
             )
@@ -322,8 +330,8 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
         const kid = kids.find((k) => k.id === selectedKidId)
         return (
           <div className="flex items-center justify-between bg-capp-dark/5 rounded-xl px-3 py-2 mb-3">
-            <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/60">Showing {kid?.name}'s camps</p>
-            <button onClick={() => onKidSelect(null)} className="font-[Montserrat] text-xs font-semibold text-capp-coral">Show all →</button>
+            <p className="font-garet text-xs font-semibold text-capp-dark/60">Showing {kid?.name}'s camps</p>
+            <button onClick={() => onKidSelect(null)} className="font-garet text-xs font-semibold text-capp-coral">Show all →</button>
           </div>
         )
       })()}
@@ -348,8 +356,8 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
               </div>
 
               <div className="w-10 shrink-0 pt-1.5 mr-3">
-                <p className={`font-[Montserrat] text-[9px] font-semibold uppercase tracking-wide leading-none ${isEmpty ? 'text-capp-dark/20' : 'text-capp-dark/40'}`}>{mon}</p>
-                <p className={`font-[League_Spartan] font-bold text-sm leading-tight ${isEmpty ? 'text-capp-dark/18' : 'text-capp-dark'}`}>{day}</p>
+                <p className={`font-garet text-[9px] font-semibold uppercase tracking-wide leading-none ${isEmpty ? 'text-capp-dark/20' : 'text-capp-dark/40'}`}>{mon}</p>
+                <p className={`font-garet font-bold text-sm leading-tight ${isEmpty ? 'text-capp-dark/18' : 'text-capp-dark'}`}>{day}</p>
               </div>
 
               <div className="flex-1 flex flex-col gap-1.5 py-1.5 pb-3 min-w-0">
@@ -361,8 +369,8 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                   <>
                     {hasConflict && (
                       <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-xl px-2.5 py-1.5 mb-0.5">
-                        <span className="text-xs">⚠️</span>
-                        <p className="font-[Montserrat] text-xs font-semibold text-amber-700">Same kid has two camps this week</p>
+                        <div className="w-3 h-3 rounded-full bg-amber-500 shrink-0" />
+                        <p className="font-garet text-xs font-semibold text-amber-700">Same kid has two camps this week</p>
                       </div>
                     )}
                     {entries.map((item) => {
@@ -374,8 +382,8 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                             className="flex items-center gap-2 rounded-xl px-3 py-2"
                             style={{ backgroundColor: `${ev.color}18`, border: `1.5px solid ${ev.color}45` }}
                           >
-                            <span className="text-base shrink-0">{ev.emoji}</span>
-                            <p className="font-[Montserrat] text-xs font-semibold flex-1 min-w-0 truncate" style={{ color: ev.color }}>
+                            <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: ev.color }} />
+                            <p className="font-garet text-xs font-semibold flex-1 min-w-0 truncate" style={{ color: ev.color }}>
                               {ev.label}
                             </p>
                             <button
@@ -388,33 +396,28 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                         )
                       }
                       const { camp, kid, entry } = item
-                      const registered = isRegistered(camp.id)
+                      const entryStatus = entry.status ?? 'saved'
+                      const sc = STATUS_CONFIG[entryStatus]
                       return (
                         <div key={`${camp.id}-${entry.session}`} className="relative">
                           <button
                             onClick={() => navigate(`/camps/${camp.id}`)}
                             className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:scale-[0.98] transition-transform w-full"
-                            style={registered ? {
-                              backgroundColor: '#FEFCE8',
-                              border: '1.5px solid #EAB30855',
-                            } : {
-                              backgroundColor: kid ? `${kid.avatarColor}18` : 'rgba(0,0,0,0.04)',
-                              border: `1.5px solid ${kid ? `${kid.avatarColor}45` : 'rgba(0,0,0,0.08)'}`,
-                            }}
+                            style={{ backgroundColor: sc.bg, border: `1.5px solid ${sc.bar}55` }}
                           >
-                            <span className="text-base shrink-0">{camp.icon}</span>
+                            <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: sc.bar }} />
                             <div className="flex-1 min-w-0">
-                              <p className="font-[Montserrat] text-xs font-semibold text-capp-dark leading-tight truncate">
-                                {registered && <span className="text-yellow-600 mr-1">✓</span>}{camp.name}
+                              <p className="font-garet text-xs font-semibold text-capp-dark leading-tight truncate">
+                                {camp.name}
                               </p>
-                              <p className="font-[Montserrat] text-[10px] text-capp-dark/40 mt-0.5">${camp.price}/wk · {camp.location}</p>
+                              <p className="font-garet text-[10px] text-capp-dark/40 mt-0.5">${camp.price}/wk · {camp.location}</p>
                             </div>
                             {kid ? (
                               <KidAvatar kid={kid} size={24} rounded="full" className="shrink-0" />
                             ) : (
                               <button
                                 onClick={(e) => { e.stopPropagation(); setAssigningId(assigningId === camp.id ? null : camp.id) }}
-                                className="text-[10px] font-[Montserrat] text-capp-coral font-semibold shrink-0 active:opacity-60"
+                                className="text-[10px] font-garet text-capp-coral font-semibold shrink-0 active:opacity-60"
                               >
                                 Assign
                               </button>
@@ -423,7 +426,7 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
 
                           {assigningId === camp.id && (
                             <div className="flex items-center gap-3 mt-1.5 pl-1">
-                              <span className="font-[Montserrat] text-[10px] text-capp-dark/40">Who?</span>
+                              <span className="font-garet text-[10px] text-capp-dark/40">Who?</span>
                               {kids.map((k) => (
                                 <button
                                   key={k.id}
@@ -431,7 +434,7 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
                                   className="flex flex-col items-center gap-1 active:scale-90 transition-transform"
                                 >
                                   <KidAvatar kid={k} size={32} rounded="full" />
-                                  <span className="font-[Montserrat] text-[9px] text-capp-dark/60">{k.name}</span>
+                                  <span className="font-garet text-[9px] text-capp-dark/60">{k.name}</span>
                                 </button>
                               ))}
                             </div>
@@ -448,13 +451,13 @@ function SummerCalendar({ savedEntries, allCamps, kids, navigate, assignKid, sel
       </div>
 
       {!hasAnyCamps && customEvents.length === 0 && (
-        <p className="font-[Montserrat] text-sm text-capp-dark/35 text-center mt-4">
+        <p className="font-garet text-sm text-capp-dark/35 text-center mt-4">
           Save camps to see them on your timeline
         </p>
       )}
 
       {selectedKidId && timelineEntries.length === 0 && (
-        <p className="font-[Montserrat] text-sm text-capp-dark/35 text-center mt-4">
+        <p className="font-garet text-sm text-capp-dark/35 text-center mt-4">
           No camps assigned to {kids.find((k) => k.id === selectedKidId)?.name} yet
         </p>
       )}
@@ -473,10 +476,10 @@ function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-4">
-      <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg mb-3 uppercase">{name} {year}</h3>
+      <h3 className="font-garet font-bold text-capp-dark text-lg mb-3 uppercase">{name} {year}</h3>
       <div className="grid grid-cols-7 mb-1">
         {DAY_LABELS.map((d) => (
-          <div key={d} className="text-center font-[Montserrat] text-[10px] font-semibold text-capp-dark/35 uppercase tracking-wide py-1">{d}</div>
+          <div key={d} className="text-center font-garet text-[10px] font-semibold text-capp-dark/35 uppercase tracking-wide py-1">{d}</div>
         ))}
       </div>
       <div className="grid grid-cols-7 gap-px">
@@ -489,7 +492,7 @@ function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
 
           return (
             <div key={day} className={`min-h-[48px] rounded-lg p-0.5 flex flex-col gap-0.5 ${items.length > 0 ? 'bg-capp-warm-bg' : ''}`}>
-              <span className={`font-[Montserrat] text-xs font-semibold self-center w-6 h-6 flex items-center justify-center rounded-full mb-0.5 ${
+              <span className={`font-garet text-xs font-semibold self-center w-6 h-6 flex items-center justify-center rounded-full mb-0.5 ${
                 isToday ? 'bg-capp-coral text-capp-dark' : items.length > 0 ? 'text-capp-dark' : 'text-capp-dark/25'
               }`}>
                 {day}
@@ -497,26 +500,24 @@ function MonthGrid({ month, year, name, dayMap, navigate, isRegistered }) {
               {items.slice(0, 2).map((item, idx) => {
                 if (item.type === 'event') {
                   return (
-                    <div key={idx} className="text-[8px] font-[Montserrat] font-semibold px-1 py-0.5 rounded truncate leading-tight"
+                    <div key={idx} className="text-[8px] font-garet font-semibold px-1 py-0.5 rounded truncate leading-tight"
                       style={{ backgroundColor: `${item.event.color}25`, color: item.event.color }}>
                       {item.event.emoji} {item.event.label}
                     </div>
                   )
                 }
-                const reg = isRegistered(item.camp.id)
+                const msc = STATUS_CONFIG[item.entry?.status ?? 'saved']
                 return (
                   <button key={idx}
                     onClick={() => navigate(`/camps/${item.camp.id}`)}
-                    className="text-[8px] font-[Montserrat] font-semibold px-1 py-0.5 rounded truncate leading-tight text-left active:opacity-70"
-                    style={reg
-                      ? { backgroundColor: '#FEF08A', color: '#854d0e' }
-                      : { backgroundColor: `${item.camp.accent}25`, color: item.camp.accent }}>
-                    {item.camp.icon} {item.camp.name}
+                    className="text-[8px] font-garet font-semibold px-1 py-0.5 rounded truncate leading-tight text-left active:opacity-70"
+                    style={{ backgroundColor: msc.badgeBg, color: msc.badgeText }}>
+                    {item.camp.name}
                   </button>
                 )
               })}
               {items.length > 2 && (
-                <div className="text-[8px] font-[Montserrat] text-capp-dark/35 px-1">+{items.length - 2}</div>
+                <div className="text-[8px] font-garet text-capp-dark/35 px-1">+{items.length - 2}</div>
               )}
             </div>
           )
@@ -562,7 +563,8 @@ function MonthView({ savedEntries, allCamps, customEvents, navigate, isRegistere
 
 export default function MySummerPage() {
   const navigate = useNavigate()
-  const { savedIds, savedEntries, unsave, assignKid, markRegistered, isRegistered } = useSaved()
+  const { savedIds, savedEntries, unsave, assignKid, isRegistered, getStatus, cycleStatus } = useSaved()
+  const { camps } = useCamps()
   const { kids } = useKids()
   const { events: customEvents, addEvent, removeEvent } = useCustomEvents()
   const savedCamps = camps.filter((c) => savedIds.includes(c.id))
@@ -570,6 +572,7 @@ export default function MySummerPage() {
   const [view, setView] = useState('calendar')
   const [selectedKidId, setSelectedKidId] = useState(null)
   const [showAddEvent, setShowAddEvent] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(null)
 
   const selectedKid = selectedKidId ? kids.find((k) => k.id === selectedKidId) : null
 
@@ -590,14 +593,14 @@ export default function MySummerPage() {
       <div className="px-4 pt-12 pb-4 border-b border-capp-dark/5 bg-white">
         <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 mb-1 active:opacity-70 transition-opacity">
           <div className="w-7 h-7 rounded-lg bg-capp-coral flex items-center justify-center">
-            <span className="font-[League_Spartan] text-capp-dark text-sm font-bold leading-none">C</span>
+            <span className="font-garet text-capp-dark text-sm font-bold leading-none">C</span>
           </div>
-          <span className="font-[League_Spartan] font-bold text-capp-dark text-lg">CAMPP</span>
+          <span className="font-garet font-bold text-capp-dark text-lg">CAMPP</span>
         </button>
         <div className="flex items-end justify-between">
           <div>
-            <h1 className="font-[League_Spartan] font-bold text-capp-dark text-2xl uppercase">My Summer</h1>
-            <p className="font-[Montserrat] text-sm text-capp-dark/50 mt-0.5">
+            <h1 className="font-garet font-bold text-capp-dark text-2xl uppercase">My Summer</h1>
+            <p className="font-garet text-sm text-capp-dark/50 mt-0.5">
               {savedCamps.length === 0
                 ? 'Your saved camps will appear here'
                 : selectedKid
@@ -608,14 +611,14 @@ export default function MySummerPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowAddEvent(true)}
-              className="px-3 py-2 rounded-xl bg-capp-dark text-white font-[Montserrat] text-xs font-semibold active:scale-95 transition-transform"
+              className="px-3 py-2 rounded-xl bg-capp-dark text-white font-garet text-xs font-semibold active:scale-95 transition-transform"
             >
               + Event
             </button>
             <select
               value={view}
               onChange={(e) => setView(e.target.value)}
-              className="font-[Montserrat] text-xs font-semibold text-capp-dark bg-white border border-capp-dark/10 rounded-xl px-3 py-2 shadow-sm"
+              className="font-garet text-xs font-semibold text-capp-dark bg-white border border-capp-dark/10 rounded-xl px-3 py-2 shadow-sm"
             >
               <option value="calendar">Calendar</option>
               <option value="list">List</option>
@@ -627,14 +630,18 @@ export default function MySummerPage() {
       {savedCamps.length === 0 && customEvents.length === 0 ? (
         /* ── Empty state ── */
         <div className="flex flex-col items-center justify-center px-8 py-20 text-center">
-          <div className="w-20 h-20 rounded-full bg-capp-coral/10 flex items-center justify-center text-4xl mb-4">🏕️</div>
-          <h2 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-2 uppercase">Start building your summer</h2>
-          <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed mb-6">
-            Tap the heart on any camp to save it here. Plan your whole summer before you commit to anything.
+          <div className="w-20 h-20 rounded-full bg-capp-blue/10 flex items-center justify-center mb-4">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#155fcc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h2 className="font-garet font-bold text-capp-dark text-xl mb-2 uppercase">No camps saved yet</h2>
+          <p className="font-garet text-sm text-capp-dark/55 leading-relaxed mb-6">
+            Browse camps and save your favorites — they'll all appear here so you can plan your whole summer.
           </p>
           <button
             onClick={() => navigate('/camps')}
-            className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold px-7 py-3.5 rounded-2xl shadow-md active:scale-95 transition-transform"
+            className="bg-capp-blue text-white font-garet font-bold px-7 py-3.5 rounded-2xl shadow-md active:scale-95 transition-transform"
           >
             Browse Camps
           </button>
@@ -651,7 +658,7 @@ export default function MySummerPage() {
           />
           <button
             onClick={() => navigate('/camps')}
-            className="w-full py-4 rounded-2xl border-2 border-dashed border-capp-dark/15 font-[Montserrat] font-medium text-sm text-capp-dark/40 active:scale-95 transition-transform"
+            className="w-full py-4 rounded-2xl border-2 border-dashed border-capp-dark/15 font-garet font-medium text-sm text-capp-dark/40 active:scale-95 transition-transform"
           >
             + Add more camps
           </button>
@@ -661,11 +668,11 @@ export default function MySummerPage() {
         <div className="px-4 pt-4 pb-4 flex flex-col gap-4">
 
           {/* Total summary bar */}
-          <div className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md" style={{ backgroundColor: '#FABE37' }}>
+          <div className="rounded-2xl px-5 py-4 flex items-center justify-between shadow-md" style={{ backgroundColor: '#ffd21f' }}>
             <div>
-              <p className="font-[Montserrat] text-xs text-capp-dark/60 mb-0.5">Estimated total</p>
-              <p className="font-[League_Spartan] font-bold text-capp-dark text-3xl">${total.toLocaleString()}</p>
-              <p className="font-[Montserrat] text-xs text-capp-dark/50 mt-0.5">{savedCamps.length} camp{savedCamps.length !== 1 ? 's' : ''} · Summer sorted ✓</p>
+              <p className="font-garet text-xs text-capp-dark/60 mb-0.5">Estimated total</p>
+              <p className="font-garet font-bold text-capp-dark text-3xl">${total.toLocaleString()}</p>
+              <p className="font-garet text-xs text-capp-dark/50 mt-0.5">{savedCamps.length} camp{savedCamps.length !== 1 ? 's' : ''} · Summer sorted ✓</p>
             </div>
             <div className="flex gap-1.5">
               {savedCamps.slice(0, 4).map((c) => (
@@ -685,63 +692,67 @@ export default function MySummerPage() {
                   {/* Column header */}
                   <div className="flex flex-col items-center gap-1.5 bg-white rounded-2xl px-3 py-3 shadow-sm">
                     <KidAvatar kid={kid} size={48} rounded="full" style={{ border: `2px solid ${kid.avatarColor}` }} />
-                    <p className="font-[League_Spartan] font-bold text-capp-dark text-sm">{kid.name}</p>
-                    <p className="font-[Montserrat] text-xs text-capp-dark/40">{kidCamps.length} camp{kidCamps.length !== 1 ? 's' : ''} · ${kidTotal.toLocaleString()}</p>
+                    <p className="font-garet font-bold text-capp-dark text-sm">{kid.name}</p>
+                    <p className="font-garet text-xs text-capp-dark/40">{kidCamps.length} camp{kidCamps.length !== 1 ? 's' : ''} · ${kidTotal.toLocaleString()}</p>
                   </div>
 
                   {/* Camp cards */}
                   {kidCamps.length === 0 ? (
                     <div className="bg-white/60 rounded-2xl p-4 text-center border-2 border-dashed border-capp-dark/10">
-                      <p className="font-[Montserrat] text-xs text-capp-dark/30">No camps yet</p>
+                      <p className="font-garet text-xs text-capp-dark/30">No camps yet</p>
                     </div>
                   ) : kidCamps.map((camp) => {
                     const session = getSession(camp.id)
                     const days = camp.regDeadline ? daysUntil(camp.regDeadline) : null
-                    const registered = isRegistered(camp.id)
+                    const status = getStatus(camp.id)
+                    const sc = STATUS_CONFIG[status]
                     return (
-                      <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: registered ? '#FEFCE8' : 'white' }}>
-                        <div className="h-1 w-full" style={{ backgroundColor: registered ? '#EAB308' : kid.avatarColor }} />
+                      <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: sc.bg }}>
+                        <div className="h-1.5 w-full" style={{ backgroundColor: sc.bar }} />
                         <div className="p-3">
                           <div className="flex items-start gap-2">
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: camp.accentLight }}>
-                              {camp.icon}
+                              
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="font-[League_Spartan] font-bold text-capp-dark text-sm leading-tight truncate">{camp.name}</p>
-                              <p className="font-[Montserrat] text-[10px] text-capp-dark/40 mt-0.5">{camp.location}</p>
+                              <p className="font-garet font-bold text-capp-dark text-sm leading-tight truncate">{camp.name}</p>
+                              <p className="font-garet text-[10px] text-capp-dark/40 mt-0.5">{camp.location}</p>
                               <div className="flex flex-wrap gap-1 mt-1.5">
-                                {registered && (
-                                  <span className="font-[Montserrat] text-[10px] font-bold text-yellow-800 bg-yellow-200 px-1.5 py-0.5 rounded-full">✓ Reg'd</span>
-                                )}
                                 {session && (
-                                  <span className="font-[Montserrat] text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">{session}</span>
+                                  <span className="font-garet text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">{session}</span>
                                 )}
-                                {!registered && days !== null && days <= 14 && (
-                                  <span className="font-[Montserrat] text-[10px] font-bold text-white px-1.5 py-0.5 rounded-full" style={{ backgroundColor: deadlineColor(days) }}>
+                                {status === 'saved' && days !== null && days <= 14 && (
+                                  <span className="font-garet text-[10px] font-bold text-white px-1.5 py-0.5 rounded-full" style={{ backgroundColor: deadlineColor(days) }}>
                                     {days}d left
                                   </span>
                                 )}
                               </div>
                             </div>
-                            <span className="font-[League_Spartan] font-bold text-capp-dark text-sm shrink-0">${camp.price}</span>
+                            <span className="font-garet font-bold text-capp-dark text-sm shrink-0">${camp.price}</span>
                           </div>
-                          <div className="flex gap-1.5 mt-2">
-                            <button
-                              onClick={() => navigate(`/camps/${camp.id}`)}
-                              className="flex-1 py-2 rounded-xl font-[Montserrat] font-semibold text-xs text-capp-dark bg-capp-coral active:scale-95 transition-transform"
-                            >
-                              Details
-                            </button>
-                            <button
-                              onClick={() => markRegistered(camp.id, !registered)}
-                              className={`px-2 py-2 rounded-xl font-[Montserrat] text-[10px] font-bold active:scale-95 transition-transform ${
-                                registered ? 'bg-yellow-200 text-yellow-800' : 'bg-capp-dark/5 text-capp-dark/40'
-                              }`}
-                            >
-                              {registered ? '✓' : 'Reg'}
-                            </button>
-                            <button onClick={() => unsave(camp.id)} className="text-base active:scale-90 transition-transform px-1">❤️</button>
-                          </div>
+                          {confirmDelete === camp.id ? (
+                            <div className="flex items-center gap-1.5 mt-2">
+                              <p className="font-garet text-xs text-capp-dark/60 flex-1">Remove this camp?</p>
+                              <button onClick={() => { unsave(camp.id); setConfirmDelete(null) }} className="px-3 py-1.5 rounded-xl bg-red-500 text-white font-garet font-bold text-xs active:scale-95 transition-transform">Remove</button>
+                              <button onClick={() => setConfirmDelete(null)} className="px-3 py-1.5 rounded-xl bg-capp-dark/8 text-capp-dark/50 font-garet font-bold text-xs active:scale-95 transition-transform">Keep</button>
+                            </div>
+                          ) : (
+                            <div className="flex gap-1.5 mt-2">
+                              <button onClick={() => navigate(`/camps/${camp.id}`)} className="flex-1 py-2 rounded-xl font-garet font-semibold text-xs text-capp-dark bg-capp-coral active:scale-95 transition-transform">
+                                Details
+                              </button>
+                              <button
+                                onClick={() => cycleStatus(camp.id)}
+                                className="flex-1 py-2 rounded-xl font-garet font-bold text-[10px] active:scale-95 transition-transform"
+                                style={{ backgroundColor: sc.badgeBg, color: sc.badgeText }}
+                              >
+                                {sc.label}
+                              </button>
+                              <button onClick={() => setConfirmDelete(camp.id)} className="w-9 h-9 rounded-xl flex items-center justify-center bg-capp-dark/5 text-capp-dark/30 text-sm active:scale-95 active:bg-red-50 active:text-red-400 transition-all">
+                                x
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )
@@ -754,33 +765,54 @@ export default function MySummerPage() {
             {savedEntries.some((e) => !e.kidId) && (
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col items-center gap-1.5 bg-white rounded-2xl px-3 py-3 shadow-sm">
-                  <div className="w-12 h-12 rounded-full bg-capp-dark/8 flex items-center justify-center text-xl">🏕️</div>
-                  <p className="font-[League_Spartan] font-bold text-capp-dark text-sm">Unassigned</p>
-                  <p className="font-[Montserrat] text-xs text-capp-dark/40">Not yet assigned to a kid</p>
+                  <div className="w-12 h-12 rounded-full bg-capp-blue/10 flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#155fcc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+                  <p className="font-garet font-bold text-capp-dark text-sm">Unassigned</p>
+                  <p className="font-garet text-xs text-capp-dark/40">Not yet assigned to a kid</p>
                 </div>
                 {savedEntries.filter((e) => !e.kidId).map((entry) => {
                   const camp = camps.find((c) => c.id === entry.id)
                   if (!camp) return null
                   const session = getSession(camp.id)
-                  const registered = isRegistered(camp.id)
+                  const status = getStatus(camp.id)
+                  const sc = STATUS_CONFIG[status]
                   return (
-                    <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: registered ? '#FEFCE8' : 'white' }}>
-                      <div className="h-1 w-full" style={{ backgroundColor: registered ? '#EAB308' : camp.accent }} />
+                    <div key={camp.id} className="rounded-2xl shadow-sm overflow-hidden" style={{ backgroundColor: sc.bg }}>
+                      <div className="h-1.5 w-full" style={{ backgroundColor: sc.bar }} />
                       <div className="p-3">
                         <div className="flex items-start gap-2">
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: camp.accentLight }}>{camp.icon}</div>
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: camp.accentLight }}></div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-[League_Spartan] font-bold text-capp-dark text-sm leading-tight truncate">{camp.name}</p>
-                            <p className="font-[Montserrat] text-[10px] text-capp-dark/40 mt-0.5">{camp.location}</p>
+                            <p className="font-garet font-bold text-capp-dark text-sm leading-tight truncate">{camp.name}</p>
+                            <p className="font-garet text-[10px] text-capp-dark/40 mt-0.5">{camp.location}</p>
                             {session && (
-                              <span className="font-[Montserrat] text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full mt-1 inline-block">{session}</span>
+                              <span className="font-garet text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full mt-1 inline-block">{session}</span>
                             )}
                           </div>
-                          <span className="font-[League_Spartan] font-bold text-capp-dark text-sm shrink-0">${camp.price}</span>
+                          <span className="font-garet font-bold text-capp-dark text-sm shrink-0">${camp.price}</span>
                         </div>
-                        <button onClick={() => navigate(`/camps/${camp.id}`)} className="w-full mt-2 py-2 rounded-xl font-[Montserrat] font-semibold text-xs text-capp-dark bg-capp-coral active:scale-95 transition-transform">
-                          Details
-                        </button>
+                        {confirmDelete === camp.id ? (
+                          <div className="flex items-center gap-1.5 mt-2">
+                            <p className="font-garet text-xs text-capp-dark/60 flex-1">Remove this camp?</p>
+                            <button onClick={() => { unsave(camp.id); setConfirmDelete(null) }} className="px-3 py-1.5 rounded-xl bg-red-500 text-white font-garet font-bold text-xs active:scale-95 transition-transform">Remove</button>
+                            <button onClick={() => setConfirmDelete(null)} className="px-3 py-1.5 rounded-xl bg-capp-dark/8 text-capp-dark/50 font-garet font-bold text-xs active:scale-95 transition-transform">Keep</button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-1.5 mt-2">
+                            <button onClick={() => navigate(`/camps/${camp.id}`)} className="flex-1 py-2 rounded-xl font-garet font-semibold text-xs text-capp-dark bg-capp-coral active:scale-95 transition-transform">
+                              Details
+                            </button>
+                            <button
+                              onClick={() => cycleStatus(camp.id)}
+                              className="flex-1 py-2 rounded-xl font-garet font-bold text-[10px] active:scale-95 transition-transform"
+                              style={{ backgroundColor: sc.badgeBg, color: sc.badgeText }}
+                            >
+                              {sc.label}
+                            </button>
+                            <button onClick={() => setConfirmDelete(camp.id)} className="w-9 h-9 rounded-xl flex items-center justify-center bg-capp-dark/5 text-capp-dark/30 text-sm active:scale-95 active:bg-red-50 active:text-red-400 transition-all">
+                              x
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )
@@ -793,15 +825,15 @@ export default function MySummerPage() {
           {customEvents.length > 0 && (
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
               <div className="px-4 pt-4 pb-2 border-b border-capp-dark/5">
-                <p className="font-[Montserrat] text-xs font-semibold text-capp-dark/40 uppercase tracking-wide">Family Events</p>
+                <p className="font-garet text-xs font-semibold text-capp-dark/40 uppercase tracking-wide">Family Events</p>
               </div>
               <div className="flex flex-col divide-y divide-capp-dark/5">
                 {customEvents.map((ev) => (
                   <div key={ev.id} className="flex items-center gap-3 px-4 py-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: `${ev.color}18` }}>{ev.emoji}</div>
+                    <div className="w-9 h-9 rounded-xl shrink-0" style={{ backgroundColor: `${ev.color}18` }} />
                     <div className="flex-1 min-w-0">
-                      <p className="font-[Montserrat] text-sm font-semibold text-capp-dark truncate">{ev.label}</p>
-                      <p className="font-[Montserrat] text-xs text-capp-dark/40">
+                      <p className="font-garet text-sm font-semibold text-capp-dark truncate">{ev.label}</p>
+                      <p className="font-garet text-xs text-capp-dark/40">
                         {ev.startDate ? `${formatDisplayDate(ev.startDate)} – ${formatDisplayDate(ev.endDate)}` : ev.week}
                       </p>
                     </div>
@@ -814,7 +846,7 @@ export default function MySummerPage() {
 
           <button
             onClick={() => navigate('/camps')}
-            className="w-full py-4 rounded-2xl border-2 border-dashed border-capp-dark/15 font-[Montserrat] font-medium text-sm text-capp-dark/40 active:scale-95 transition-transform"
+            className="w-full py-4 rounded-2xl border-2 border-dashed border-capp-dark/15 font-garet font-medium text-sm text-capp-dark/40 active:scale-95 transition-transform"
           >
             + Add more camps
           </button>

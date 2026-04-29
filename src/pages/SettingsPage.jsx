@@ -25,7 +25,7 @@ export default function SettingsPage() {
   function handleShareApp() {
     if (navigator.share) {
       navigator.share({
-        title: 'CAMPP — Summer, sorted.',
+        title: 'CAMPP — Discover. Connect. Sort.',
         text: "I've been using CAMPP to find and organize summer camps for my kids. You should check it out!",
         url: appUrl,
       }).catch(() => {})
@@ -66,12 +66,12 @@ export default function SettingsPage() {
         </button>
         <div className="flex items-center gap-2 flex-1">
           <div className="w-7 h-7 rounded-lg bg-capp-coral flex items-center justify-center">
-            <span className="font-[League_Spartan] text-capp-dark text-sm font-bold">C</span>
+            <span className="font-garet text-capp-dark text-sm font-bold">C</span>
           </div>
-          <span className="font-[League_Spartan] font-bold text-capp-dark text-lg">Settings</span>
+          <span className="font-garet font-bold text-capp-dark text-lg">Settings</span>
         </div>
         {saved && (
-          <span className="font-[Montserrat] text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
+          <span className="font-garet text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
             Saved ✓
           </span>
         )}
@@ -82,7 +82,7 @@ export default function SettingsPage() {
         {/* ── Profile card ── */}
         <section className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="px-4 pt-4 pb-2">
-            <p className="font-[Montserrat] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">
+            <p className="font-garet text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">
               My profile
             </p>
           </div>
@@ -90,11 +90,11 @@ export default function SettingsPage() {
           {/* Avatar row */}
           <div className="flex items-center gap-4 px-4 pb-4">
             <div className="w-16 h-16 rounded-full bg-capp-coral flex items-center justify-center shadow-md shrink-0">
-              <span className="font-[League_Spartan] font-bold text-capp-dark text-xl">{initials}</span>
+              <span className="font-garet font-bold text-capp-dark text-xl">{initials}</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-[League_Spartan] font-bold text-capp-dark text-lg leading-tight truncate">{user?.name}</p>
-              <p className="font-[Montserrat] text-sm text-capp-dark/45 truncate">{user?.email}</p>
+              <p className="font-garet font-bold text-capp-dark text-lg leading-tight truncate">{user?.name}</p>
+              <p className="font-garet text-sm text-capp-dark/45 truncate">{user?.email}</p>
             </div>
             <button
               onClick={() => { setEditingProfile(true); setName(user?.name ?? ''); setEmail(user?.email ?? '') }}
@@ -108,18 +108,18 @@ export default function SettingsPage() {
           {editingProfile && (
             <div className="border-t border-capp-dark/5 px-4 py-4 flex flex-col gap-3">
               <div>
-                <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+                <label className="font-garet text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
                   Name
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full font-[Montserrat] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3 focus:outline-none transition-colors"
+                  className="w-full font-garet text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3 focus:outline-none transition-colors"
                 />
               </div>
               <div>
-                <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+                <label className="font-garet text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
                   Email
                 </label>
                 <input
@@ -127,19 +127,19 @@ export default function SettingsPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   inputMode="email"
-                  className="w-full font-[Montserrat] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3 focus:outline-none transition-colors"
+                  className="w-full font-garet text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3 focus:outline-none transition-colors"
                 />
               </div>
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={handleSaveProfile}
-                  className="flex-1 bg-capp-coral text-capp-dark font-[Montserrat] font-semibold py-3 rounded-2xl active:scale-95 transition-transform"
+                  className="flex-1 bg-capp-coral text-capp-dark font-garet font-semibold py-3 rounded-2xl active:scale-95 transition-transform"
                 >
                   Save changes
                 </button>
                 <button
                   onClick={() => setEditingProfile(false)}
-                  className="flex-1 bg-capp-dark/5 text-capp-dark/60 font-[Montserrat] font-medium py-3 rounded-2xl active:scale-95 transition-transform"
+                  className="flex-1 bg-capp-dark/5 text-capp-dark/60 font-garet font-medium py-3 rounded-2xl active:scale-95 transition-transform"
                 >
                   Cancel
                 </button>
@@ -151,12 +151,12 @@ export default function SettingsPage() {
         {/* ── Kids ── */}
         <section className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
-            <p className="font-[Montserrat] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">
+            <p className="font-garet text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">
               My kids
             </p>
             <button
               onClick={() => navigate('/add-kid')}
-              className="font-[Montserrat] text-xs font-semibold text-capp-coral"
+              className="font-garet text-xs font-semibold text-capp-coral"
             >
               + Add kid
             </button>
@@ -164,10 +164,10 @@ export default function SettingsPage() {
 
           {kids.length === 0 ? (
             <div className="px-4 pb-5 pt-2 text-center">
-              <p className="font-[Montserrat] text-sm text-capp-dark/45 mb-3">No kids added yet</p>
+              <p className="font-garet text-sm text-capp-dark/45 mb-3">No kids added yet</p>
               <button
                 onClick={() => navigate('/add-kid')}
-                className="bg-capp-coral text-capp-dark font-[Montserrat] font-semibold text-sm px-5 py-2.5 rounded-xl active:scale-95 transition-transform"
+                className="bg-capp-coral text-capp-dark font-garet font-semibold text-sm px-5 py-2.5 rounded-xl active:scale-95 transition-transform"
               >
                 Add your first kid
               </button>
@@ -179,32 +179,32 @@ export default function SettingsPage() {
                   <KidAvatar kid={kid} size={44} rounded="full" className="shadow-sm shrink-0" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-[Montserrat] text-sm font-semibold text-capp-dark">{kid.name}</p>
-                      <span className="font-[Montserrat] text-xs text-capp-dark/40">{kid.age}y</span>
+                      <p className="font-garet text-sm font-semibold text-capp-dark">{kid.name}</p>
+                      <span className="font-garet text-xs text-capp-dark/40">{kid.age}y</span>
                       {kid.isExample && (
-                        <span className="font-[Montserrat] text-[10px] text-capp-dark/30 bg-capp-dark/5 px-1.5 py-0.5 rounded-full">
+                        <span className="font-garet text-[10px] text-capp-dark/30 bg-capp-dark/5 px-1.5 py-0.5 rounded-full">
                           example
                         </span>
                       )}
                     </div>
                     {kid.interests?.length > 0 && (
-                      <p className="font-[Montserrat] text-xs text-capp-dark/40 truncate mt-0.5">
+                      <p className="font-garet text-xs text-capp-dark/40 truncate mt-0.5">
                         {kid.interests.join(' · ')}
                       </p>
                     )}
                     <div className="flex gap-2 mt-1 flex-wrap">
                       {kid.environment && (
-                        <span className="font-[Montserrat] text-[10px] text-capp-dark/40 bg-capp-dark/5 px-1.5 py-0.5 rounded-full capitalize">
+                        <span className="font-garet text-[10px] text-capp-dark/40 bg-capp-dark/5 px-1.5 py-0.5 rounded-full capitalize">
                           {kid.environment === 'both' ? 'indoors & outdoors' : kid.environment}
                         </span>
                       )}
                       {kid.stimulation && (
-                        <span className="font-[Montserrat] text-[10px] text-capp-dark/40 bg-capp-dark/5 px-1.5 py-0.5 rounded-full capitalize">
+                        <span className="font-garet text-[10px] text-capp-dark/40 bg-capp-dark/5 px-1.5 py-0.5 rounded-full capitalize">
                           {kid.stimulation} energy
                         </span>
                       )}
                       {kid.challenge && (
-                        <span className="font-[Montserrat] text-[10px] text-capp-dark/40 bg-capp-dark/5 px-1.5 py-0.5 rounded-full capitalize">
+                        <span className="font-garet text-[10px] text-capp-dark/40 bg-capp-dark/5 px-1.5 py-0.5 rounded-full capitalize">
                           {kid.challenge === 'easy' ? 'easy & fun' : kid.challenge}
                         </span>
                       )}
@@ -225,7 +225,7 @@ export default function SettingsPage() {
         {/* ── Community ── */}
         <section className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="px-4 pt-4 pb-2">
-            <p className="font-[Montserrat] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">Community</p>
+            <p className="font-garet text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">Community</p>
           </div>
           <div className="flex flex-col divide-y divide-capp-dark/5">
 
@@ -239,13 +239,13 @@ export default function SettingsPage() {
                   🔗
                 </div>
                 <div>
-                  <p className="font-[Montserrat] text-sm font-medium text-capp-dark">Share CAMPP</p>
-                  <p className="font-[Montserrat] text-xs text-capp-dark/40">
+                  <p className="font-garet text-sm font-medium text-capp-dark">Share CAMPP</p>
+                  <p className="font-garet text-xs text-capp-dark/40">
                     {copied ? 'Link copied!' : 'Spread the word with other camp parents'}
                   </p>
                 </div>
               </div>
-              <span className={`font-[Montserrat] text-xs font-semibold shrink-0 ${copied ? 'text-emerald-500' : 'text-capp-coral'}`}>
+              <span className={`font-garet text-xs font-semibold shrink-0 ${copied ? 'text-emerald-500' : 'text-capp-coral'}`}>
                 {copied ? 'Copied ✓' : 'Share →'}
               </span>
             </button>
@@ -260,8 +260,8 @@ export default function SettingsPage() {
                   🏕️
                 </div>
                 <div>
-                  <p className="font-[Montserrat] text-sm font-medium text-capp-dark">Submit a camp suggestion</p>
-                  <p className="font-[Montserrat] text-xs text-capp-dark/40">Know a great camp we should add?</p>
+                  <p className="font-garet text-sm font-medium text-capp-dark">Submit a camp suggestion</p>
+                  <p className="font-garet text-xs text-capp-dark/40">Know a great camp we should add?</p>
                 </div>
               </div>
               <span className="text-capp-dark/25 text-sm shrink-0">→</span>
@@ -273,7 +273,7 @@ export default function SettingsPage() {
         {/* ── App ── */}
         <section className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="px-4 pt-4 pb-2">
-            <p className="font-[Montserrat] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">App</p>
+            <p className="font-garet text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">App</p>
           </div>
           <div className="flex flex-col divide-y divide-capp-dark/5">
             <button
@@ -282,7 +282,7 @@ export default function SettingsPage() {
             >
               <div className="flex items-center gap-3">
                 <span className="text-lg">🏕️</span>
-                <span className="font-[Montserrat] text-sm font-medium text-capp-dark">Browse camps</span>
+                <span className="font-garet text-sm font-medium text-capp-dark">Browse camps</span>
               </div>
               <span className="text-capp-dark/25 text-sm">→</span>
             </button>
@@ -292,7 +292,7 @@ export default function SettingsPage() {
             >
               <div className="flex items-center gap-3">
                 <span className="text-lg">☀️</span>
-                <span className="font-[Montserrat] text-sm font-medium text-capp-dark">My Summer</span>
+                <span className="font-garet text-sm font-medium text-capp-dark">My Summer</span>
               </div>
               <span className="text-capp-dark/25 text-sm">→</span>
             </button>
@@ -302,7 +302,7 @@ export default function SettingsPage() {
             >
               <div className="flex items-center gap-3">
                 <span className="text-lg">✦</span>
-                <span className="font-[Montserrat] text-sm font-medium text-capp-dark">CAMPP Assistant</span>
+                <span className="font-garet text-sm font-medium text-capp-dark">CAMPP Assistant</span>
               </div>
               <span className="text-capp-dark/25 text-sm">→</span>
             </button>
@@ -312,10 +312,10 @@ export default function SettingsPage() {
         {/* ── Support ── */}
         <section className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="px-4 pt-4 pb-2">
-            <p className="font-[Montserrat] text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">Support</p>
+            <p className="font-garet text-[11px] font-bold text-capp-dark/35 uppercase tracking-wider">Support</p>
           </div>
           <div className="px-4 pb-4 pt-1">
-            <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed">
+            <p className="font-garet text-sm text-capp-dark/55 leading-relaxed">
               Questions or feedback? Reach us at{' '}
               <a href="mailto:support@campp.app" className="text-capp-coral font-semibold">
                 support@campp.app
@@ -327,12 +327,12 @@ export default function SettingsPage() {
         {/* ── Sign out ── */}
         <button
           onClick={() => setShowSignOutConfirm(true)}
-          className="w-full bg-white rounded-2xl shadow-sm py-4 font-[Montserrat] font-semibold text-red-400 active:scale-95 transition-transform"
+          className="w-full bg-white rounded-2xl shadow-sm py-4 font-garet font-semibold text-red-400 active:scale-95 transition-transform"
         >
           Sign out
         </button>
 
-        <p className="font-[Montserrat] text-xs text-capp-dark/25 text-center pb-4">CAMPP · North County San Diego</p>
+        <p className="font-garet text-xs text-capp-dark/25 text-center pb-4">CAMPP · North County San Diego</p>
 
       </div>
 
@@ -344,8 +344,8 @@ export default function SettingsPage() {
             {suggestionSent ? (
               <div className="flex flex-col items-center text-center py-6 gap-3">
                 <span className="text-5xl">🙌</span>
-                <h3 className="font-[League_Spartan] font-bold text-capp-dark text-xl uppercase">Thanks for the tip!</h3>
-                <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed">
+                <h3 className="font-garet font-bold text-capp-dark text-xl uppercase">Thanks for the tip!</h3>
+                <p className="font-garet text-sm text-capp-dark/55 leading-relaxed">
                   We review every suggestion and love hearing about hidden gems in the area.
                 </p>
               </div>
@@ -356,17 +356,17 @@ export default function SettingsPage() {
                     🏕️
                   </div>
                   <div>
-                    <h3 className="font-[League_Spartan] font-bold text-capp-dark text-lg leading-tight uppercase">
+                    <h3 className="font-garet font-bold text-capp-dark text-lg leading-tight uppercase">
                       Suggest a camp
                     </h3>
-                    <p className="font-[Montserrat] text-xs text-capp-dark/45 mt-0.5">
+                    <p className="font-garet text-xs text-capp-dark/45 mt-0.5">
                       Know something we're missing? Tell us!
                     </p>
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <label className="font-[Montserrat] text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
+                  <label className="font-garet text-xs font-semibold text-capp-dark/55 uppercase tracking-wider mb-1.5 block">
                     Camp name, website, or description
                   </label>
                   <textarea
@@ -375,7 +375,7 @@ export default function SettingsPage() {
                     placeholder="e.g. Surf Divas in La Jolla — great for girls 8–14, they have a website at..."
                     rows={4}
                     autoFocus
-                    className="w-full font-[Montserrat] text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors resize-none"
+                    className="w-full font-garet text-base bg-capp-warm-bg border-2 border-capp-dark/10 focus:border-capp-coral/50 rounded-2xl px-4 py-3.5 focus:outline-none transition-colors resize-none"
                   />
                 </div>
 
@@ -392,13 +392,13 @@ export default function SettingsPage() {
                       setTimeout(() => setShowSuggestionSheet(false), 2500)
                     }}
                     disabled={!suggestionText.trim()}
-                    className="w-full bg-capp-coral text-capp-dark font-[Montserrat] font-semibold py-4 rounded-2xl active:scale-95 transition-all disabled:opacity-40"
+                    className="w-full bg-capp-coral text-capp-dark font-garet font-semibold py-4 rounded-2xl active:scale-95 transition-all disabled:opacity-40"
                   >
                     Send suggestion →
                   </button>
                   <button
                     onClick={() => setShowSuggestionSheet(false)}
-                    className="w-full bg-capp-dark/5 text-capp-dark/70 font-[Montserrat] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform"
+                    className="w-full bg-capp-dark/5 text-capp-dark/70 font-garet font-medium py-3.5 rounded-2xl active:scale-95 transition-transform"
                   >
                     Cancel
                   </button>
@@ -414,20 +414,20 @@ export default function SettingsPage() {
         <div className="fixed inset-0 z-50 flex items-end">
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowSignOutConfirm(false)} />
           <div className="relative w-full bg-white rounded-t-3xl px-5 pt-6 pb-10">
-            <h3 className="font-[League_Spartan] font-bold text-capp-dark text-xl mb-2 uppercase">Sign out?</h3>
-            <p className="font-[Montserrat] text-sm text-capp-dark/55 leading-relaxed mb-6">
+            <h3 className="font-garet font-bold text-capp-dark text-xl mb-2 uppercase">Sign out?</h3>
+            <p className="font-garet text-sm text-capp-dark/55 leading-relaxed mb-6">
               Your saved camps and kids' profiles are stored on this device and will still be here when you sign back in.
             </p>
             <div className="flex flex-col gap-3">
               <button
                 onClick={handleSignOut}
-                className="w-full bg-red-500 text-white font-[Montserrat] font-semibold py-4 rounded-2xl active:scale-95 transition-transform"
+                className="w-full bg-red-500 text-white font-garet font-semibold py-4 rounded-2xl active:scale-95 transition-transform"
               >
                 Yes, sign out
               </button>
               <button
                 onClick={() => setShowSignOutConfirm(false)}
-                className="w-full bg-capp-dark/5 text-capp-dark font-[Montserrat] font-medium py-3.5 rounded-2xl active:scale-95 transition-transform"
+                className="w-full bg-capp-dark/5 text-capp-dark font-garet font-medium py-3.5 rounded-2xl active:scale-95 transition-transform"
               >
                 Cancel
               </button>
