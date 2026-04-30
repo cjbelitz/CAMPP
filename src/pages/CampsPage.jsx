@@ -368,20 +368,25 @@ export default function CampsPage() {
           </div>
         )}
 
-        {/* ── City pills ── */}
+        {/* ── City buttons ── */}
         {openFilter === 'city' && (
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="grid grid-cols-2 gap-3 mb-3">
             {CITIES.map(city => {
               const isActive = activeCity === city
               return (
                 <button
                   key={city}
                   onClick={() => setActiveCity(isActive ? null : city)}
-                  className="font-garet text-sm font-bold px-4 py-2 rounded-full border-2 active:scale-95 transition-all"
+                  className="w-full rounded-2xl font-garet font-black text-base active:scale-95 transition-all"
                   style={{
-                    backgroundColor: isActive ? '#155fcc' : 'transparent',
+                    backgroundColor: isActive ? '#155fcc' : 'white',
                     borderColor: '#155fcc',
+                    border: `2px solid ${isActive ? '#155fcc' : '#155fcc'}`,
                     color: isActive ? 'white' : '#155fcc',
+                    paddingTop: '1.1rem',
+                    paddingBottom: '1.1rem',
+                    paddingLeft: '0.75rem',
+                    paddingRight: '0.75rem',
                   }}
                 >
                   {city}
