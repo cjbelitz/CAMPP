@@ -292,10 +292,10 @@ export default function CampsPage() {
                 }}
               >
                 <span className={isOpen ? 'text-white' : 'text-capp-blue'}>{icon}</span>
-                <p className={`font-garet font-black text-[11px] uppercase leading-tight mt-2 ${isOpen ? 'text-white' : 'text-capp-dark'}`}>
+                <p className={`font-garet font-black text-base uppercase leading-tight mt-2 ${isOpen ? 'text-white' : 'text-capp-dark'}`}>
                   {label}
                 </p>
-                <p className={`font-garet text-[9px] leading-tight mt-0.5 ${isOpen ? 'text-white/70' : 'text-capp-dark/45'}`}>
+                <p className={`font-garet text-xs leading-tight mt-1 ${isOpen ? 'text-white/70' : 'text-capp-dark/45'}`}>
                   {sub}
                 </p>
                 {hasActive && !isOpen && (
@@ -405,15 +405,8 @@ export default function CampsPage() {
           </div>
         )}
 
-        {/* ── Result count (no filter active) ── */}
-        {!hasActiveFilter && !loading && (
-          <p className="font-garet text-xs text-capp-dark/40 mb-3">
-            {camps.length} camp{camps.length !== 1 ? 's' : ''} · North County SD
-          </p>
-        )}
-
-        {/* ── Camp list ── */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
+        {/* ── Camp list — only shown when a filter is active ── */}
+        {(hasActiveFilter || selectedKid) && <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
           {loading ? (
             <div className="py-16 flex flex-col items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-capp-blue/10 animate-pulse flex items-center justify-center">
@@ -442,7 +435,7 @@ export default function CampsPage() {
               </div>
             ))
           )}
-        </div>
+        </div>}
 
       </div>
     </div>
