@@ -345,18 +345,20 @@ export default function CampsPage() {
 
         {/* ── Age range buttons ── */}
         {openFilter === 'age' && (
-          <div className="flex gap-2.5 mb-3">
+          <div className="grid grid-cols-2 gap-3 mb-3">
             {AGE_RANGES.map(range => {
               const isActive = activeAge?.label === range.label
               return (
                 <button
                   key={range.label}
                   onClick={() => setActiveAge(isActive ? null : range)}
-                  className="flex-1 py-4 rounded-2xl font-garet font-black text-lg active:scale-95 transition-all"
+                  className="w-full rounded-2xl font-garet font-black text-3xl active:scale-95 transition-all"
                   style={{
                     backgroundColor: isActive ? '#155fcc' : 'white',
                     color: isActive ? 'white' : '#1a1a1a',
                     border: `2px solid ${isActive ? '#155fcc' : 'rgba(0,0,0,0.08)'}`,
+                    paddingTop: '1.25rem',
+                    paddingBottom: '1.25rem',
                   }}
                 >
                   {range.label}
